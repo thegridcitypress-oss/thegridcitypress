@@ -188,27 +188,31 @@
     </div>
 
     <div id="add-article-page" class="page">
-        <div class="auth-container">
-            <h1>Publish a New Article</h1>
-            <div id="add-article-message"></div>
-            <form class="auth-form" onsubmit="handleAddArticle(event)">
-                <label>Title</label>
-                <input type="text" id="article-title" required>
-                <label>Article Date</label>
-                <input type="date" id="article-date" required>
-                <label>Team</label>
-                <select id="article-team" required>
-                    <option value="">-- Choose a Team --</option>
-                    <option value="Utah Athletics">Utah Athletics</option>
-                    <option value="Utah Mammoth">Utah Mammoth</option>
-                    <option value="Utah Jazz">Utah Jazz</option>
-                </select>
-                <label>Full Article (Paste from Google Docs)</label>
-                <div id="editor" contenteditable="true"></div>
-                <button type="submit">Publish Article</button>
-            </form>
-            <a class="back-link" onclick="showProfile()">← Back to Profile</a>
-        </div>
+    <div class="auth-container">
+        <h1>Publish a New Article</h1>
+        <div id="add-article-message"></div>
+        <form class="auth-form" onsubmit="handleAddArticle(event)">
+            <label>Title</label>
+            <input type="text" id="add-article-title" required>
+
+            <label>Article Date</label>
+            <input type="date" id="add-article-date" required>
+
+            <label>Team</label>
+            <select id="add-article-team" required>
+                <option value="">-- Choose a Team --</option>
+                <option value="Utah Athletics">Utah Athletics</option>
+                <option value="Utah Mammoth">Utah Mammoth</option>
+                <option value="Utah Jazz">Utah Jazz</option>
+            </select>
+
+            <label>Full Article (Paste from Google Docs)</label>
+            <div id="add-article-editor" contenteditable="true" style="border:1px solid #ccc; min-height:200px; padding:10px;"></div>
+
+            <button type="submit">Publish Article</button>
+        </form>
+        <a class="back-link" onclick="showProfile()">← Back to Profile</a>
+    </div>
     </div>
 
     <div id="delete-articles-page" class="page">
@@ -442,25 +446,37 @@
         }
 
         window.handleAddArticle = async function(e) {
-            e.preventDefault();
-            if (!currentUser || currentUser.role !== 'admin') return;
-            const title = document.getElementById('article-title').value.trim();
-            const editorContent = document.getElementById('editor').innerHTML.trim();
-            const team = document.getElementById('article-team').value;
-            const publishDate = document.getElementById('article-date').value;
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = editorContent;
-            const textContent = tempDiv.textContent.trim();
-            if (!title || !textContent || !team || !publishDate) { showMessage('add-article-message', 'All fields are required. Please make sure you have written content in the article editor.', true); return; }
-            try {
-                await addDoc(collection(db, 'articles'), { title, content: editorContent, team, published_at: publishDate });
-                showMessage('add-article-message', 'Article published!', false);
-                setTimeout(() => showProfile(), 1500);
-            } catch (error) {
-                console.error('Error adding article:', error);
-                showMessage('add-article-message', 'Error publishing article: ' + error.message, true);
-            }
-        }
+    e.preventDefault();
+    if (!currentUser || currentUser.role !== 'admin') return;
+
+    const title = document.getElementById('add-article-title').value.trim();
+    const editorContent = document.getElementById('add-article-editor').innerHTML.trim();
+    const team = document.getElementById('add-article-team').value;
+    const publishDate = document.getElementById('add-article-date').value;
+
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = editorContent;
+    const textContent = tempDiv.textContent.trim();
+
+    if (!title || !textContent || !team || !publishDate) {
+        showMessage('add-article-message', 'All fields are required. Please make sure you have written content in the article editor.', true);
+        return;
+    }
+
+    try {
+        await addDoc(collection(db, 'articles'), {
+            title,
+            content: editorContent,
+            team,
+            published_at: publishDate
+        });
+        showMessage('add-article-message', 'Article published!', false);
+        setTimeout(() => showProfile(), 1500);
+    } catch (error) {
+        console.error('Error adding article:', error);
+        showMessage('add-article-message', 'Error publishing article: ' + error.message, true);
+    }
+}
 
         window.deleteArticle = async function(id) {
             if (!confirm('Are you sure you want to delete this article?')) return;
