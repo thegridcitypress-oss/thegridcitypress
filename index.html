@@ -374,6 +374,40 @@
     window.scrollTo(0, 0);
 }
 
+window.handleAddArticle = async function(e) {
+    e.preventDefault();
+    if (!currentUser || currentUser.role !== 'admin') return;
+
+    const title = document.getElementById('add-article-title').value.trim();
+    const editorContent = document.getElementById('add-article-editor').innerHTML.trim();
+    const team = document.getElementById('add-article-team').value;
+    const publishDate = document.getElementById('add-article-date').value;
+
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = editorContent;
+    const textContent = tempDiv.textContent.trim();
+
+    if (!title || !textContent || !team || !publishDate) {
+        showMessage('add-article-message', 'All fields are required. Please make sure you have written content in the article editor.', true);
+        return;
+    }
+
+    try {
+        await addDoc(collection(db, 'articles'), {
+            title,
+            content: editorContent,
+            team,
+            published_at: publishDate
+        });
+        showMessage('add-article-message', 'Article published!', false);
+        setTimeout(() => showProfile(), 1500);
+    } catch (error) {
+        console.error('Error adding article:', error);
+        showMessage('add-article-message', 'Error publishing article: ' + error.message, true);
+    }
+}
+
+
 
         window.showDeleteArticles = function() {
             if (!currentUser || currentUser.role !== 'admin') return;
