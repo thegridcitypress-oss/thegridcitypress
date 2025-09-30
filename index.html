@@ -360,16 +360,20 @@
         }
 
         window.showAddArticle = function() {
-            if (!currentUser || currentUser.role !== 'admin') { alert('You must be logged in as an admin to add articles.'); return; }
-            document.getElementById('article-title').value = '';
-            document.getElementById('editor').innerHTML = '';
-            document.getElementById('article-team').value = '';
-            document.getElementById('article-date').value = new Date().toISOString().split('T')[0];
-            document.getElementById('add-article-message').innerHTML = '';
-            hideAllPages();
-            document.getElementById('add-article-page').classList.add('active');
-            window.scrollTo(0, 0);
-        }
+    if (!currentUser || currentUser.role !== 'admin') {
+        alert('You must be logged in as an admin to add articles.');
+        return;
+    }
+    document.getElementById('add-article-title').value = '';
+    document.getElementById('add-article-editor').innerHTML = '';
+    document.getElementById('add-article-team').value = '';
+    document.getElementById('add-article-date').value = new Date().toISOString().split('T')[0];
+    document.getElementById('add-article-message').innerHTML = '';
+    hideAllPages();
+    document.getElementById('add-article-page').classList.add('active');
+    window.scrollTo(0, 0);
+}
+
 
         window.showDeleteArticles = function() {
             if (!currentUser || currentUser.role !== 'admin') return;
