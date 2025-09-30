@@ -145,21 +145,16 @@
     </div>
 
     <div id="profile-page" class="page">
-        <div class="auth-container">
-            <h1>Your Profile</h1>
-            <div class="profile-info">
-                <p><strong>Username:</strong> <span id="profile-username"></span></p>
-                <p><strong>Role:</strong> <span id="profile-role"></span></p>
-            </div>
-            <div class="links">
-                <button onclick="showUpdateProfile()">Update Profile</button>
-                <div id="admin-actions" class="hidden">
-                    <button onclick="showAddArticle()">Add Article</button>
-                    <button onclick="showDeleteArticles()">Delete Articles</button>
-                </div>
-                <button onclick="handleLogout()">Log Out</button>
-            </div>
-            <a class="back-link" onclick="showHome()">← Back to Home</a>
+        <div class="links">
+    <button type="button" onclick="showUpdateProfile()">Update Profile</button>
+    <div id="admin-actions" class="hidden">
+        <button type="button" onclick="showAddArticle()">Add Article</button>
+        <button type="button" onclick="showDeleteArticles()">Delete Articles</button>
+    </div>
+    <button type="button" onclick="handleLogout()">Log Out</button>
+</div>
+<a class="back-link" onclick="showHome()">← Back to Home</a>
+
         </div>
     </div>
 
