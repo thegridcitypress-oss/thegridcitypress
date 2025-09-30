@@ -100,14 +100,15 @@ header h1 { font-size: 2rem; }
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  const DEFAULT_ARTICLES = [];
-  let articles = DEFAULT_ARTICLES.slice();
-  let users = [];
-  let currentUser = null;
+  // Load existing articles from localStorage or use default empty array
+  let articles = JSON.parse(localStorage.getItem('articles')) || [];
+  let users = JSON.parse(localStorage.getItem('users')) || [];
+  let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
   let currentFilter = null;
-  
+
   document.getElementById('year').textContent = new Date().getFullYear();
 
+  // ---------------- Auth UI ----------------
   function updateAuthUI() {
     const navAuth = document.getElementById('nav-auth');
     if (currentUser) {
@@ -117,6 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
+  // ---------------- Pages ----------------
   window.showHome = function() {
     document.querySelectorAll('.article-view, .auth-container, .profile-container').forEach(el=>el.classList.remove('active'));
     document.getElementById('home-page').style.display = 'block';
@@ -139,6 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('article-page').classList.add('active');
   }
 
+  // ---------------- Display Articles ----------------
   function displayArticles(filter=null){
     const list = document.getElementById('articles-list');
     let filtered = filter ? articles.filter(a=>a.team===filter) : articles.slice();
@@ -146,13 +149,71 @@ document.addEventListener('DOMContentLoaded', function() {
     else list.innerHTML = filtered.map(a=>'<a class="article-link" onclick="showArticle('+a.id+')"><h3>'+escapeHtml(a.title)+'</h3><small>'+escapeHtml(a.team)+' | '+escapeHtml(formatDate(a.published_at))+'</small></a>').join('');
   }
 
+  // ---------------- Add Article ----------------
+  window.showAddArticle = function() {
+    if (!currentUser) { alert('You must be logged in to add an article.'); return; }
+
+    document.querySelectorAll('.article-view, .auth-container, .profile-container').forEach(el=>el.classList.remove('active'));
+    
+    const addHtml = `
+      <div class="auth-container active">
+        <h1>Add Article</h1>
+        <label>Title*</label><input type="text" id="article-title">
+        <label>Team*</label>
+        <select id="article-team">
+          <option value="">--Select Team--</option>
+          <option value="Utah Athletics">Utah Athletics</option>
+          <option value="Utah Mammoth">Utah Mammoth</option>
+          <option value="Utah Jazz">Utah Jazz</option>
+        </select>
+        <label>Content*</label><textarea id="article-content-input" rows="8" style="width:100%;"></textarea>
+        <button onclick="addArticle()">Add Article</button>
+      </div>
+    `;
+    document.getElementById('home-page').insertAdjacentHTML('afterend', addHtml);
+  }
+
+  window.addArticle = function() {
+    const title = document.getElementById('article-title').value.trim();
+    const team = document.getElementById('article-team').value;
+    const content = document.getElementById('article-content-input').value.trim();
+
+    if (!title || !team || !content) {
+      alert('Please fill out all required fields.');
+      return;
+    }
+
+    const newArticle = {
+      id: Date.now(),
+      title,
+      team,
+      content: content.replace(/\n/g, '<br>'),
+      published_at: new Date().toISOString()
+    };
+
+    articles.push(newArticle);
+    localStorage.setItem('articles', JSON.stringify(articles));
+
+    alert('Article added!');
+    
+    // Remove the add form
+    const form = document.querySelector('.auth-container.active');
+    if(form) form.remove();
+
+    // Return to home
+    window.showHome();
+  }
+
+  // ---------------- Helpers ----------------
   function formatDate(d){return new Date(d).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});}
   function escapeHtml(t){return String(t||'').replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 
+  // ---------------- Initialize ----------------
   updateAuthUI();
   window.showHome();
 });
 </script>
+
 
 </body>
 </html>
