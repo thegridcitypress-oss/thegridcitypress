@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Grid City Press</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Playfair Display', serif;
+            background-color: #f9f9f9;
+            color: #111;
+        }
+
+        header {
+            position: relative;
+            background-color: white;
+            border-bottom: 1px solid #ccc;
+            padding: 30px 20px 20px;
+        }
+
+        .header-inner {
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+
+        nav.main-nav {
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+
+        .nav-left {
+            text-align: center;
+        }
+
+        .nav-left a {
+            text-decoration: none;
+            color: #444;
+            margin: 0 15px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .nav-left a:hover {
+            color: #000;
+        }
+
+        .nav-right {
+            position: absolute;
+            top: 35px;
+            right: 20px;
+        }
+
+        .nav-right a, .nav-right button {
+            text-decoration: none;
+            color: #444;
+            margin: 0 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .nav-right a:hover, .nav-right button:hover {
+            color: #000;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px 40px;
+        }
+
+        h2.section-title {
+            font-size: 1.8rem;
+            margin: 20px 0 15px;
+            font-weight: 700;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .article-link {
+            display: block;
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-decoration: none;
+            color: inherit;
+            transition: background-color 0.2s ease;
+            cursor: pointer;
+        }
+
+        .article-link:hover {
+            background-color: #f0f0f0;
+        }
+
+        .article-link h3 {
+            margin: 0 0 5px;
+            font-size: 1.4rem;
+        }
+
+        .article-link small {
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        footer {
+            text-align: center;
+            color: #aaa;
+            font-size: 0.8rem;
+            padding: 20px;
+            border-top: 1px solid #ddd;
+        }
+
+        /* Article View */
+        .article-view {
+            display: none;
+        }
+
+        .article-view.active {
+            display: block;
+        }
+
+        .article-content {
+            margin-top: 30px;
+            line-height: 1.8;
+        }
+
+        .article-content p {
+            margin-bottom: 1.2em;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            text-decoration: none;
+            color: #444;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .back-link:hover {
+            color: #000;
+        }
+
+        /* Auth Forms */
+        .auth-container {
+            display: none;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .auth-container.active {
+            display: block;
+        }
+
+        .auth-container h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .auth-form label {
+            display: block;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .auth-form input, .auth-form select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            font-family: inherit;
+            font-size: inherit;
+            border: 1px solid #ccc;
+        }
+
+        .auth-form button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: inherit;
+        }
+
+        .auth-form button:hover {
+            background-color: #333;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 10px;
+            font-weight: bold;
+            color: darkgreen;
+            background-color: #e8f5e9;
+            border: 1px solid #4caf50;
+            border-radius: 4px;
+        }
+
+        .message.error {
+            color: darkred;
+            background-color: #ffebee;
+            border-color: #f44336;
+        }
+
+        .auth-links {
+            margin-top: 20px;
+        }
+
+        .auth-links a {
+            color: #444;
+            text-decoration: none;
+            display: block;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Profile Page */
+        .profile-container {
+            display: none;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .profile-container.active {
+            display: block;
+        }
+
+        .profile-info {
+            margin: 20px 0;
+        }
+
+        .profile-info p {
+            margin: 10px 0;
+        }
+
+        .links {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .links a, .links button {
+            text-decoration: none;
+            background-color: #000;
+            color: #fff;
+            padding: 10px 15px;
+            font-weight: 600;
+            text-align: center;
+            border-radius: 4px;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+            font-size: inherit;
+        }
+
+        .links a:hover, .links button:hover {
+            background-color: #333;
+        }
+
+        /* Editor */
+        #editor {
+            border: 1px solid #ccc;
+            padding: 15px;
+            min-height: 500px;
+            background-color: white;
+            margin-top: 5px;
+            overflow-y: auto;
+        }
+
+        .delete-button {
+            margin-top: 10px;
+            display: inline-block;
+            padding: 6px 12px;
+            background-color: crimson;
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .delete-button:hover {
+            background-color: darkred;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .nav-right {
+                position: static;
+                text-align: center;
+                margin-top: 15px;
+            }
+
+            .nav-left a {
+                display: block;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Home Page -->
+    <div id="home-page">
+        <header>
+            <div class="header-inner">
+                <h1>The Grid City Press</h1>
+            </div>
+            <nav class="main-nav">
+                <div class="nav-left">
+                    <a onclick="filterByTeam('Utah Athletics')">Utah Athletics</a>
+                    <a onclick="filterByTeam('Utah Mammoth')">Utah Mammoth</a>
+                    <a onclick="filterByTeam('Utah Jazz')">Utah Jazz</a>
+                </div>
+                <div class="nav-right" id="nav-auth">
+                    <a onclick="showLogin()">Log In</a>
+                    <a onclick="showRegister()">Register</a>
+                </div>
+            </nav>
+        </header>
+
+        <div class="container">
+            <h2 class="section-title" id="articles-title">Latest Articles</h2>
+            <div id="articles-list"></div>
+        </div>
+
+        <footer>
+            &copy; <span id="year"></span> The Grid City Press. All rights reserved.
+        </footer>
+    </div>
+
+    <!-- Article Detail View -->
+    <div id="article-page" class="article-view">
+        <header>
+            <div class="header-inner">
+                <h1>The Grid City Press</h1>
+            </div>
+        </header>
+        <div class="container">
+            <h1 id="article-title"></h1>
+            <small id="article-meta"></small>
+            <div class="article-content" id="article-content"></div>
+            <a class="back-link" onclick="showHome()">← Back to Home</a>
+        </div>
+    </div>
+
+    <!-- Login Page -->
+    <div id="login-page" class="auth-container">
+        <h1>Log In</h1>
+        <div id="login-message"></div>
+        <form class="auth-form" onsubmit="handleLogin(event)">
+            <label for="login-username">Username</label>
+            <input type="text" id="login-username" required>
+
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" required>
+
+            <button type="submit">Log In</button>
+        </form>
+        <div class="auth-links">
+            <a onclick="showRegister()">→ Create an Account</a>
+            <a onclick="showHome()">← Back to Home</a>
+        </div>
+    </div>
+
+    <!-- Register Page -->
+    <div id="register-page" class="auth-container">
+        <h1>Create Account</h1>
+        <div id="register-message"></div>
+        <form class="auth-form" onsubmit="handleRegister(event)">
+            <label for="reg-username">Username</label>
+            <input type="text" id="reg-username" required>
+
+            <label for="reg-password">Password</label>
+            <input type="password" id="reg-password" required>
+
+            <label for="reg-role">I am a…</label>
+            <select id="reg-role" required onchange="toggleAdminSecret()">
+                <option value="">-- Select Role --</option>
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+            </select>
+
+            <div id="admin-secret-container" class="hidden">
+                <label for="admin-secret">Admin Secret</label>
+                <input type="password" id="admin-secret">
+            </div>
+
+            <button type="submit">Register</button>
+        </form>
+        <div class="auth-links">
+            <a onclick="showLogin()">← Back to Log In</a>
+            <a onclick="showHome()">← Back to Home</a>
+        </div>
+    </div>
+
+    <!-- Profile Page -->
+    <div id="profile-page" class="profile-container">
+        <h1>Your Profile</h1>
+        <div class="profile-info">
+            <p><strong>Username:</strong> <span id="profile-username"></span></p>
+            <p><strong>Role:</strong> <span id="profile-role"></span></p>
+        </div>
+        <div class="links">
+            <button onclick="showUpdateProfile()">✏️ Update Profile</button>
+            <div id="admin-actions" class="hidden">
+                <button onclick="showAddArticle()">➕ Add Article</button>
+                <button onclick="showDeleteArticles()">🗑️ Delete Articles</button>
+            </div>
+            <button onclick="handleLogout()">Log Out</button>
+        </div>
+        <a class="back-link" onclick="showHome()">← Back to Home</a>
+    </div>
+
+    <!-- Update Profile Page -->
+    <div id="update-profile-page" class="auth-container">
+        <h1>Update Profile</h1>
+        <div id="update-message"></div>
+        <form class="auth-form" onsubmit="handleUpdateProfile(event)">
+            <label for="update-username">Username</label>
+            <input type="text" id="update-username" required>
+
+            <label for="update-password">New Password <small>(leave blank to keep current)</small></label>
+            <input type="password" id="update-password">
+
+            <label for="update-role">Role</label>
+            <select id="update-role" required onchange="toggleUpdateAdminSecret()">
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+            </select>
+
+            <div id="update-admin-secret-container" class="hidden">
+                <label for="update-admin-secret">Admin Secret</label>
+                <input type="password" id="update-admin-secret">
+            </div>
+
+            <button type="submit">Save Changes</button>
+        </form>
+        <a class="back-link" onclick="showProfile()">← Back to Profile</a>
+    </div>
+
+    <!-- Add Article Page -->
+    <div id="add-article-page" class="auth-container">
+        <h1>Publish a New Article</h1>
+        <div id="add-article-message"></div>
+        <form class="auth-form" onsubmit="handleAddArticle(event)">
+            <label for="article-title">Title</label>
+            <input type="text" id="article-title" required>
+
+            <label for="editor">Full Article (Paste from Google Docs)</label>
+            <div id="editor" contenteditable="true"></div>
+
+            <label for="article-team">Team</label>
+            <select id="article-team" required>
+                <option value="">-- Choose a Team --</option>
+                <option value="Utah Athletics">Utah Athletics</option>
+                <option value="Utah Mammoth">Utah Mammoth</option>
+                <option value="Utah Jazz">Utah Jazz</option>
+            </select>
+
+            <button type="submit">Publish Article</button>
+        </form>
+        <a class="back-link" onclick="showProfile()">← Back to Profile</a>
+    </div>
+
+    <!-- Delete Articles Page -->
+    <div id="delete-articles-page" class="auth-container">
+        <h1>Delete Articles</h1>
+        <div id="delete-message"></div>
+        <div id="delete-articles-list"></div>
+        <a class="back-link" onclick="showProfile()">← Back to Profile</a>
+    </div>
+
+    <script>
+        // Sample data storage
+        const articles = [
+            {
+                id: 1,
+                title: "Jazz Secure Victory in Overtime Thriller",
+                content: "<p>The Utah Jazz pulled off an incredible overtime victory against their rivals in what many are calling the game of the season. With just seconds remaining, the Jazz managed to tie the game and force overtime.</p><p>Star player Jordan Clarkson led the team with 32 points, including the crucial three-pointer that tied the game at the end of regulation. The energy in the arena was electric as fans witnessed one of the most memorable performances of the year.</p><p>Coach Will Hardy praised his team's resilience and determination, noting that this win could be a turning point in their season. The Jazz will look to build on this momentum as they head into a challenging road trip next week.</p>",
+                team: "Utah Jazz",
+                published_at: "2025-09-28"
+            },
+            {
+                id: 2,
+                title: "Utah Mammoth Dominate Home Opener",
+                content: "<p>The Utah Mammoth lacrosse team started their season with an impressive win at their home opener this weekend. The team showcased exceptional teamwork and skill, delighting the packed crowd at the Maverik Center.</p><p>Forward Jake Thompson scored a hat trick in the first half alone, setting the tone for what would become a dominant performance. The Mammoth's defense was equally impressive, holding their opponents to just three goals throughout the entire game.</p><p>Head coach emphasized the importance of starting the season strong and building positive momentum. The team's next home game is scheduled for early October, and tickets are already selling fast.</p>",
+                team: "Utah Mammoth",
+                published_at: "2025-09-27"
+            },
+            {
+                id: 3,
+                title: "Utes Football Team Eyes Conference Championship",
+                content: "<p>The University of Utah football team is having an outstanding season, currently sitting at the top of their conference standings. With only three games remaining in the regular season, the Utes are in prime position to secure a spot in the conference championship game.</p><p>Quarterback Bryson Barnes has been exceptional this season, throwing for over 2,500 yards and 22 touchdowns. The offensive line has provided excellent protection, allowing the team to execute their game plan effectively week after week.</p><p>The defense has also been stellar, ranking second in the conference in points allowed. Coach Kyle Whittingham credits the team's success to their preparation and dedication throughout the off-season. The next matchup will be a crucial test as they face another top-ranked opponent.</p>",
+                team: "Utah Athletics",
+                published_at: "2025-09-26"
+            }
+        ];
+
+        let users = [];
+        let currentUser = null;
+        let currentFilter = null;
+
+        // Initialize
+        document.getElementById('year').textContent = new Date().getFullYear();
+        loadUsers();
+        checkAuth();
+        displayArticles();
+
+        function loadUsers() {
+            const saved = localStorage.getItem('gridCityUsers');
+            if (saved) {
+                users = JSON.parse(saved);
+            }
+        }
+
+        function saveUsers() {
+            localStorage.setItem('gridCityUsers', JSON.stringify(users));
+        }
+
+        function checkAuth() {
+            const saved = localStorage.getItem('gridCityCurrentUser');
+            if (saved) {
+                currentUser = JSON.parse(saved);
+                updateAuthUI();
+            }
+        }
+
+        function updateAuthUI() {
+            const navAuth = document.getElementById('nav-auth');
+            if (currentUser) {
+                navAuth.innerHTML = `
+                    <a onclick="showProfile()">${currentUser.username}</a>
+                    <button onclick="handleLogout()">Log Out</button>
+                `;
+            } else {
+                navAuth.innerHTML = `
+                    <a onclick="showLogin()">Log In</a>
+                    <a onclick="showRegister()">Register</a>
+                `;
+            }
+        }
+
+        function displayArticles(filter = null) {
+            const list = document.getElementById('articles-list');
+            const title = document.getElementById('articles-title');
+            
+            let filtered = articles;
+            if (filter) {
+                filtered = articles.filter(a => a.team === filter);
+                title.textContent = `${filter} Articles`;
+            } else {
+                title.textContent = 'Latest Articles';
+            }
+
+            filtered.sort((a, b) => new Date(b.published_at) - new Date(a.published_at));
+
+            list.innerHTML = filtered.map(article => `
+                <a onclick="showArticle(${article.id})" class="article-link">
+                    <h3>${article.title}</h3>
+                    <small>${article.team} | ${formatDate(article.published_at)}</small>
+                </a>
+            `).join('');
+        }
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        }
+
+        function filterByTeam(team) {
+            currentFilter = team;
+            displayArticles(team);
+        }
+
+        function showArticle(id) {
+            const article = articles.find(a => a.id === id);
+            if (!article) return;
+
+            document.getElementById('article-title').textContent = article.title;
+            document.getElementById('article-meta').textContent = `${article.team} | ${formatDate(article.published_at)}`;
+            document.getElementById('article-content').innerHTML = article.content;
+
+            hideAllPages();
+            document.getElementById('article-page').classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function showHome() {
+            hideAllPages();
+            document.getElementById('home-page').style.display = 'block';
+            displayArticles(currentFilter);
+            window.scrollTo(0, 0);
+        }
+
+        function showLogin() {
+            hideAllPages();
+            document.getElementById('login-page').classList.add('active');
+            document.getElementById('login-message').innerHTML = '';
+            window.scrollTo(0, 0);
+        }
+
+        function showRegister() {
+            hideAllPages();
+            document.getElementById('register-page').classList.add('active');
+            document.getElementById('register-message').innerHTML = '';
+            window.scrollTo(0, 0);
+        }
+
+        function showProfile() {
+            if (!currentUser) {
