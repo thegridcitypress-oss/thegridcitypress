@@ -127,7 +127,6 @@
             border-top: 1px solid #ddd;
         }
 
-        /* Article View */
         .article-view {
             display: none;
         }
@@ -158,7 +157,6 @@
             color: #000;
         }
 
-        /* Auth Forms */
         .auth-container {
             display: none;
             max-width: 600px;
@@ -237,7 +235,6 @@
             display: none;
         }
 
-        /* Profile Page */
         .profile-container {
             display: none;
             max-width: 600px;
@@ -282,7 +279,6 @@
             background-color: #333;
         }
 
-        /* Editor */
         #editor {
             border: 1px solid #ccc;
             padding: 15px;
@@ -329,7 +325,6 @@
     </style>
 </head>
 <body>
-    <!-- Main Home Page -->
     <div id="home-page">
         <header>
             <div class="header-inner">
@@ -358,7 +353,6 @@
         </footer>
     </div>
 
-    <!-- Article Detail View -->
     <div id="article-page" class="article-view">
         <header>
             <div class="header-inner">
@@ -373,17 +367,14 @@
         </div>
     </div>
 
-    <!-- Login Page -->
     <div id="login-page" class="auth-container">
         <h1>Log In</h1>
         <div id="login-message"></div>
         <form class="auth-form" onsubmit="handleLogin(event)">
             <label for="login-username">Username</label>
             <input type="text" id="login-username" required>
-
             <label for="login-password">Password</label>
             <input type="password" id="login-password" required>
-
             <button type="submit">Log In</button>
         </form>
         <div class="auth-links">
@@ -392,29 +383,24 @@
         </div>
     </div>
 
-    <!-- Register Page -->
     <div id="register-page" class="auth-container">
         <h1>Create Account</h1>
         <div id="register-message"></div>
         <form class="auth-form" onsubmit="handleRegister(event)">
             <label for="reg-username">Username</label>
             <input type="text" id="reg-username" required>
-
             <label for="reg-password">Password</label>
             <input type="password" id="reg-password" required>
-
             <label for="reg-role">I am a…</label>
             <select id="reg-role" required onchange="toggleAdminSecret()">
                 <option value="">-- Select Role --</option>
                 <option value="user">User</option>
                 <option value="admin">Admin</option>
             </select>
-
             <div id="admin-secret-container" class="hidden">
                 <label for="admin-secret">Admin Secret</label>
                 <input type="password" id="admin-secret">
             </div>
-
             <button type="submit">Register</button>
         </form>
         <div class="auth-links">
@@ -423,7 +409,6 @@
         </div>
     </div>
 
-    <!-- Profile Page -->
     <div id="profile-page" class="profile-container">
         <h1>Your Profile</h1>
         <div class="profile-info">
@@ -431,54 +416,46 @@
             <p><strong>Role:</strong> <span id="profile-role"></span></p>
         </div>
         <div class="links">
-            <button onclick="showUpdateProfile()">✏️ Update Profile</button>
+            <button onclick="showUpdateProfile()">Update Profile</button>
             <div id="admin-actions" class="hidden">
-                <button onclick="showAddArticle()">➕ Add Article</button>
-                <button onclick="showDeleteArticles()">🗑️ Delete Articles</button>
+                <button onclick="showAddArticle()">Add Article</button>
+                <button onclick="showDeleteArticles()">Delete Articles</button>
             </div>
             <button onclick="handleLogout()">Log Out</button>
         </div>
         <a class="back-link" onclick="showHome()">← Back to Home</a>
     </div>
 
-    <!-- Update Profile Page -->
     <div id="update-profile-page" class="auth-container">
         <h1>Update Profile</h1>
         <div id="update-message"></div>
         <form class="auth-form" onsubmit="handleUpdateProfile(event)">
             <label for="update-username">Username</label>
             <input type="text" id="update-username" required>
-
             <label for="update-password">New Password <small>(leave blank to keep current)</small></label>
             <input type="password" id="update-password">
-
             <label for="update-role">Role</label>
             <select id="update-role" required onchange="toggleUpdateAdminSecret()">
                 <option value="user">User</option>
                 <option value="admin">Admin</option>
             </select>
-
             <div id="update-admin-secret-container" class="hidden">
                 <label for="update-admin-secret">Admin Secret</label>
                 <input type="password" id="update-admin-secret">
             </div>
-
             <button type="submit">Save Changes</button>
         </form>
         <a class="back-link" onclick="showProfile()">← Back to Profile</a>
     </div>
 
-    <!-- Add Article Page -->
     <div id="add-article-page" class="auth-container">
         <h1>Publish a New Article</h1>
         <div id="add-article-message"></div>
         <form class="auth-form" onsubmit="handleAddArticle(event)">
             <label for="article-title">Title</label>
             <input type="text" id="article-title" required>
-
             <label for="editor">Full Article (Paste from Google Docs)</label>
             <div id="editor" contenteditable="true"></div>
-
             <label for="article-team">Team</label>
             <select id="article-team" required>
                 <option value="">-- Choose a Team --</option>
@@ -486,13 +463,11 @@
                 <option value="Utah Mammoth">Utah Mammoth</option>
                 <option value="Utah Jazz">Utah Jazz</option>
             </select>
-
             <button type="submit">Publish Article</button>
         </form>
         <a class="back-link" onclick="showProfile()">← Back to Profile</a>
     </div>
 
-    <!-- Delete Articles Page -->
     <div id="delete-articles-page" class="auth-container">
         <h1>Delete Articles</h1>
         <div id="delete-message"></div>
@@ -501,7 +476,6 @@
     </div>
 
     <script>
-        // Sample data storage
         const articles = [
             {
                 id: 1,
@@ -530,7 +504,6 @@
         let currentUser = null;
         let currentFilter = null;
 
-        // Initialize
         document.getElementById('year').textContent = new Date().getFullYear();
         loadUsers();
         checkAuth();
@@ -538,9 +511,7 @@
 
         function loadUsers() {
             const saved = localStorage.getItem('gridCityUsers');
-            if (saved) {
-                users = JSON.parse(saved);
-            }
+            if (saved) users = JSON.parse(saved);
         }
 
         function saveUsers() {
@@ -558,43 +529,23 @@
         function updateAuthUI() {
             const navAuth = document.getElementById('nav-auth');
             if (currentUser) {
-                navAuth.innerHTML = `
-                    <a onclick="showProfile()">${currentUser.username}</a>
-                    <button onclick="handleLogout()">Log Out</button>
-                `;
+                navAuth.innerHTML = '<a onclick="showProfile()">' + currentUser.username + '</a><button onclick="handleLogout()">Log Out</button>';
             } else {
-                navAuth.innerHTML = `
-                    <a onclick="showLogin()">Log In</a>
-                    <a onclick="showRegister()">Register</a>
-                `;
+                navAuth.innerHTML = '<a onclick="showLogin()">Log In</a><a onclick="showRegister()">Register</a>';
             }
         }
 
         function displayArticles(filter = null) {
             const list = document.getElementById('articles-list');
             const title = document.getElementById('articles-title');
-            
-            let filtered = articles;
-            if (filter) {
-                filtered = articles.filter(a => a.team === filter);
-                title.textContent = `${filter} Articles`;
-            } else {
-                title.textContent = 'Latest Articles';
-            }
-
+            let filtered = filter ? articles.filter(a => a.team === filter) : articles;
+            title.textContent = filter ? filter + ' Articles' : 'Latest Articles';
             filtered.sort((a, b) => new Date(b.published_at) - new Date(a.published_at));
-
-            list.innerHTML = filtered.map(article => `
-                <a onclick="showArticle(${article.id})" class="article-link">
-                    <h3>${article.title}</h3>
-                    <small>${article.team} | ${formatDate(article.published_at)}</small>
-                </a>
-            `).join('');
+            list.innerHTML = filtered.map(article => '<a onclick="showArticle(' + article.id + ')" class="article-link"><h3>' + article.title + '</h3><small>' + article.team + ' | ' + formatDate(article.published_at) + '</small></a>').join('');
         }
 
         function formatDate(dateStr) {
-            const date = new Date(dateStr);
-            return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+            return new Date(dateStr).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
         }
 
         function filterByTeam(team) {
@@ -605,11 +556,9 @@
         function showArticle(id) {
             const article = articles.find(a => a.id === id);
             if (!article) return;
-
             document.getElementById('article-title').textContent = article.title;
-            document.getElementById('article-meta').textContent = `${article.team} | ${formatDate(article.published_at)}`;
+            document.getElementById('article-meta').textContent = article.team + ' | ' + formatDate(article.published_at);
             document.getElementById('article-content').innerHTML = article.content;
-
             hideAllPages();
             document.getElementById('article-page').classList.add('active');
             window.scrollTo(0, 0);
@@ -637,4 +586,167 @@
         }
 
         function showProfile() {
-            if (!currentUser) {
+            if (!currentUser) { showLogin(); return; }
+            document.getElementById('profile-username').textContent = currentUser.username;
+            document.getElementById('profile-role').textContent = currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1);
+            document.getElementById('admin-actions').classList.toggle('hidden', currentUser.role !== 'admin');
+            hideAllPages();
+            document.getElementById('profile-page').classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function showUpdateProfile() {
+            if (!currentUser) return;
+            document.getElementById('update-username').value = currentUser.username;
+            document.getElementById('update-role').value = currentUser.role;
+            document.getElementById('update-password').value = '';
+            hideAllPages();
+            document.getElementById('update-profile-page').classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function showAddArticle() {
+            if (!currentUser || currentUser.role !== 'admin') return;
+            document.getElementById('article-title').value = '';
+            document.getElementById('editor').innerHTML = '';
+            document.getElementById('article-team').value = '';
+            document.getElementById('add-article-message').innerHTML = '';
+            hideAllPages();
+            document.getElementById('add-article-page').classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function showDeleteArticles() {
+            if (!currentUser || currentUser.role !== 'admin') return;
+            const list = document.getElementById('delete-articles-list');
+            list.innerHTML = articles.map(article => '<div class="article-link"><h3>' + article.title + '</h3><small>' + article.team + ' | ' + formatDate(article.published_at) + '</small><br><button class="delete-button" onclick="deleteArticle(' + article.id + ')">Delete</button></div>').join('');
+            hideAllPages();
+            document.getElementById('delete-articles-page').classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function hideAllPages() {
+            document.getElementById('home-page').style.display = 'none';
+            document.querySelectorAll('.article-view, .auth-container, .profile-container').forEach(el => el.classList.remove('active'));
+        }
+
+        function toggleAdminSecret() {
+            document.getElementById('admin-secret-container').classList.toggle('hidden', document.getElementById('reg-role').value !== 'admin');
+        }
+
+        function toggleUpdateAdminSecret() {
+            document.getElementById('update-admin-secret-container').classList.toggle('hidden', document.getElementById('update-role').value !== 'admin');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('login-username').value.trim();
+            const password = document.getElementById('login-password').value;
+            const user = users.find(u => u.username === username && u.password === password);
+            if (user) {
+                currentUser = { username: user.username, role: user.role };
+                localStorage.setItem('gridCityCurrentUser', JSON.stringify(currentUser));
+                updateAuthUI();
+                showHome();
+            } else {
+                showMessage('login-message', '❌ Invalid username or password.', true);
+            }
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const username = document.getElementById('reg-username').value.trim();
+            const password = document.getElementById('reg-password').value;
+            const role = document.getElementById('reg-role').value;
+            const adminSecret = document.getElementById('admin-secret').value;
+            if (!username || !password || !role) {
+                showMessage('register-message', '❌ All fields are required.', true);
+                return;
+            }
+            if (role === 'admin' && adminSecret !== 'toor') {
+                showMessage('register-message', '❌ Incorrect admin password.', true);
+                return;
+            }
+            if (users.find(u => u.username === username)) {
+                showMessage('register-message', '❌ Username already taken.', true);
+                return;
+            }
+            users.push({ username, password, role });
+            saveUsers();
+            showMessage('register-message', '✅ Registration successful. <a onclick="showLogin()" style="color: darkgreen; text-decoration: underline; cursor: pointer;">Log in</a>.', false);
+        }
+
+        function handleUpdateProfile(e) {
+            e.preventDefault();
+            if (!currentUser) return;
+            const newUsername = document.getElementById('update-username').value.trim();
+            const newPassword = document.getElementById('update-password').value;
+            const newRole = document.getElementById('update-role').value;
+            const adminSecret = document.getElementById('update-admin-secret').value;
+            if (!newUsername || !newRole) {
+                showMessage('update-message', '❌ Username and role are required.', true);
+                return;
+            }
+            if (newRole === 'admin' && adminSecret !== 'toor') {
+                showMessage('update-message', '❌ Incorrect admin secret.', true);
+                return;
+            }
+            const userIndex = users.findIndex(u => u.username === currentUser.username);
+            if (userIndex === -1) return;
+            if (newUsername !== currentUser.username && users.find(u => u.username === newUsername)) {
+                showMessage('update-message', '❌ Username already in use.', true);
+                return;
+            }
+            users[userIndex].username = newUsername;
+            if (newPassword) users[userIndex].password = newPassword;
+            users[userIndex].role = newRole;
+            currentUser = { username: newUsername, role: newRole };
+            localStorage.setItem('gridCityCurrentUser', JSON.stringify(currentUser));
+            saveUsers();
+            updateAuthUI();
+            showMessage('update-message', '✅ Profile updated successfully.', false);
+        }
+
+        function handleAddArticle(e) {
+            e.preventDefault();
+            if (!currentUser || currentUser.role !== 'admin') return;
+            const title = document.getElementById('article-title').value;
+            const content = document.getElementById('editor').innerHTML;
+            const team = document.getElementById('article-team').value;
+            if (!title || !content || !team) {
+                showMessage('add-article-message', '❌ All fields are required.', true);
+                return;
+            }
+            const newArticle = {
+                id: Math.max(...articles.map(a => a.id), 0) + 1,
+                title, content, team,
+                published_at: new Date().toISOString().split('T')[0]
+            };
+            articles.unshift(newArticle);
+            showMessage('add-article-message', '✅ Article published!', false);
+            setTimeout(() => showProfile(), 1500);
+        }
+
+        function deleteArticle(id) {
+            if (!confirm('Are you sure you want to delete this article?')) return;
+            const index = articles.findIndex(a => a.id === id);
+            if (index > -1) {
+                articles.splice(index, 1);
+                showDeleteArticles();
+                showMessage('delete-message', '✅ Article deleted successfully.', false);
+            }
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            localStorage.removeItem('gridCityCurrentUser');
+            updateAuthUI();
+            showHome();
+        }
+
+        function showMessage(elementId, message, isError) {
+            document.getElementById(elementId).innerHTML = '<div class="message ' + (isError ? 'error' : '') + '">' + message + '</div>';
+        }
+    </script>
+</body>
+</html>
