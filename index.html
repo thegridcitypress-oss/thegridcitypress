@@ -1,283 +1,490 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Grid City Press</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
-<style>
-/* General styles */
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Playfair Display', serif; background-color: #f9f9f9; color: #111; }
-header { position: relative; background-color: white; border-bottom: 1px solid #ccc; padding: 30px 20px 20px; }
-.header-inner { display: flex; align-items: center; justify-content: center; gap: 20px; max-width: 1000px; margin: 0 auto; }
-.logo { width: 80px; height: 80px; flex-shrink: 0; }
-header h1 { font-size: 3rem; font-weight: 700; letter-spacing: 1px; margin: 0; }
-nav.main-nav { margin-top: 20px; margin-bottom: 30px; }
-.nav-left { text-align: center; }
-.nav-left a { text-decoration: none; color: #444; margin: 0 15px; font-weight: 600; font-size: 1rem; cursor: pointer; }
-.nav-left a:hover { color: #000; }
-.nav-right { position: absolute; top: 35px; right: 20px; }
-.nav-right a, .nav-right button { text-decoration: none; color: #444; margin: 0 10px; font-weight: 600; font-size: 1rem; background: none; border: none; cursor: pointer; font-family: inherit; }
-.nav-right a:hover, .nav-right button:hover { color: #000; }
-.container { max-width: 800px; margin: 0 auto; padding: 0 20px 40px; }
-h2.section-title { font-size: 1.8rem; margin: 20px 0 15px; font-weight: 700; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
-.article-link { display: block; border: 1px solid #ccc; padding: 20px; margin-bottom: 20px; text-decoration: none; color: inherit; transition: background-color 0.2s ease; cursor: pointer; }
-.article-link:hover { background-color: #f0f0f0; }
-.article-link h3 { margin: 0 0 5px; font-size: 1.4rem; }
-.article-link small { color: #777; font-size: 0.9rem; }
-footer { text-align: center; color: #aaa; font-size: 0.8rem; padding: 20px; border-top: 1px solid #ddd; }
-.page { display: none; }
-.page.active { display: block; }
-.article-content { margin-top: 30px; line-height: 1.8; }
-.article-content p { margin-bottom: 1.2em; }
-.back-link { display: inline-block; margin-top: 30px; text-decoration: none; color: #444; font-weight: 600; cursor: pointer; }
-.back-link:hover { color: #000; text-decoration: underline; }
-.auth-container { max-width: 600px; margin: 50px auto; padding: 0 20px; }
-.auth-container h1 { text-align: center; margin-bottom: 30px; }
-.auth-form label { display: block; margin-top: 20px; font-weight: bold; }
-.auth-form input, .auth-form select { width: 100%; padding: 10px; margin-top: 5px; font-family: inherit; font-size: inherit; border: 1px solid #ccc; }
-.auth-form button { margin-top: 20px; padding: 10px 20px; background-color: #000; color: #fff; border: none; cursor: pointer; font-family: inherit; font-size: inherit; }
-.auth-form button:hover { background-color: #333; }
-.message { margin-top: 20px; padding: 10px; font-weight: bold; color: darkgreen; background-color: #e8f5e9; border: 1px solid #4caf50; border-radius: 4px; }
-.message.error { color: darkred; background-color: #ffebee; border-color: #f44336; }
-.auth-links { margin-top: 20px; }
-.auth-links a { color: #444; text-decoration: none; display: block; margin-top: 10px; cursor: pointer; }
-.hidden { display: none; }
-.profile-info { margin: 20px 0; }
-.profile-info p { margin: 10px 0; }
-.links { margin-top: 30px; display: flex; flex-direction: column; gap: 15px; }
-.links a, .links button { text-decoration: none; background-color: #000; color: #fff; padding: 10px 15px; font-weight: 600; text-align: center; border-radius: 4px; cursor: pointer; border: none; font-family: inherit; font-size: inherit; }
-.links a:hover, .links button:hover { background-color: #333; }
-#editor { border: 1px solid #ccc; padding: 15px; min-height: 300px; background-color: white; margin-top: 5px; overflow-y: auto; }
-.delete-button { margin-top: 10px; display: inline-block; padding: 6px 12px; background-color: crimson; color: white; text-decoration: none; font-size: 0.9rem; border-radius: 4px; border: none; cursor: pointer; font-family: inherit; }
-.delete-button:hover { background-color: darkred; }
-.empty-state { text-align: center; padding: 40px 20px; color: #777; }
-@media (max-width: 768px) {
-    header h1 { font-size: 2rem; }
-    .logo { width: 60px; height: 60px; }
-    .nav-right { position: static; text-align: center; margin-top: 15px; }
-    .nav-left a { display: block; margin: 10px 0; }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Grid City Press</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Playfair Display', serif; background-color: #f9f9f9; color: #111; }
+        header { position: relative; background-color: white; border-bottom: 1px solid #ccc; padding: 30px 20px 20px; }
+        .header-inner { display: flex; align-items: center; justify-content: center; gap: 20px; max-width: 1000px; margin: 0 auto; }
+        .logo { width: 80px; height: 80px; flex-shrink: 0; }
+        header h1 { font-size: 3rem; font-weight: 700; letter-spacing: 1px; margin: 0; }
+        nav.main-nav { margin-top: 20px; margin-bottom: 30px; }
+        .nav-left { text-align: center; }
+        .nav-left a { text-decoration: none; color: #444; margin: 0 15px; font-weight: 600; font-size: 1rem; cursor: pointer; }
+        .nav-left a:hover { color: #000; }
+        .nav-right { position: absolute; top: 35px; right: 20px; }
+        .nav-right a, .nav-right button { text-decoration: none; color: #444; margin: 0 10px; font-weight: 600; font-size: 1rem; background: none; border: none; cursor: pointer; font-family: inherit; }
+        .nav-right a:hover, .nav-right button:hover { color: #000; }
+        .container { max-width: 800px; margin: 0 auto; padding: 0 20px 40px; }
+        h2.section-title { font-size: 1.8rem; margin: 20px 0 15px; font-weight: 700; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
+        .article-link { display: block; border: 1px solid #ccc; padding: 20px; margin-bottom: 20px; text-decoration: none; color: inherit; transition: background-color 0.2s ease; cursor: pointer; }
+        .article-link:hover { background-color: #f0f0f0; }
+        .article-link h3 { margin: 0 0 5px; font-size: 1.4rem; }
+        .article-link small { color: #777; font-size: 0.9rem; }
+        footer { text-align: center; color: #aaa; font-size: 0.8rem; padding: 20px; border-top: 1px solid #ddd; }
+        .page { display: none; }
+        .page.active { display: block; }
+        .article-content { margin-top: 30px; line-height: 1.8; }
+        .article-content p { margin-bottom: 1.2em; }
+        .back-link { display: inline-block; margin-top: 30px; text-decoration: none; color: #444; font-weight: 600; cursor: pointer; }
+        .back-link:hover { color: #000; text-decoration: underline; }
+        .auth-container { max-width: 600px; margin: 50px auto; padding: 0 20px; }
+        .auth-container h1 { text-align: center; margin-bottom: 30px; }
+        .auth-form label { display: block; margin-top: 20px; font-weight: bold; }
+        .auth-form input, .auth-form select { width: 100%; padding: 10px; margin-top: 5px; font-family: inherit; font-size: inherit; border: 1px solid #ccc; }
+        .auth-form button { margin-top: 20px; padding: 10px 20px; background-color: #000; color: #fff; border: none; cursor: pointer; font-family: inherit; font-size: inherit; }
+        .auth-form button:hover { background-color: #333; }
+        .message { margin-top: 20px; padding: 10px; font-weight: bold; color: darkgreen; background-color: #e8f5e9; border: 1px solid #4caf50; border-radius: 4px; }
+        .message.error { color: darkred; background-color: #ffebee; border-color: #f44336; }
+        .auth-links { margin-top: 20px; }
+        .auth-links a { color: #444; text-decoration: none; display: block; margin-top: 10px; cursor: pointer; }
+        .hidden { display: none; }
+        .profile-info { margin: 20px 0; }
+        .profile-info p { margin: 10px 0; }
+        .links { margin-top: 30px; display: flex; flex-direction: column; gap: 15px; }
+        .links a, .links button { text-decoration: none; background-color: #000; color: #fff; padding: 10px 15px; font-weight: 600; text-align: center; border-radius: 4px; cursor: pointer; border: none; font-family: inherit; font-size: inherit; }
+        .links a:hover, .links button:hover { background-color: #333; }
+        #editor { border: 1px solid #ccc; padding: 15px; min-height: 300px; background-color: white; margin-top: 5px; overflow-y: auto; }
+        .delete-button { margin-top: 10px; display: inline-block; padding: 6px 12px; background-color: crimson; color: white; text-decoration: none; font-size: 0.9rem; border-radius: 4px; border: none; cursor: pointer; font-family: inherit; }
+        .delete-button:hover { background-color: darkred; }
+        .empty-state { text-align: center; padding: 40px 20px; color: #777; }
+        @media (max-width: 768px) {
+            header h1 { font-size: 2rem; }
+            .logo { width: 60px; height: 60px; }
+            .nav-right { position: static; text-align: center; margin-top: 15px; }
+            .nav-left a { display: block; margin: 10px 0; }
+        }
+    </style>
 </head>
 <body>
-
-<!-- Home Page -->
-<div id="home-page" class="page active">
-    <header>
-        <div class="header-inner">
-            <img src="logo.png" alt="Grid City Press Logo" class="logo" onerror="this.style.display='none'">
-            <h1>The Grid City Press</h1>
-        </div>
-        <nav class="main-nav">
-            <div class="nav-left">
-                <a onclick="filterByTeam('Utah Athletics')">Utah Athletics</a>
-                <a onclick="filterByTeam('Utah Mammoth')">Utah Mammoth</a>
-                <a onclick="filterByTeam('Utah Jazz')">Utah Jazz</a>
+    <div id="home-page" class="page active">
+        <header>
+            <div class="header-inner">
+                <img src="https://i.postimg.cc/wvXmG4HW/grid-city-press-logo.png" alt="Grid City Press Logo" class="logo">
+                <h1>The Grid City Press</h1>
             </div>
-            <div class="nav-right" id="nav-auth"></div>
-        </nav>
-    </header>
-    <div class="container">
-        <h2 class="section-title" id="articles-title">Latest Articles</h2>
-        <div id="articles-list"></div>
-    </div>
-    <footer>&copy; <span id="year"></span> The Grid City Press. All rights reserved.</footer>
-</div>
-
-<!-- Article Page -->
-<div id="article-page" class="page">
-    <header>
-        <div class="header-inner">
-            <img src="logo.png" alt="Grid City Press Logo" class="logo" onerror="this.style.display='none'">
-            <h1>The Grid City Press</h1>
+            <nav class="main-nav">
+                <div class="nav-left">
+                    <a onclick="filterByTeam('Utah Athletics')">Utah Athletics</a>
+                    <a onclick="filterByTeam('Utah Mammoth')">Utah Mammoth</a>
+                    <a onclick="filterByTeam('Utah Jazz')">Utah Jazz</a>
+                </div>
+                <div class="nav-right" id="nav-auth"></div>
+            </nav>
+        </header>
+        <div class="container">
+            <h2 class="section-title" id="articles-title">Latest Articles</h2>
+            <div id="articles-list"></div>
         </div>
-    </header>
-    <div class="container">
-        <h1 id="article-title"></h1>
-        <small id="article-meta"></small>
-        <div class="article-content" id="article-content"></div>
-        <a class="back-link" onclick="showHome()">← Back to Home</a>
+        <footer>&copy; <span id="year"></span> The Grid City Press. All rights reserved.</footer>
     </div>
-</div>
 
-<!-- Login Page -->
-<div id="login-page" class="page">
-    <div class="auth-container">
-        <h1>Log In</h1>
-        <div id="login-message"></div>
-        <form class="auth-form" onsubmit="handleLogin(event)">
-            <label>Username</label>
-            <input type="text" id="login-username" required>
-            <label>Password</label>
-            <input type="password" id="login-password" required>
-            <button type="submit">Log In</button>
-        </form>
-        <div class="auth-links">
-            <a onclick="showRegister()">→ Create an Account</a>
-            <a onclick="showHome()">← Back to Home</a>
-        </div>
-    </div>
-</div>
-
-<!-- Register Page -->
-<div id="register-page" class="page">
-    <div class="auth-container">
-        <h1>Create Account</h1>
-        <div id="register-message"></div>
-        <form class="auth-form" onsubmit="handleRegister(event)">
-            <label>Username</label>
-            <input type="text" id="reg-username" required>
-            <label>Password</label>
-            <input type="password" id="reg-password" required>
-            <label>I am a…</label>
-            <select id="reg-role" required onchange="toggleAdminSecret()">
-                <option value="">-- Select Role --</option>
-                <option value="user">User</option>
-                <option value="admin">Admin</option>
-            </select>
-            <div id="admin-secret-container" class="hidden">
-                <label>Admin Secret</label>
-                <input type="password" id="admin-secret">
+    <div id="article-page" class="page">
+        <header>
+            <div class="header-inner">
+                <img src="https://i.postimg.cc/wvXmG4HW/grid-city-press-logo.png" alt="Grid City Press Logo" class="logo">
+                <h1>The Grid City Press</h1>
             </div>
-            <button type="submit">Register</button>
-        </form>
-        <div class="auth-links">
-            <a onclick="showLogin()">← Back to Log In</a>
-            <a onclick="showHome()">← Back to Home</a>
+        </header>
+        <div class="container">
+            <h1 id="article-title"></h1>
+            <small id="article-meta"></small>
+            <div class="article-content" id="article-content"></div>
+            <a class="back-link" onclick="showHome()">← Back to Home</a>
         </div>
     </div>
-</div>
 
-<!-- Profile Page -->
-<div id="profile-page" class="page">
-    <div class="profile-info">
-        <p>Username: <span id="profile-username"></span></p>
-        <p>Role: <span id="profile-role"></span></p>
-    </div>
-    <div class="links">
-        <button type="button" onclick="showUpdateProfile()">Update Profile</button>
-        <div id="admin-actions" class="hidden">
-            <button type="button" onclick="showAddArticle()">Add Article</button>
-            <button type="button" onclick="showDeleteArticles()">Delete Articles</button>
-        </div>
-        <button type="button" onclick="handleLogout()">Log Out</button>
-    </div>
-    <a class="back-link" onclick="showHome()">← Back to Home</a>
-</div>
-
-<!-- Update Profile Page -->
-<div id="update-profile-page" class="page">
-    <div class="auth-container">
-        <h1>Update Profile</h1>
-        <div id="update-message"></div>
-        <form class="auth-form" onsubmit="handleUpdateProfile(event)">
-            <label>Username</label>
-            <input type="text" id="update-username" required>
-            <label>New Password <small>(leave blank to keep current)</small></label>
-            <input type="password" id="update-password">
-            <label>Role</label>
-            <select id="update-role" required onchange="toggleUpdateAdminSecret()">
-                <option value="user">User</option>
-                <option value="admin">Admin</option>
-            </select>
-            <div id="update-admin-secret-container" class="hidden">
-                <label>Admin Secret</label>
-                <input type="password" id="update-admin-secret">
+    <div id="login-page" class="page">
+        <div class="auth-container">
+            <h1>Log In</h1>
+            <div id="login-message"></div>
+            <form class="auth-form" onsubmit="handleLogin(event)">
+                <label>Username</label>
+                <input type="text" id="login-username" required>
+                <label>Password</label>
+                <input type="password" id="login-password" required>
+                <button type="submit">Log In</button>
+            </form>
+            <div class="auth-links">
+                <a onclick="showRegister()">→ Create an Account</a>
+                <a onclick="showHome()">← Back to Home</a>
             </div>
-            <button type="submit">Save Changes</button>
-        </form>
-        <a class="back-link" onclick="showProfile()">← Back to Profile</a>
+        </div>
     </div>
-</div>
 
-<!-- Add Article Page -->
-<div id="add-article-page" class="page">
-    <div class="auth-container">
-        <h1>Publish a New Article</h1>
-        <div id="add-article-message"></div>
-        <form class="auth-form" onsubmit="handleAddArticle(event)">
-            <label>Title</label>
-            <input type="text" id="add-article-title" required>
-            <label>Article Date</label>
-            <input type="date" id="add-article-date" required>
-            <label>Team</label>
-            <select id="add-article-team" required>
-                <option value="">-- Choose a Team --</option>
-                <option value="Utah Athletics">Utah Athletics</option>
-                <option value="Utah Mammoth">Utah Mammoth</option>
-                <option value="Utah Jazz">Utah Jazz</option>
-            </select>
-            <label>Full Article (Paste from Google Docs)</label>
-            <div id="add-article-editor" contenteditable="true" style="border:1px solid #ccc; min-height:200px; padding:10px;"></div>
-            <button type="submit">Publish Article</button>
-        </form>
-        <a class="back-link" onclick="showProfile()">← Back to Profile</a>
+    <div id="register-page" class="page">
+        <div class="auth-container">
+            <h1>Create Account</h1>
+            <div id="register-message"></div>
+            <form class="auth-form" onsubmit="handleRegister(event)">
+                <label>Username</label>
+                <input type="text" id="reg-username" required>
+                <label>Password</label>
+                <input type="password" id="reg-password" required>
+                <label>I am a…</label>
+                <select id="reg-role" required onchange="toggleAdminSecret()">
+                    <option value="">-- Select Role --</option>
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                </select>
+                <div id="admin-secret-container" class="hidden">
+                    <label>Admin Secret</label>
+                    <input type="password" id="admin-secret">
+                </div>
+                <button type="submit">Register</button>
+            </form>
+            <div class="auth-links">
+                <a onclick="showLogin()">← Back to Log In</a>
+                <a onclick="showHome()">← Back to Home</a>
+            </div>
+        </div>
     </div>
-</div>
 
-<!-- Delete Articles Page -->
-<div id="delete-articles-page" class="page">
-    <div class="auth-container">
-        <h1>Delete Articles</h1>
-        <div id="delete-message"></div>
-        <div id="delete-articles-list"></div>
-        <a class="back-link" onclick="showProfile()">← Back to Profile</a>
+    <div id="profile-page" class="page">
+        <div class="auth-container">
+            <h1>Your Profile</h1>
+            <div class="profile-info">
+                <p><strong>Username:</strong> <span id="profile-username"></span></p>
+                <p><strong>Role:</strong> <span id="profile-role"></span></p>
+            </div>
+            <div class="links">
+                <button onclick="showUpdateProfile()">Update Profile</button>
+                <div id="admin-actions" class="hidden">
+                    <button onclick="showAddArticle()">Add Article</button>
+                    <button onclick="showDeleteArticles()">Delete Articles</button>
+                </div>
+                <button onclick="handleLogout()">Log Out</button>
+            </div>
+            <a class="back-link" onclick="showHome()">← Back to Home</a>
+        </div>
     </div>
-</div>
 
-<script type="module">
-// Firebase initialization
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, query, orderBy, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+    <div id="update-profile-page" class="page">
+        <div class="auth-container">
+            <h1>Update Profile</h1>
+            <div id="update-message"></div>
+            <form class="auth-form" onsubmit="handleUpdateProfile(event)">
+                <label>Username</label>
+                <input type="text" id="update-username" required>
+                <label>New Password <small>(leave blank to keep current)</small></label>
+                <input type="password" id="update-password">
+                <label>Role</label>
+                <select id="update-role" required onchange="toggleUpdateAdminSecret()">
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                </select>
+                <div id="update-admin-secret-container" class="hidden">
+                    <label>Admin Secret</label>
+                    <input type="password" id="update-admin-secret">
+                </div>
+                <button type="submit">Save Changes</button>
+            </form>
+            <a class="back-link" onclick="showProfile()">← Back to Profile</a>
+        </div>
+    </div>
 
-const firebaseConfig = {
-    apiKey: "AIzaSyDZ7DADsKBXvHLe8oCG44v2-nDGg4zLLdY",
-    authDomain: "thegridcitypress-2da14.firebaseapp.com",
-    projectId: "thegridcitypress-2da14",
-    storageBucket: "thegridcitypress-2da14.appspot.com",
-    messagingSenderId: "298645771353",
-    appId: "1:298645771353:web:74f2345d90fb9a81dfcd48"
-};
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+    <div id="add-article-page" class="page">
+        <div class="auth-container">
+            <h1>Publish a New Article</h1>
+            <div id="add-article-message"></div>
+            <form class="auth-form" onsubmit="handleAddArticle(event)">
+                <label>Title</label>
+                <input type="text" id="article-title" required>
+                <label>Article Date</label>
+                <input type="date" id="article-date" required>
+                <label>Team</label>
+                <select id="article-team" required>
+                    <option value="">-- Choose a Team --</option>
+                    <option value="Utah Athletics">Utah Athletics</option>
+                    <option value="Utah Mammoth">Utah Mammoth</option>
+                    <option value="Utah Jazz">Utah Jazz</option>
+                </select>
+                <label>Full Article (Paste from Google Docs)</label>
+                <div id="editor" contenteditable="true"></div>
+                <button type="submit">Publish Article</button>
+            </form>
+            <a class="back-link" onclick="showProfile()">← Back to Profile</a>
+        </div>
+    </div>
 
-let articles = [];
-let users = [];
-let currentUser = null;
-let currentFilter = null;
+    <div id="delete-articles-page" class="page">
+        <div class="auth-container">
+            <h1>Delete Articles</h1>
+            <div id="delete-message"></div>
+            <div id="delete-articles-list"></div>
+            <a class="back-link" onclick="showProfile()">← Back to Profile</a>
+        </div>
+    </div>
 
-async function init() {
-    const savedUsers = localStorage.getItem('gridCityUsers');
-    users = savedUsers ? JSON.parse(savedUsers) : [];
-    const savedCurrentUser = sessionStorage.getItem('gridCityCurrentUser');
-    currentUser = savedCurrentUser ? JSON.parse(savedCurrentUser) : null;
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, query, orderBy, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
-    document.getElementById('year').textContent = new Date().getFullYear();
+        const firebaseConfig = {
+            apiKey: "AIzaSyDZ7DADsKBXvHLe8oCG44v2-nDGg4zLLdY",
+            authDomain: "thegridcitypress-2da14.firebaseapp.com",
+            projectId: "thegridcitypress-2da14",
+            storageBucket: "thegridcitypress-2da14.firebasestorage.app",
+            messagingSenderId: "298645771353",
+            appId: "1:298645771353:web:74f2345d90fb9a81dfcd48"
+        };
 
-    const dateInput = document.getElementById('add-article-date');
-    if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        let articles = [];
+        let users = [];
+        let currentUser = null;
+        let currentFilter = null;
 
-    updateAuthUI();
-    await loadArticles();
+        async function init() {
+            const savedUsers = localStorage.getItem('gridCityUsers');
+            users = savedUsers ? JSON.parse(savedUsers) : [];
+            const savedCurrentUser = sessionStorage.getItem('gridCityCurrentUser');
+            currentUser = savedCurrentUser ? JSON.parse(savedCurrentUser) : null;
+            document.getElementById('year').textContent = new Date().getFullYear();
+            const today = new Date().toISOString().split('T')[0];
+            const dateInput = document.getElementById('article-date');
+            if(dateInput) dateInput.value = today;
+            updateAuthUI();
+            await loadArticles();
+            const articlesRef = collection(db, 'articles');
+            const q = query(articlesRef, orderBy('published_at', 'desc'));
+            onSnapshot(q, (snapshot) => {
+                articles = [];
+                snapshot.forEach((d) => { articles.push({ id: d.id, ...d.data() }); });
+                displayArticles(currentFilter);
+            });
+        }
 
-    const articlesRef = collection(db, 'articles');
-    const q = query(articlesRef, orderBy('published_at', 'desc'));
-    onSnapshot(q, (snapshot) => {
-        articles = [];
-        snapshot.forEach((d) => { articles.push({ id: d.id, ...d.data() }); });
-        displayArticles(currentFilter);
-    });
-}
+        async function loadArticles() {
+            try {
+                const articlesRef = collection(db, 'articles');
+                const q = query(articlesRef, orderBy('published_at', 'desc'));
+                const querySnapshot = await getDocs(q);
+                articles = [];
+                querySnapshot.forEach((d) => { articles.push({ id: d.id, ...d.data() }); });
+                displayArticles();
+            } catch (error) { console.error('Error loading articles:', error); }
+        }
 
-// --- Continue with JS functions: showPage, showHome, showLogin, showRegister, handleLogin, handleRegister, filterByTeam, displayArticles, showArticle, showProfile, showAddArticle, showDeleteArticles, handleAddArticle, handleDeleteArticle, handleLogout, etc. --- //
+        function saveUsers() { localStorage.setItem('gridCityUsers', JSON.stringify(users)); }
+        function saveCurrentUser() {
+            if (currentUser) sessionStorage.setItem('gridCityCurrentUser', JSON.stringify(currentUser));
+            else sessionStorage.removeItem('gridCityCurrentUser');
+        }
 
-init();
-</script>
-</body>
-</html>
+        window.updateAuthUI = function() {
+            const navAuth = document.getElementById('nav-auth');
+            if (currentUser) navAuth.innerHTML = '<a onclick="showProfile()">' + escapeHtml(currentUser.username) + '</a><button onclick="handleLogout()">Log Out</button>';
+            else navAuth.innerHTML = '<a onclick="showLogin()">Log In</a><a onclick="showRegister()">Register</a>';
+        }
 
+        window.displayArticles = function(filter = null) {
+            const list = document.getElementById('articles-list');
+            const title = document.getElementById('articles-title');
+            let filtered = filter ? articles.filter(a => a.team === filter) : articles.slice();
+            title.textContent = filter ? filter + ' Articles' : 'Latest Articles';
+            filtered.sort((a, b) => new Date(b.published_at) - new Date(a.published_at));
+            const displayCount = filter ? filtered.length : Math.min(5, filtered.length);
+            const toDisplay = filtered.slice(0, displayCount);
+            if (toDisplay.length === 0) list.innerHTML = '<div class="empty-state"><p>No articles yet.</p></div>';
+            else list.innerHTML = toDisplay.map(a => '<a class="article-link" onclick="showArticle(\'' + a.id + '\')"><h3>' + escapeHtml(a.title) + '</h3><small>' + escapeHtml(a.team) + ' | ' + formatDate(a.published_at) + '</small></a>').join('');
+        }
+
+        function formatDate(dateStr) { return new Date(dateStr).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }); }
+        function escapeHtml(text) { const div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
+        function hideAllPages() { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); }
+
+        window.showHome = function() {
+            currentFilter = null;
+            hideAllPages();
+            document.getElementById('home-page').classList.add('active');
+            displayArticles();
+            window.scrollTo(0, 0);
+        }
+
+        window.filterByTeam = function(team) {
+            currentFilter = team;
+            hideAllPages();
+            document.getElementById('home-page').classList.add('active');
+            displayArticles(team);
+            window.scrollTo(0, 0);
+        }
+
+        window.showArticle = function(id) {
+            const article = articles.find(a => a.id === id);
+            if (!article) return;
+            document.getElementById('article-title').textContent = article.title;
+            document.getElementById('article-meta').textContent = article.team + ' | ' + formatDate(article.published_at);
+            document.getElementById('article-content').innerHTML = article.content;
+            hideAllPages();
+            document.getElementById('article-page').classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        window.showLogin = function() {
+            hideAllPages();
+            document.getElementById('login-page').classList.add('active');
+            document.getElementById('login-message').innerHTML = '';
+            window.scrollTo(0, 0);
+        }
+
+        window.showRegister = function() {
+            hideAllPages();
+            document.getElementById('register-page').classList.add('active');
+            document.getElementById('register-message').innerHTML = '';
+            window.scrollTo(0, 0);
+        }
+
+        window.showProfile = function() {
+            if (!currentUser) { showLogin(); return; }
+            document.getElementById('profile-username').textContent = currentUser.username;
+            document.getElementById('profile-role').textContent = currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1);
+            document.getElementById('admin-actions').classList.toggle('hidden', currentUser.role !== 'admin');
+            hideAllPages();
+            document.getElementById('profile-page').classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        window.showUpdateProfile = function() {
+            if (!currentUser) return;
+            document.getElementById('update-username').value = currentUser.username;
+            document.getElementById('update-role').value = currentUser.role;
+            document.getElementById('update-password').value = '';
+            hideAllPages();
+            document.getElementById('update-profile-page').classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        window.showAddArticle = function() {
+            if (!currentUser || currentUser.role !== 'admin') { alert('You must be logged in as an admin to add articles.'); return; }
+            document.getElementById('article-title').value = '';
+            document.getElementById('editor').innerHTML = '';
+            document.getElementById('article-team').value = '';
+            document.getElementById('article-date').value = new Date().toISOString().split('T')[0];
+            document.getElementById('add-article-message').innerHTML = '';
+            hideAllPages();
+            document.getElementById('add-article-page').classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        window.showDeleteArticles = function() {
+            if (!currentUser || currentUser.role !== 'admin') return;
+            const list = document.getElementById('delete-articles-list');
+            if (articles.length === 0) list.innerHTML = '<div class="empty-state"><p>No articles to delete.</p></div>';
+            else list.innerHTML = articles.map(article => '<div class="article-link"><h3>' + escapeHtml(article.title) + '</h3><small>' + escapeHtml(article.team) + ' | ' + formatDate(article.published_at) + '</small><br><button class="delete-button" onclick="deleteArticle(\'' + article.id + '\')">Delete</button></div>').join('');
+            hideAllPages();
+            document.getElementById('delete-articles-page').classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        window.toggleAdminSecret = function() {
+            const role = document.getElementById('reg-role').value;
+            document.getElementById('admin-secret-container').classList.toggle('hidden', role !== 'admin');
+        }
+
+        window.toggleUpdateAdminSecret = function() {
+            const role = document.getElementById('update-role').value;
+            document.getElementById('update-admin-secret-container').classList.toggle('hidden', role !== 'admin');
+        }
+
+        window.handleLogin = function(e) {
+            e.preventDefault();
+            const username = document.getElementById('login-username').value.trim();
+            const password = document.getElementById('login-password').value;
+            const user = users.find(u => u.username === username && u.password === password);
+            if (user) {
+                currentUser = { username: user.username, role: user.role };
+                saveCurrentUser();
+                updateAuthUI();
+                showHome();
+            } else showMessage('login-message', 'Invalid username or password.', true);
+        }
+
+        window.handleRegister = function(e) {
+            e.preventDefault();
+            const username = document.getElementById('reg-username').value.trim();
+            const password = document.getElementById('reg-password').value;
+            const role = document.getElementById('reg-role').value;
+            const adminSecret = document.getElementById('admin-secret').value;
+            if (!username || !password || !role) { showMessage('register-message', 'All fields are required.', true); return; }
+            if (role === 'admin' && adminSecret !== 'toor') { showMessage('register-message', 'Incorrect admin password.', true); return; }
+            if (users.find(u => u.username === username)) { showMessage('register-message', 'Username already taken.', true); return; }
+            users.push({ username, password, role });
+            saveUsers();
+            showMessage('register-message', 'Registration successful! <a onclick="showLogin()" style="color: darkgreen; text-decoration: underline; cursor: pointer;">Log in</a>.', false);
+        }
+
+        window.handleUpdateProfile = function(e) {
+            e.preventDefault();
+            if (!currentUser) return;
+            const newUsername = document.getElementById('update-username').value.trim();
+            const newPassword = document.getElementById('update-password').value;
+            const newRole = document.getElementById('update-role').value;
+            const adminSecret = document.getElementById('update-admin-secret').value;
+            if (!newUsername || !newRole) { showMessage('update-message', 'Username and role are required.', true); return; }
+            if (newRole === 'admin' && adminSecret !== 'toor') { showMessage('update-message', 'Incorrect admin secret.', true); return; }
+            const userIndex = users.findIndex(u => u.username === currentUser.username);
+            if (userIndex === -1) return;
+            if (newUsername !== currentUser.username && users.find(u => u.username === newUsername)) { showMessage('update-message', 'Username already in use.', true); return; }
+            users[userIndex].username = newUsername;
+            if (newPassword) users[userIndex].password = newPassword;
+            users[userIndex].role = newRole;
+            currentUser = { username: newUsername, role: newRole };
+            saveCurrentUser();
+            saveUsers();
+            updateAuthUI();
+            showMessage('update-message', 'Profile updated successfully.', false);
+        }
+
+        window.handleAddArticle = async function(e) {
+            e.preventDefault();
+            if (!currentUser || currentUser.role !== 'admin') return;
+            const title = document.getElementById('article-title').value.trim();
+            const editorContent = document.getElementById('editor').innerHTML.trim();
+            const team = document.getElementById('article-team').value;
+            const publishDate = document.getElementById('article-date').value;
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = editorContent;
+            const textContent = tempDiv.textContent.trim();
+            if (!title || !textContent || !team || !publishDate) { showMessage('add-article-message', 'All fields are required. Please make sure you have written content in the article editor.', true); return; }
+            try {
+                await addDoc(collection(db, 'articles'), { title, content: editorContent, team, published_at: publishDate });
+                showMessage('add-article-message', 'Article published!', false);
+                setTimeout(() => showProfile(), 1500);
+            } catch (error) {
+                console.error('Error adding article:', error);
+                showMessage('add-article-message', 'Error publishing article: ' + error.message, true);
+            }
+        }
+
+        window.deleteArticle = async function(id) {
+            if (!confirm('Are you sure you want to delete this article?')) return;
+            try {
+                await deleteDoc(doc(db, 'articles', id));
+                showMessage('delete-message', 'Article deleted successfully.', false);
+            } catch (error) {
+                console.error('Error deleting article:', error);
+                showMessage('delete-message', 'Error deleting article.', true);
+            }
+        }
+
+        window.handleLogout = function() {
+            currentUser = null;
+            saveCurrentUser();
+            updateAuthUI();
+            showHome();
+        }
+
+        function showMessage(elementId, message, isError) {
+            document.getElementById(elementId).innerHTML = '<div class="message ' + (isError ? 'error' : '') + '">' + message + '</div>';
+        }
+
+        window.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
