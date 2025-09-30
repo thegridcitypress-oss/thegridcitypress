@@ -145,17 +145,20 @@
     </div>
 
     <div id="profile-page" class="page">
-        <div class="links">
-    <button type="button" onclick="showUpdateProfile()">Update Profile</button>
-    <div id="admin-actions" class="hidden">
-        <button type="button" onclick="showAddArticle()">Add Article</button>
-        <button type="button" onclick="showDeleteArticles()">Delete Articles</button>
+    <div class="profile-info">
+        <p>Username: <span id="profile-username"></span></p>
+        <p>Role: <span id="profile-role"></span></p>
     </div>
-    <button type="button" onclick="handleLogout()">Log Out</button>
-</div>
-<a class="back-link" onclick="showHome()">← Back to Home</a>
-
+    <div class="links">
+        <button type="button" onclick="showUpdateProfile()">Update Profile</button>
+        <div id="admin-actions" class="hidden">
+            <button type="button" onclick="showAddArticle()">Add Article</button>
+            <button type="button" onclick="showDeleteArticles()">Delete Articles</button>
         </div>
+        <button type="button" onclick="handleLogout()">Log Out</button>
+    </div>
+    <a class="back-link" onclick="showHome()">← Back to Home</a>
+</div>
     </div>
 
     <div id="update-profile-page" class="page">
