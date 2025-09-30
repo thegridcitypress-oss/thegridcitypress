@@ -574,20 +574,10 @@
             }
         }
 
-        function formatDate(dateValue) {
-    let date;
-    if (dateValue && dateValue.toDate) {
-        // Firestore Timestamp
-        date = dateValue.toDate();
-    } else {
-        // Plain JS Date
-        date = new Date(dateValue);
-    }
-    return date.toLocaleDateString('en-US', { 
-        year: 'numeric', month: 'long', day: 'numeric' 
-    });
-}
-
+        function formatDate(dateStr) {
+            return new Date(dateStr).toLocaleDateString('en-US', { 
+                year: 'numeric', month: 'long', day: 'numeric' 
+            });
         }
 
         function escapeHtml(text) {
@@ -813,11 +803,11 @@
             
             try {
                 await addDoc(collection(db, 'articles'), {
-    title,
-    content,
-    team,
-    published_at: new Date() // store full Date object
-});
+                    title,
+                    content,
+                    team,
+                    published_at: new Date().toISOString().split('T')[0]
+                });
                 
                 showMessage('add-article-message', 'Article published!', false);
                 setTimeout(() => showProfile(), 1500);
