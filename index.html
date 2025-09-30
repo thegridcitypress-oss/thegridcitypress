@@ -296,6 +296,12 @@
             color: #777;
         }
 
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #777;
+        }
+
         @media (max-width: 768px) {
             header h1 {
                 font-size: 2rem;
@@ -470,29 +476,63 @@
         </div>
     </div>
 
-    <script>
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, query, orderBy, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDZ7DADsKBXvHLe8oCG44v2-nDGg4zLLdY",
+            authDomain: "thegridcitypress-2da14.firebaseapp.com",
+            projectId: "thegridcitypress-2da14",
+            storageBucket: "thegridcitypress-2da14.firebasestorage.app",
+            messagingSenderId: "298645771353",
+            appId: "1:298645771353:web:74f2345d90fb9a81dfcd48"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
         let articles = [];
         let users = [];
         let currentUser = null;
         let currentFilter = null;
 
-        function init() {
-            const savedArticles = localStorage.getItem('gridCityArticles');
-            articles = savedArticles ? JSON.parse(savedArticles) : [];
-
+        async function init() {
             const savedUsers = localStorage.getItem('gridCityUsers');
             users = savedUsers ? JSON.parse(savedUsers) : [];
 
-            const savedCurrentUser = localStorage.getItem('gridCityCurrentUser');
+            const savedCurrentUser = sessionStorage.getItem('gridCityCurrentUser');
             currentUser = savedCurrentUser ? JSON.parse(savedCurrentUser) : null;
 
             document.getElementById('year').textContent = new Date().getFullYear();
             updateAuthUI();
-            displayArticles();
+            
+            await loadArticles();
+            
+            const articlesRef = collection(db, 'articles');
+            const q = query(articlesRef, orderBy('published_at', 'desc'));
+            onSnapshot(q, (snapshot) => {
+                articles = [];
+                snapshot.forEach((doc) => {
+                    articles.push({ id: doc.id, ...doc.data() });
+                });
+                displayArticles(currentFilter);
+            });
         }
 
-        function saveArticles() {
-            localStorage.setItem('gridCityArticles', JSON.stringify(articles));
+        async function loadArticles() {
+            try {
+                const articlesRef = collection(db, 'articles');
+                const q = query(articlesRef, orderBy('published_at', 'desc'));
+                const querySnapshot = await getDocs(q);
+                articles = [];
+                querySnapshot.forEach((doc) => {
+                    articles.push({ id: doc.id, ...doc.data() });
+                });
+                displayArticles();
+            } catch (error) {
+                console.error('Error loading articles:', error);
+            }
         }
 
         function saveUsers() {
@@ -501,13 +541,13 @@
 
         function saveCurrentUser() {
             if (currentUser) {
-                localStorage.setItem('gridCityCurrentUser', JSON.stringify(currentUser));
+                sessionStorage.setItem('gridCityCurrentUser', JSON.stringify(currentUser));
             } else {
-                localStorage.removeItem('gridCityCurrentUser');
+                sessionStorage.removeItem('gridCityCurrentUser');
             }
         }
 
-        function updateAuthUI() {
+        window.updateAuthUI = function() {
             const navAuth = document.getElementById('nav-auth');
             if (currentUser) {
                 navAuth.innerHTML = '<a onclick="showProfile()">' + escapeHtml(currentUser.username) + '</a><button onclick="handleLogout()">Log Out</button>';
@@ -516,20 +556,18 @@
             }
         }
 
-        function displayArticles(filter = null) {
+        window.displayArticles = function(filter = null) {
             const list = document.getElementById('articles-list');
             const title = document.getElementById('articles-title');
             
             let filtered = filter ? articles.filter(a => a.team === filter) : articles.slice();
             title.textContent = filter ? filter + ' Articles' : 'Latest Articles';
             
-            filtered.sort((a, b) => new Date(b.published_at) - new Date(a.published_at));
-            
             if (filtered.length === 0) {
                 list.innerHTML = '<div class="empty-state"><p>No articles yet.</p></div>';
             } else {
                 list.innerHTML = filtered.map(a => 
-                    '<a class="article-link" onclick="showArticle(' + a.id + ')"><h3>' + 
+                    '<a class="article-link" onclick="showArticle(\'' + a.id + '\')"><h3>' + 
                     escapeHtml(a.title) + '</h3><small>' + escapeHtml(a.team) + 
                     ' | ' + formatDate(a.published_at) + '</small></a>'
                 ).join('');
@@ -552,7 +590,7 @@
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         }
 
-        function showHome() {
+        window.showHome = function() {
             currentFilter = null;
             hideAllPages();
             document.getElementById('home-page').classList.add('active');
@@ -560,7 +598,7 @@
             window.scrollTo(0, 0);
         }
 
-        function filterByTeam(team) {
+        window.filterByTeam = function(team) {
             currentFilter = team;
             hideAllPages();
             document.getElementById('home-page').classList.add('active');
@@ -568,7 +606,7 @@
             window.scrollTo(0, 0);
         }
 
-        function showArticle(id) {
+        window.showArticle = function(id) {
             const article = articles.find(a => a.id === id);
             if (!article) return;
             
@@ -581,21 +619,21 @@
             window.scrollTo(0, 0);
         }
 
-        function showLogin() {
+        window.showLogin = function() {
             hideAllPages();
             document.getElementById('login-page').classList.add('active');
             document.getElementById('login-message').innerHTML = '';
             window.scrollTo(0, 0);
         }
 
-        function showRegister() {
+        window.showRegister = function() {
             hideAllPages();
             document.getElementById('register-page').classList.add('active');
             document.getElementById('register-message').innerHTML = '';
             window.scrollTo(0, 0);
         }
 
-        function showProfile() {
+        window.showProfile = function() {
             if (!currentUser) { showLogin(); return; }
             
             document.getElementById('profile-username').textContent = currentUser.username;
@@ -607,7 +645,7 @@
             window.scrollTo(0, 0);
         }
 
-        function showUpdateProfile() {
+        window.showUpdateProfile = function() {
             if (!currentUser) return;
             
             document.getElementById('update-username').value = currentUser.username;
@@ -619,7 +657,7 @@
             window.scrollTo(0, 0);
         }
 
-        function showAddArticle() {
+        window.showAddArticle = function() {
             if (!currentUser || currentUser.role !== 'admin') {
                 alert('You must be logged in as an admin to add articles.');
                 return;
@@ -635,7 +673,7 @@
             window.scrollTo(0, 0);
         }
 
-        function showDeleteArticles() {
+        window.showDeleteArticles = function() {
             if (!currentUser || currentUser.role !== 'admin') return;
             
             const list = document.getElementById('delete-articles-list');
@@ -647,8 +685,8 @@
                     '<div class="article-link"><h3>' + escapeHtml(article.title) + 
                     '</h3><small>' + escapeHtml(article.team) + ' | ' + 
                     formatDate(article.published_at) + 
-                    '</small><br><button class="delete-button" onclick="deleteArticle(' + 
-                    article.id + ')">Delete</button></div>'
+                    '</small><br><button class="delete-button" onclick="deleteArticle(\'' + 
+                    article.id + '\')">Delete</button></div>'
                 ).join('');
             }
             
@@ -657,17 +695,17 @@
             window.scrollTo(0, 0);
         }
 
-        function toggleAdminSecret() {
+        window.toggleAdminSecret = function() {
             const role = document.getElementById('reg-role').value;
             document.getElementById('admin-secret-container').classList.toggle('hidden', role !== 'admin');
         }
 
-        function toggleUpdateAdminSecret() {
+        window.toggleUpdateAdminSecret = function() {
             const role = document.getElementById('update-role').value;
             document.getElementById('update-admin-secret-container').classList.toggle('hidden', role !== 'admin');
         }
 
-        function handleLogin(e) {
+        window.handleLogin = function(e) {
             e.preventDefault();
             const username = document.getElementById('login-username').value.trim();
             const password = document.getElementById('login-password').value;
@@ -684,7 +722,7 @@
             }
         }
 
-        function handleRegister(e) {
+        window.handleRegister = function(e) {
             e.preventDefault();
             const username = document.getElementById('reg-username').value.trim();
             const password = document.getElementById('reg-password').value;
@@ -711,7 +749,7 @@
             showMessage('register-message', 'Registration successful! <a onclick="showLogin()" style="color: darkgreen; text-decoration: underline; cursor: pointer;">Log in</a>.', false);
         }
 
-        function handleUpdateProfile(e) {
+        window.handleUpdateProfile = function(e) {
             e.preventDefault();
             if (!currentUser) return;
             
@@ -750,7 +788,7 @@
             showMessage('update-message', 'Profile updated successfully.', false);
         }
 
-        function handleAddArticle(e) {
+        window.handleAddArticle = async function(e) {
             e.preventDefault();
             if (!currentUser || currentUser.role !== 'admin') return;
             
@@ -763,34 +801,35 @@
                 return;
             }
             
-            const newArticle = {
-                id: Date.now(),
-                title,
-                content,
-                team,
-                published_at: new Date().toISOString().split('T')[0]
-            };
-            
-            articles.unshift(newArticle);
-            saveArticles();
-            showMessage('add-article-message', 'Article published!', false);
-            
-            setTimeout(() => showProfile(), 1500);
-        }
-
-        function deleteArticle(id) {
-            if (!confirm('Are you sure you want to delete this article?')) return;
-            
-            const index = articles.findIndex(a => a.id === id);
-            if (index > -1) {
-                articles.splice(index, 1);
-                saveArticles();
-                showDeleteArticles();
-                showMessage('delete-message', 'Article deleted successfully.', false);
+            try {
+                await addDoc(collection(db, 'articles'), {
+                    title,
+                    content,
+                    team,
+                    published_at: new Date().toISOString().split('T')[0]
+                });
+                
+                showMessage('add-article-message', 'Article published!', false);
+                setTimeout(() => showProfile(), 1500);
+            } catch (error) {
+                console.error('Error adding article:', error);
+                showMessage('add-article-message', 'Error publishing article.', true);
             }
         }
 
-        function handleLogout() {
+        window.deleteArticle = async function(id) {
+            if (!confirm('Are you sure you want to delete this article?')) return;
+            
+            try {
+                await deleteDoc(doc(db, 'articles', id));
+                showMessage('delete-message', 'Article deleted successfully.', false);
+            } catch (error) {
+                console.error('Error deleting article:', error);
+                showMessage('delete-message', 'Error deleting article.', true);
+            }
+        }
+
+        window.handleLogout = function() {
             currentUser = null;
             saveCurrentUser();
             updateAuthUI();
