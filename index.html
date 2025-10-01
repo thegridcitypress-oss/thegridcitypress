@@ -850,6 +850,130 @@
         }
 
         window.addEventListener('DOMContentLoaded', init);
+        
+        function navigate(page, data = {}) {
+            const state = { page, data };
+            history.pushState(state, '', '#' + page);
+            renderPage(state);
+        }
+
+        function renderPage(state) {
+            const page = state.page;
+            const data = state.data || {};
+
+            if (page === 'home') {
+                currentFilter = data.filter || null;
+                document.getElementById('filter-back-link').style.display = data.filter ? 'inline-block' : 'none';
+                hideAllPages();
+                document.getElementById('home-page').classList.add('active');
+                displayArticles(data.filter);
+            } else if (page === 'article') {
+                const article = articles.find(a => a.id === data.id);
+                if (!article) {
+                    navigate('home');
+                    return;
+                }
+                document.getElementById('article-title').textContent = article.title;
+                document.getElementById('article-meta').textContent = article.team + ' | ' + formatDate(article.published_at);
+                document.getElementById('article-content').innerHTML = article.content;
+                hideAllPages();
+                document.getElementById('article-page').classList.add('active');
+            } else if (page === 'login') {
+                hideAllPages();
+                document.getElementById('login-page').classList.add('active');
+                document.getElementById('login-message').innerHTML = '';
+            } else if (page === 'register') {
+                hideAllPages();
+                document.getElementById('register-page').classList.add('active');
+                document.getElementById('register-message').innerHTML = '';
+            } else if (page === 'profile') {
+                if (!currentUser) { navigate('login'); return; }
+                document.getElementById('profile-username').textContent = currentUser.username;
+                document.getElementById('profile-role').textContent = currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1);
+                document.getElementById('admin-actions').classList.toggle('hidden', currentUser.role !== 'admin');
+                hideAllPages();
+                document.getElementById('profile-page').classList.add('active');
+            } else if (page === 'update-profile') {
+                if (!currentUser) return;
+                document.getElementById('update-username').value = currentUser.username;
+                document.getElementById('update-role').value = currentUser.role;
+                document.getElementById('update-password').value = '';
+                hideAllPages();
+                document.getElementById('update-profile-page').classList.add('active');
+            } else if (page === 'add-article') {
+                if (!currentUser || currentUser.role !== 'admin') {
+                    alert('You must be logged in as an admin to add articles.');
+                    return;
+                }
+                document.getElementById('article-title-input').value = '';
+                document.getElementById('editor').innerHTML = '';
+                document.getElementById('article-team').value = '';
+                document.getElementById('add-article-message').innerHTML = '';
+                hideAllPages();
+                document.getElementById('add-article-page').classList.add('active');
+            } else if (page === 'delete-articles') {
+                if (!currentUser || currentUser.role !== 'admin') return;
+                const list = document.getElementById('delete-articles-list');
+                if (articles.length === 0) {
+                    list.innerHTML = '<div class="empty-state"><p>No articles to delete.</p></div>';
+                } else {
+                    list.innerHTML = articles.map(article => 
+                        '<div class="article-link"><h3>' + escapeHtml(article.title) + 
+                        '</h3><small>' + escapeHtml(article.team) + ' | ' + 
+                        formatDate(article.published_at) + 
+                        '</small><br><button class="delete-button" onclick="deleteArticle(\'' + 
+                        article.id + '\')">Delete</button></div>'
+                    ).join('');
+                }
+                hideAllPages();
+                document.getElementById('delete-articles-page').classList.add('active');
+            }
+            window.scrollTo(0, 0);
+        }
+
+        window.addEventListener('popstate', (event) => {
+            if (event.state) {
+                renderPage(event.state);
+            } else {
+                navigate('home');
+            }
+        });
+
+        window.showHome = function() {
+            navigate('home');
+        }
+
+        window.filterByTeam = function(team) {
+            navigate('home', { filter: team });
+        }
+
+        window.showArticle = function(id) {
+            navigate('article', { id });
+        }
+
+        window.showLogin = function() {
+            navigate('login');
+        }
+
+        window.showRegister = function() {
+            navigate('register');
+        }
+
+        window.showProfile = function() {
+            navigate('profile');
+        }
+
+        window.showUpdateProfile = function() {
+            navigate('update-profile');
+        }
+
+        window.showAddArticle = function() {
+            navigate('add-article');
+        }
+
+        window.showDeleteArticles = function() {
+            navigate('delete-articles');
+        }
     </script>
 </body>
 </html>
