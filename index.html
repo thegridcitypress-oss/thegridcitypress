@@ -336,6 +336,7 @@
             </nav>
         </header>
         <div class="container">
+            <a class="back-link" id="filter-back-link" onclick="showHome()" style="display: none;">← Back to All Articles</a>
             <h2 class="section-title" id="articles-title">Latest Articles</h2>
             <div id="articles-list"></div>
         </div>
@@ -451,9 +452,9 @@
             <div id="add-article-message"></div>
             <form class="auth-form" onsubmit="handleAddArticle(event)">
                 <label>Title</label>
-                <input type="text" id="article-title" required>
+                <input type="text" id="article-title-input" required>
                 <label>Full Article (Paste from Google Docs)</label>
-                <div id="editor" contenteditable="true"></div>
+                <div id="editor" contenteditable="true" placeholder="Paste or type your article content here..."></div>
                 <label>Team</label>
                 <select id="article-team" required>
                     <option value="">-- Choose a Team --</option>
@@ -498,8 +499,8 @@
         let currentFilter = null;
 
         async function init() {
-            const savedUsers = localStorage.getItem('gridCityUsers');
-            users = savedUsers ? JSON.parse(savedUsers) : [];
+            const savedUsers = JSON.parse(sessionStorage.getItem('gridCityUsers') || '[]');
+            users = savedUsers;
 
             const savedCurrentUser = sessionStorage.getItem('gridCityCurrentUser');
             currentUser = savedCurrentUser ? JSON.parse(savedCurrentUser) : null;
@@ -536,7 +537,7 @@
         }
 
         function saveUsers() {
-            localStorage.setItem('gridCityUsers', JSON.stringify(users));
+            sessionStorage.setItem('gridCityUsers', JSON.stringify(users));
         }
 
         function saveCurrentUser() {
@@ -592,6 +593,7 @@
 
         window.showHome = function() {
             currentFilter = null;
+            document.getElementById('filter-back-link').style.display = 'none';
             hideAllPages();
             document.getElementById('home-page').classList.add('active');
             displayArticles();
@@ -600,6 +602,7 @@
 
         window.filterByTeam = function(team) {
             currentFilter = team;
+            document.getElementById('filter-back-link').style.display = 'inline-block';
             hideAllPages();
             document.getElementById('home-page').classList.add('active');
             displayArticles(team);
@@ -663,7 +666,7 @@
                 return;
             }
             
-            document.getElementById('article-title').value = '';
+            document.getElementById('article-title-input').value = '';
             document.getElementById('editor').innerHTML = '';
             document.getElementById('article-team').value = '';
             document.getElementById('add-article-message').innerHTML = '';
@@ -792,11 +795,16 @@
             e.preventDefault();
             if (!currentUser || currentUser.role !== 'admin') return;
             
-            const title = document.getElementById('article-title').value.trim();
-            const content = document.getElementById('editor').innerHTML.trim();
+            const title = document.getElementById('article-title-input').value.trim();
+            const editorContent = document.getElementById('editor').innerHTML.trim();
             const team = document.getElementById('article-team').value;
             
-            if (!title || !content || !team) {
+            // Check if editor has actual content (not just empty tags)
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = editorContent;
+            const textContent = tempDiv.textContent || tempDiv.innerText || '';
+            
+            if (!title || !textContent.trim() || !team) {
                 showMessage('add-article-message', 'All fields are required.', true);
                 return;
             }
@@ -804,7 +812,7 @@
             try {
                 await addDoc(collection(db, 'articles'), {
                     title,
-                    content,
+                    content: editorContent,
                     team,
                     published_at: new Date().toISOString().split('T')[0]
                 });
