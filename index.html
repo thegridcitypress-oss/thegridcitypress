@@ -406,37 +406,40 @@
         }
 
         window.handleRegister = async function(e) {
-            e.preventDefault();
-            const displayName = document.getElementById('reg-displayname').value.trim();
-            const email = document.getElementById('reg-email').value.trim();
-            const password = document.getElementById('reg-password').value;
-            const role = document.getElementById('reg-role').value;
-            const adminSecret = document.getElementById('admin-secret').value;
-            if (!displayName || !email || !password || !role) {
-                showMessage('register-message', 'All fields are required.', true);
-                return;
-            }
-            if (role === 'admin' && adminSecret !== ADMIN_SECRET) {
-                showMessage('register-message', 'Incorrect admin secret code.', true);
-                return;
-            }
-            try {
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
-                await updateProfile(user, { displayName });
-                await setDoc(doc(db, 'users', user.uid), {
-                    displayName,
-                    email,
-                    role,
-                    createdAt: new Date().toISOString()
-                });
-                showMessage('register-message', 'Registration successful!', false);
-                setTimeout(() => navigate('home'), 1500);
-            } catch (error) {
-                showMessage('register-message', getErrorMessage(error), true);
-            }
-        }
-
+    e.preventDefault();
+    const displayName = document.getElementById('reg-displayname').value.trim();
+    const email = document.getElementById('reg-email').value.trim();
+    const password = document.getElementById('reg-password').value;
+    const role = document.getElementById('reg-role').value;
+    const adminSecret = document.getElementById('admin-secret').value;
+    if (!displayName || !email || !password || !role) {
+        showMessage('register-message', 'All fields are required.', true);
+        return;
+    }
+    if (role === 'admin' && adminSecret !== ADMIN_SECRET) {
+        showMessage('register-message', 'Incorrect admin secret code.', true);
+        return;
+    }
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        
+        // ADD THIS LINE - It will show your UID in the console
+        console.log('YOUR UID IS:', user.uid);
+        
+        await updateProfile(user, { displayName });
+        await setDoc(doc(db, 'users', user.uid), {
+            displayName,
+            email,
+            role,
+            createdAt: new Date().toISOString()
+        });
+        showMessage('register-message', 'Registration successful!', false);
+        setTimeout(() => navigate('home'), 1500);
+    } catch (error) {
+        showMessage('register-message', getErrorMessage(error), true);
+    }
+}
         window.handleAddArticle = async function(e) {
             e.preventDefault();
             if (!currentUser || (currentUserData.role !== 'admin' && currentUser.uid !== SUPERUSER_UID)) return;
