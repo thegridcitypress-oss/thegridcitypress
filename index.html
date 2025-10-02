@@ -271,8 +271,12 @@
 
         async function init() {
             document.getElementById('year').textContent = new Date().getFullYear();
+            
+            // Set default dates for article forms
             const today = new Date().toISOString().split('T')[0];
-            document.getElementById('article-date').value = today;
+            if (document.getElementById('article-date')) {
+                document.getElementById('article-date').value = today;
+            }
             
             onAuthStateChanged(auth, async (user) => {
                 if (user) {
