@@ -269,11 +269,19 @@
 
         let articles = [], currentUser = null, currentUserData = null, currentFilter = null;
 
+        function getTodayDateString() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
         async function init() {
             document.getElementById('year').textContent = new Date().getFullYear();
             
             // Set default dates for article forms
-            const today = new Date().toISOString().split('T')[0];
+            const today = getTodayDateString();
             if (document.getElementById('article-date')) {
                 document.getElementById('article-date').value = today;
             }
@@ -396,8 +404,7 @@
                 document.getElementById('article-title-input').value = '';
                 document.getElementById('editor').innerHTML = '';
                 document.getElementById('article-team').value = '';
-                const today = new Date().toISOString().split('T')[0];
-                document.getElementById('article-date').value = today;
+                document.getElementById('article-date').value = getTodayDateString();
                 document.getElementById('add-article-message').innerHTML = '';
                 hideAllPages();
                 document.getElementById('add-article-page').classList.add('active');
