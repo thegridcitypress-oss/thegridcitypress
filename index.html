@@ -271,7 +271,8 @@
 
         async function init() {
             document.getElementById('year').textContent = new Date().getFullYear();
-            document.getElementById('article-date').valueAsDate = new Date();
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('article-date').value = today;
             
             onAuthStateChanged(auth, async (user) => {
                 if (user) {
@@ -389,7 +390,8 @@
                 document.getElementById('article-title-input').value = '';
                 document.getElementById('editor').innerHTML = '';
                 document.getElementById('article-team').value = '';
-                document.getElementById('article-date').valueAsDate = new Date();
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('article-date').value = today;
                 document.getElementById('add-article-message').innerHTML = '';
                 hideAllPages();
                 document.getElementById('add-article-page').classList.add('active');
@@ -509,7 +511,8 @@
             const title = document.getElementById('article-title-input').value.trim();
             const editorContent = document.getElementById('editor').innerHTML.trim();
             const team = document.getElementById('article-team').value;
-            const date = document.getElementById('article-date').value;
+            const dateInput = document.getElementById('article-date').value;
+            const date = dateInput;
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = editorContent;
             const textContent = tempDiv.textContent || tempDiv.innerText || '';
@@ -541,7 +544,8 @@
             const title = document.getElementById('edit-article-title').value.trim();
             const editorContent = document.getElementById('edit-editor').innerHTML.trim();
             const team = document.getElementById('edit-article-team').value;
-            const date = document.getElementById('edit-article-date').value;
+            const dateInput = document.getElementById('edit-article-date').value;
+            const date = dateInput;
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = editorContent;
             const textContent = tempDiv.textContent || tempDiv.innerText || '';
