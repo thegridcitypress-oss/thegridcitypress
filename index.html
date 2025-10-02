@@ -298,7 +298,15 @@
                 updateAuthUI();
             });
             await loadArticles();
-            if (!history.state) history.replaceState({ page: 'home', data: {} }, '', '#home');
+            
+            // Handle initial URL hash
+            const initialState = parseHash();
+            if (initialState.page !== 'home' || initialState.data.filter) {
+                history.replaceState(initialState, '', window.location.hash);
+                renderPage(initialState);
+            } else if (!history.state) {
+                history.replaceState({ page: 'home', data: {} }, '', '#home');
+            }
             const articlesRef = collection(db, 'articles');
             const q = query(articlesRef, orderBy('published_at', 'desc'));
             onSnapshot(q, (snapshot) => {
@@ -369,9 +377,35 @@
         }
 
         function navigate(page, data = {}) {
+            let hash = '#' + page;
+            if (page === 'article' && data.id) {
+                hash = '#article/' + data.id;
+            } else if (page === 'edit-article' && data.id) {
+                hash = '#edit-article/' + data.id;
+            } else if (page === 'home' && data.filter) {
+                hash = '#team/' + encodeURIComponent(data.filter);
+            }
+            
             const state = { page, data };
-            history.pushState(state, '', '#' + page);
+            history.pushState(state, '', hash);
             renderPage(state);
+        }
+
+        function parseHash() {
+            const hash = window.location.hash.slice(1) || 'home';
+            const parts = hash.split('/');
+            
+            if (parts[0] === 'article' && parts[1]) {
+                return { page: 'article', data: { id: parts[1] } };
+            } else if (parts[0] === 'edit-article' && parts[1]) {
+                return { page: 'edit-article', data: { id: parts[1] } };
+            } else if (parts[0] === 'team' && parts[1]) {
+                return { page: 'home', data: { filter: decodeURIComponent(parts[1]) } };
+            } else if (parts[0] === 'home' || parts[0] === '') {
+                return { page: 'home', data: {} };
+            } else {
+                return { page: parts[0], data: {} };
+            }
         }
 
         function renderPage(state) {
@@ -466,8 +500,20 @@
         }
 
         window.addEventListener('popstate', (event) => {
-            if (event.state) renderPage(event.state);
-            else navigate('home');
+            if (event.state) {
+                renderPage(event.state);
+            } else {
+                const state = parseHash();
+                renderPage(state);
+            }
+        });
+
+        window.addEventListener('hashchange', () => {
+            if (!history.state || window.location.hash !== history.state.hash) {
+                const state = parseHash();
+                history.replaceState(state, '', window.location.hash);
+                renderPage(state);
+            }
         });
 
         window.showHome = () => navigate('home');
