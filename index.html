@@ -50,6 +50,8 @@
         #editor { border: 1px solid #ccc; padding: 15px; min-height: 500px; background-color: white; margin-top: 5px; overflow-y: auto; }
         .delete-button { margin-top: 10px; display: inline-block; padding: 6px 12px; background-color: crimson; color: white; font-size: 0.9rem; border-radius: 4px; border: none; cursor: pointer; font-family: inherit; }
         .delete-button:hover { background-color: darkred; }
+        .edit-button { margin-top: 10px; margin-left: 10px; display: inline-block; padding: 6px 12px; background-color: #1976d2; color: white; font-size: 0.9rem; border-radius: 4px; border: none; cursor: pointer; font-family: inherit; }
+        .edit-button:hover { background-color: #1565c0; }
         .empty-state { text-align: center; padding: 40px 20px; color: #777; }
         .user-item { border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; background: white; border-radius: 4px; }
         .user-item h4 { margin-bottom: 10px; font-size: 1.1rem; }
@@ -156,6 +158,7 @@
             <div class="links">
                 <div id="admin-actions" class="hidden">
                     <button onclick="showAddArticle()">Add Article</button>
+                    <button onclick="showEditArticles()">Edit Articles</button>
                     <button onclick="showDeleteArticles()">Delete Articles</button>
                 </div>
                 <div id="superuser-actions" class="hidden">
@@ -183,8 +186,44 @@
                     <option value="Utah Mammoth">Utah Mammoth</option>
                     <option value="Utah Jazz">Utah Jazz</option>
                 </select>
+                <label>Publication Date</label>
+                <input type="date" id="article-date" required>
                 <button type="submit">Publish Article</button>
             </form>
+            <a class="back-link" onclick="showProfile()">← Back to Profile</a>
+        </div>
+    </div>
+
+    <div id="edit-article-page" class="page">
+        <div class="auth-container">
+            <h1>Edit Article</h1>
+            <div id="edit-article-message"></div>
+            <form class="auth-form" onsubmit="handleEditArticle(event)">
+                <input type="hidden" id="edit-article-id">
+                <label>Title</label>
+                <input type="text" id="edit-article-title" required>
+                <label>Full Article</label>
+                <div id="edit-editor" contenteditable="true"></div>
+                <label>Team</label>
+                <select id="edit-article-team" required>
+                    <option value="">-- Choose a Team --</option>
+                    <option value="Utah Athletics">Utah Athletics</option>
+                    <option value="Utah Mammoth">Utah Mammoth</option>
+                    <option value="Utah Jazz">Utah Jazz</option>
+                </select>
+                <label>Publication Date</label>
+                <input type="date" id="edit-article-date" required>
+                <button type="submit">Save Changes</button>
+            </form>
+            <a class="back-link" onclick="showEditArticles()">← Back to Articles List</a>
+        </div>
+    </div>
+
+    <div id="edit-articles-page" class="page">
+        <div class="auth-container">
+            <h1>Edit Articles</h1>
+            <div id="edit-message"></div>
+            <div id="edit-articles-list"></div>
             <a class="back-link" onclick="showProfile()">← Back to Profile</a>
         </div>
     </div>
@@ -232,6 +271,8 @@
 
         async function init() {
             document.getElementById('year').textContent = new Date().getFullYear();
+            document.getElementById('article-date').valueAsDate = new Date();
+            
             onAuthStateChanged(auth, async (user) => {
                 if (user) {
                     currentUser = user;
@@ -348,9 +389,32 @@
                 document.getElementById('article-title-input').value = '';
                 document.getElementById('editor').innerHTML = '';
                 document.getElementById('article-team').value = '';
+                document.getElementById('article-date').valueAsDate = new Date();
                 document.getElementById('add-article-message').innerHTML = '';
                 hideAllPages();
                 document.getElementById('add-article-page').classList.add('active');
+            } else if (page === 'edit-articles') {
+                if (!currentUser || (currentUserData.role !== 'admin' && currentUser.uid !== SUPERUSER_UID)) return;
+                const list = document.getElementById('edit-articles-list');
+                if (articles.length === 0) {
+                    list.innerHTML = '<div class="empty-state"><p>No articles to edit.</p></div>';
+                } else {
+                    list.innerHTML = articles.map(article => '<div class="article-link"><h3>' + escapeHtml(article.title) + '</h3><small>' + escapeHtml(article.team) + ' | ' + formatDate(article.published_at) + '</small><br><button class="edit-button" onclick="showEditArticle(\'' + article.id + '\')">Edit</button></div>').join('');
+                }
+                hideAllPages();
+                document.getElementById('edit-articles-page').classList.add('active');
+            } else if (page === 'edit-article') {
+                if (!currentUser || (currentUserData.role !== 'admin' && currentUser.uid !== SUPERUSER_UID)) return;
+                const article = articles.find(a => a.id === data.id);
+                if (!article) { navigate('edit-articles'); return; }
+                document.getElementById('edit-article-id').value = article.id;
+                document.getElementById('edit-article-title').value = article.title;
+                document.getElementById('edit-editor').innerHTML = article.content;
+                document.getElementById('edit-article-team').value = article.team;
+                document.getElementById('edit-article-date').value = article.published_at;
+                document.getElementById('edit-article-message').innerHTML = '';
+                hideAllPages();
+                document.getElementById('edit-article-page').classList.add('active');
             } else if (page === 'delete-articles') {
                 if (!currentUser || (currentUserData.role !== 'admin' && currentUser.uid !== SUPERUSER_UID)) return;
                 const list = document.getElementById('delete-articles-list');
@@ -386,6 +450,8 @@
         window.showRegister = () => navigate('register');
         window.showProfile = () => navigate('profile');
         window.showAddArticle = () => navigate('add-article');
+        window.showEditArticles = () => navigate('edit-articles');
+        window.showEditArticle = (id) => navigate('edit-article', { id });
         window.showDeleteArticles = () => navigate('delete-articles');
         window.showManageUsers = () => navigate('manage-users');
 
@@ -406,50 +472,48 @@
         }
 
         window.handleRegister = async function(e) {
-    e.preventDefault();
-    const displayName = document.getElementById('reg-displayname').value.trim();
-    const email = document.getElementById('reg-email').value.trim();
-    const password = document.getElementById('reg-password').value;
-    const role = document.getElementById('reg-role').value;
-    const adminSecret = document.getElementById('admin-secret').value;
-    if (!displayName || !email || !password || !role) {
-        showMessage('register-message', 'All fields are required.', true);
-        return;
-    }
-    if (role === 'admin' && adminSecret !== ADMIN_SECRET) {
-        showMessage('register-message', 'Incorrect admin secret code.', true);
-        return;
-    }
-    try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
-        
-        // ADD THIS LINE - It will show your UID in the console
-        console.log('YOUR UID IS:', user.uid);
-        
-        await updateProfile(user, { displayName });
-        await setDoc(doc(db, 'users', user.uid), {
-            displayName,
-            email,
-            role,
-            createdAt: new Date().toISOString()
-        });
-        showMessage('register-message', 'Registration successful!', false);
-        setTimeout(() => navigate('home'), 1500);
-    } catch (error) {
-        showMessage('register-message', getErrorMessage(error), true);
-    }
-}
+            e.preventDefault();
+            const displayName = document.getElementById('reg-displayname').value.trim();
+            const email = document.getElementById('reg-email').value.trim();
+            const password = document.getElementById('reg-password').value;
+            const role = document.getElementById('reg-role').value;
+            const adminSecret = document.getElementById('admin-secret').value;
+            if (!displayName || !email || !password || !role) {
+                showMessage('register-message', 'All fields are required.', true);
+                return;
+            }
+            if (role === 'admin' && adminSecret !== ADMIN_SECRET) {
+                showMessage('register-message', 'Incorrect admin secret code.', true);
+                return;
+            }
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                await updateProfile(user, { displayName });
+                await setDoc(doc(db, 'users', user.uid), {
+                    displayName,
+                    email,
+                    role,
+                    createdAt: new Date().toISOString()
+                });
+                showMessage('register-message', 'Registration successful!', false);
+                setTimeout(() => navigate('home'), 1500);
+            } catch (error) {
+                showMessage('register-message', getErrorMessage(error), true);
+            }
+        }
+
         window.handleAddArticle = async function(e) {
             e.preventDefault();
             if (!currentUser || (currentUserData.role !== 'admin' && currentUser.uid !== SUPERUSER_UID)) return;
             const title = document.getElementById('article-title-input').value.trim();
             const editorContent = document.getElementById('editor').innerHTML.trim();
             const team = document.getElementById('article-team').value;
+            const date = document.getElementById('article-date').value;
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = editorContent;
             const textContent = tempDiv.textContent || tempDiv.innerText || '';
-            if (!title || !textContent.trim() || !team) {
+            if (!title || !textContent.trim() || !team || !date) {
                 showMessage('add-article-message', 'All fields are required.', true);
                 return;
             }
@@ -458,7 +522,7 @@
                     title,
                     content: editorContent,
                     team,
-                    published_at: new Date().toISOString().split('T')[0],
+                    published_at: date,
                     author_uid: currentUser.uid,
                     author_name: currentUserData.displayName
                 });
@@ -467,6 +531,36 @@
             } catch (error) {
                 console.error('Error adding article:', error);
                 showMessage('add-article-message', 'Error publishing article.', true);
+            }
+        }
+
+        window.handleEditArticle = async function(e) {
+            e.preventDefault();
+            if (!currentUser || (currentUserData.role !== 'admin' && currentUser.uid !== SUPERUSER_UID)) return;
+            const articleId = document.getElementById('edit-article-id').value;
+            const title = document.getElementById('edit-article-title').value.trim();
+            const editorContent = document.getElementById('edit-editor').innerHTML.trim();
+            const team = document.getElementById('edit-article-team').value;
+            const date = document.getElementById('edit-article-date').value;
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = editorContent;
+            const textContent = tempDiv.textContent || tempDiv.innerText || '';
+            if (!title || !textContent.trim() || !team || !date) {
+                showMessage('edit-article-message', 'All fields are required.', true);
+                return;
+            }
+            try {
+                await updateDoc(doc(db, 'articles', articleId), {
+                    title,
+                    content: editorContent,
+                    team,
+                    published_at: date
+                });
+                showMessage('edit-article-message', 'Article updated!', false);
+                setTimeout(() => navigate('edit-articles'), 1500);
+            } catch (error) {
+                console.error('Error updating article:', error);
+                showMessage('edit-article-message', 'Error updating article.', true);
             }
         }
 
