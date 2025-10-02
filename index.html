@@ -303,7 +303,9 @@
             // Handle initial URL hash
             const initialState = parseHash();
             if (initialState.page !== 'home' || initialState.data.filter) {
-                history.replaceState(initialState, '', window.location.hash);
+                // If landing directly on a non-home page, add home to history first
+                history.replaceState({ page: 'home', data: {} }, '', '#home');
+                history.pushState(initialState, '', window.location.hash);
                 renderPage(initialState);
             } else if (!history.state) {
                 history.replaceState({ page: 'home', data: {} }, '', '#home');
@@ -501,6 +503,13 @@
         }
 
         window.addEventListener('popstate', (event) => {
+            // Check if we're at the start of history
+            if (window.history.length <= 2) {
+                // If there's minimal history, go home instead of back
+                navigate('home');
+                return;
+            }
+            
             if (event.state) {
                 renderPage(event.state);
             } else {
