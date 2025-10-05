@@ -97,6 +97,11 @@
         .role-badge { display: inline-block; padding: 3px 8px; border-radius: 3px; font-size: 0.85rem; font-weight: 600; margin-left: 5px; }
         .role-badge.admin { background-color: #1976d2; color: white; }
         .role-badge.user { background-color: #757575; color: white; }
+        .instagram-banner { position: fixed; top: 0; left: 0; right: 0; background-color: #4CAF50; color: white; padding: 15px 20px; text-align: center; z-index: 9999; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+.instagram-banner p { margin: 0 0 10px 0; font-size: 0.95rem; }
+.instagram-banner button { background-color: white; color: #4CAF50; border: none; padding: 8px 20px; font-weight: 600; border-radius: 4px; cursor: pointer; font-family: inherit; font-size: 0.9rem; }
+.instagram-banner button:hover { background-color: #f0f0f0; }
+.instagram-banner .close-banner { position: absolute; top: 10px; right: 15px; background: none; color: white; font-size: 1.5rem; padding: 0; width: 30px; height: 30px; }
         @media (max-width: 768px) {
             header h1 { font-size: 2rem; }
             .nav-right { position: static; text-align: center; margin-top: 15px; }
@@ -596,6 +601,22 @@
         window.showEditArticle = (id) => navigate('edit-article', { id });
         window.showDeleteArticles = () => navigate('delete-articles');
         window.showManageUsers = () => navigate('manage-users');
+        function showInstagramBanner() {
+    const banner = document.createElement('div');
+    banner.className = 'instagram-banner';
+    banner.innerHTML = `
+        <button class="close-banner" onclick="this.parentElement.remove()">×</button>
+        <p><strong>For the best experience, open in your browser</strong></p>
+        <button onclick="openInBrowser()">Open in Safari/Chrome</button>
+    `;
+    document.body.insertBefore(banner, document.body.firstChild);
+}
+
+window.openInBrowser = function() {
+    const url = window.location.href;
+    window.location.href = url;
+}
+        
 
         document.getElementById('reg-role').addEventListener('change', function() {
             document.getElementById('admin-secret-container').classList.toggle('hidden', this.value !== 'admin');
