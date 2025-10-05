@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- Google tag (gtag.js) -->
+   <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-K3P4F1G7KF"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -319,14 +319,15 @@
         }
 
         async function init() {
-            document.getElementById('year').textContent = new Date().getFullYear();
-            
-            // Set default dates for article forms
-            const today = getTodayDateString();
-            if (document.getElementById('article-date')) {
-                document.getElementById('article-date').value = today;
-            }
-            
+    document.getElementById('year').textContent = new Date().getFullYear();
+    
+    // Detect Instagram in-app browser and show banner
+    const isInstagram = /Instagram/i.test(navigator.userAgent);
+    if (isInstagram) {
+        showInstagramBanner();
+    }
+    
+    // Set default dates for article forms            
             onAuthStateChanged(auth, async (user) => {
                 if (user) {
                     currentUser = user;
