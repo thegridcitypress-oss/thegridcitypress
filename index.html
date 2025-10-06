@@ -381,35 +381,41 @@
         }
 
         window.displayArticles = function(filter = null) {
-            const list = document.getElementById('articles-list');
-            const title = document.getElementById('articles-title');
-            
-            let filtered = articles.slice();
-            
-            // Only apply 7-day filter on home page (when no team filter is active)
-            if (!filter) {
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-                const sevenDaysAgo = new Date(today);
-                sevenDaysAgo.setDate(today.getDate() - 7);
-                
-                filtered = filtered.filter(a => {
-                    const articleDate = new Date(a.published_at + 'T00:00:00');
-                    return articleDate >= sevenDaysAgo;
-                });
-            } else {
-                // Apply team filter - show all articles for that team
-                filtered = filtered.filter(a => a.team === filter);
-            }
-            
-            title.textContent = filter ? filter + ' Articles' : 'Latest Articles';
-            if (filtered.length === 0) {
-                const emptyMessage = filter ? 'No articles yet.' : 'No articles from the past 7 days.';
-                list.innerHTML = '<div class="empty-state"><p>' + emptyMessage + '</p></div>';
-            } else {
-                list.innerHTML = filtered.map(a => '<a class="article-link" onclick="showArticle(\'' + a.id + '\')"><h3>' + escapeHtml(a.title) + '</h3><small>' + escapeHtml(a.team) + ' | ' + formatDate(a.published_at) + '</small></a>').join('');
-            }
-        }
+    const list = document.getElementById('articles-list');
+    const title = document.getElementById('articles-title');
+    
+    // Show loading state if no articles yet
+    if (articles.length === 0) {
+        list.innerHTML = '<div class="empty-state"><p>Loading articles...</p></div>';
+        return;
+    }
+    
+    let filtered = articles.slice();
+    
+    // Only apply 7-day filter on home page (when no team filter is active)
+    if (!filter) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const sevenDaysAgo = new Date(today);
+        sevenDaysAgo.setDate(today.getDate() - 7);
+        
+        filtered = filtered.filter(a => {
+            const articleDate = new Date(a.published_at + 'T00:00:00');
+            return articleDate >= sevenDaysAgo;
+        });
+    } else {
+        // Apply team filter - show all articles for that team
+        filtered = filtered.filter(a => a.team === filter);
+    }
+    
+    title.textContent = filter ? filter + ' Articles' : 'Latest Articles';
+    if (filtered.length === 0) {
+        const emptyMessage = filter ? 'No articles yet.' : 'No articles from the past 7 days.';
+        list.innerHTML = '<div class="empty-state"><p>' + emptyMessage + '</p></div>';
+    } else {
+        list.innerHTML = filtered.map(a => '<a class="article-link" onclick="showArticle(\'' + a.id + '\')"><h3>' + escapeHtml(a.title) + '</h3><small>' + escapeHtml(a.team) + ' | ' + formatDate(a.published_at) + '</small></a>').join('');
+    }
+}
         function formatDate(dateStr) {
             // Handle date string in YYYY-MM-DD format
             // Parse manually to avoid timezone issues
