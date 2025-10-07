@@ -131,8 +131,6 @@
         <header><div class="header-inner"><h1>The Grid City Press</h1></div></header>
         <div class="container">
             <a class="back-link" onclick="showHome()" style="margin-top: 20px; margin-bottom: 10px;">← Back to Home</a>
-            <h1 id="article-title"></h1>
-            <small id="article-meta"></small>
             <div class="article-content" id="article-content"></div>
             <a class="back-link" onclick="showHome()">← Back to Home</a>
         </div>
@@ -488,9 +486,7 @@
             } else if (page === 'article') {
                 const article = articles.find(a => a.id === data.id);
                 if (!article) { navigate('home'); return; }
-                document.getElementById('article-title').textContent = article.title;
-                document.getElementById('article-meta').textContent = article.team + ' | ' + formatDate(article.published_at);
-                document.getElementById('article-content').innerHTML = article.content;
+                            document.getElementById('article-content').innerHTML = article.content;
                 hideAllPages();
                 document.getElementById('article-page').classList.add('active');
             } else if (page === 'login') {
