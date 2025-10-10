@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,35 +31,110 @@
     <meta name="twitter:image" content="https://thegridcitypress.com/og-image.png">
     
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Playfair Display', serif; background-color: #f9f9f9; color: #111; }
         header { position: relative; background-color: white; border-bottom: 1px solid #ccc; padding: 30px 20px 20px; }
         .header-inner { text-align: center; }
-        header h1 { font-size: 3rem; font-weight: 700; letter-spacing: 1px; margin: 0; }
-        nav.main-nav { margin-top: 20px; margin-bottom: 30px; }
-        .nav-left { text-align: center; }
-        .nav-left a { text-decoration: none; color: #444; margin: 0 15px; font-weight: 600; font-size: 1rem; cursor: pointer; }
+        header h1 { font-size: 3rem; font-weight: 700; letter-spacing: 1px; margin: 0; cursor: pointer; }
+        nav.main-nav { margin-top: 20px; margin-bottom: 10px; position: relative; }
+        .nav-left { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; align-items: center; }
+        .nav-left a { text-decoration: none; color: #444; font-weight: 600; font-size: 1rem; cursor: pointer; white-space: nowrap; padding: 5px 0; }
+        .nav-left a:not(:last-child)::after { content: '|'; margin-left: 15px; color: #ccc; }
         .nav-left a:hover { color: #000; }
-        .nav-right { position: absolute; top: 35px; right: 20px; }
-        .nav-right a, .nav-right button { text-decoration: none; color: #444; margin: 0 10px; font-weight: 600; font-size: 1rem; background: none; border: none; cursor: pointer; font-family: inherit; }
+        .nav-right { position: absolute; top: -60px; right: 0; display: flex; gap: 10px; }
+        .nav-right a, .nav-right button { text-decoration: none; color: #444; font-weight: 600; font-size: 1rem; background: none; border: none; cursor: pointer; font-family: inherit; white-space: nowrap; }
         .nav-right a:hover, .nav-right button:hover { color: #000; }
-        .container { max-width: 800px; margin: 0 auto; padding: 0 20px 40px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px 40px; }
         h2.section-title { font-size: 1.8rem; margin: 20px 0 15px; font-weight: 700; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
+        
+        /* NEW GRID LAYOUT */
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .article-card {
+            display: block;
+            border: none;
+            background: white;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            border-radius: 8px;
+        }
+        
+        .article-card:hover {
+            box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+            transform: translateY(-4px);
+        }
+        
+        .article-card-content {
+            padding: 28px;
+        }
+        
+        .article-card h3 {
+            margin: 0 0 16px;
+            font-size: 1.4rem;
+            line-height: 1.35;
+            font-weight: 700;
+            color: #111;
+        }
+        
+        .article-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .article-author {
+            color: #2563eb;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.2s;
+            font-size: 0.95rem;
+        }
+        
+        .article-author:hover {
+            color: #1d4ed8;
+        }
+        
+        .article-date {
+            color: #6b7280;
+            font-size: 0.88rem;
+        }
+        
+        .article-team-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background-color: #f3f4f6;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #374151;
+            margin-top: 4px;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            width: fit-content;
+        }
+        
+        /* OLD ARTICLE LINK (for other pages) */
         .article-link { display: block; border: 1px solid #ccc; padding: 20px; margin-bottom: 20px; text-decoration: none; color: inherit; transition: background-color 0.2s ease; cursor: pointer; }
         .article-link:hover { background-color: #f0f0f0; }
         .article-link h3 { margin: 0 0 5px; font-size: 1.4rem; }
         .article-link small { color: #777; font-size: 0.9rem; }
+        
         footer { text-align: center; color: #aaa; font-size: 0.8rem; padding: 20px; border-top: 1px solid #ddd; }
         .page { display: none; }
         .page.active { display: block; }
@@ -85,7 +158,7 @@
         .links { margin-top: 30px; display: flex; flex-direction: column; gap: 15px; }
         .links button { text-decoration: none; background-color: #000; color: #fff; padding: 10px 15px; font-weight: 600; text-align: center; border-radius: 4px; cursor: pointer; border: none; font-family: inherit; font-size: inherit; }
         .links button:hover { background-color: #333; }
-        #editor { border: 1px solid #ccc; padding: 15px; min-height: 500px; background-color: white; margin-top: 5px; overflow-y: auto; }
+        #editor, #edit-editor { border: 1px solid #ccc; padding: 15px; min-height: 500px; background-color: white; margin-top: 5px; overflow-y: auto; }
         .delete-button { margin-top: 10px; display: inline-block; padding: 6px 12px; background-color: crimson; color: white; font-size: 0.9rem; border-radius: 4px; border: none; cursor: pointer; font-family: inherit; }
         .delete-button:hover { background-color: darkred; }
         .edit-button { margin-top: 10px; margin-left: 10px; display: inline-block; padding: 6px 12px; background-color: #1976d2; color: white; font-size: 0.9rem; border-radius: 4px; border: none; cursor: pointer; font-family: inherit; }
@@ -98,23 +171,42 @@
         .role-badge { display: inline-block; padding: 3px 8px; border-radius: 3px; font-size: 0.85rem; font-weight: 600; margin-left: 5px; }
         .role-badge.admin { background-color: #1976d2; color: white; }
         .role-badge.user { background-color: #757575; color: white; }
+        
         @media (max-width: 768px) {
             header h1 { font-size: 2rem; }
-            .nav-right { position: static; text-align: center; margin-top: 15px; }
-            .nav-left a { display: block; margin: 10px 0; }
+            nav.main-nav { flex-direction: column; align-items: stretch; }
+            .nav-left { gap: 10px; }
+            .nav-left a { display: block; padding: 8px 0; }
+            .nav-left a:not(:last-child)::after { content: ''; margin-left: 0; }
+            .nav-right { justify-content: center; margin-top: 10px; }
+            .articles-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+        
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .articles-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
     </style>
 </head>
 <body>
     <div id="home-page" class="page active">
         <header>
-            <div class="header-inner"><h1>The Grid City Press</h1></div>
+            <div class="header-inner"><h1 onclick="showHome()">The Grid City Press</h1></div>
             <nav class="main-nav">
                 <div class="nav-left">
-                    <a onclick="filterByTeam('Utah Athletics')">Utah Athletics</a>
-                    <a onclick="filterByTeam('Utah Mammoth')">Utah Mammoth</a>
+                    <a onclick="showHome()">Home</a>
                     <a onclick="filterByTeam('Utah Jazz')">Utah Jazz</a>
+                    <a onclick="filterByTeam('Utah Mammoth')">Utah Mammoth</a>
                     <a onclick="filterByTeam('Real Salt Lake')">Real Salt Lake</a>
+                    <a onclick="filterByTeam('Utah Athletics')">Utah Athletics</a>
+                    <a onclick="showWriters()">Writers</a>
+                    <a onclick="showPodcast()">Podcast</a>
+                    <a onclick="showWriteForUs()">Write for Us</a>
+                    <a onclick="showAbout()">About / Contact</a>
                 </div>
                 <div class="nav-right" id="nav-auth"></div>
             </nav>
@@ -122,13 +214,29 @@
         <div class="container">
             <a class="back-link" id="filter-back-link" onclick="showHome()" style="display: none;">← Back to All Articles</a>
             <h2 class="section-title" id="articles-title">Latest Articles</h2>
-            <div id="articles-list"></div>
+            <div id="articles-list" class="articles-grid"></div>
         </div>
         <footer>&copy; <span id="year"></span> The Grid City Press. All rights reserved.</footer>
     </div>
 
     <div id="article-page" class="page">
-        <header><div class="header-inner"><h1>The Grid City Press</h1></div></header>
+        <header>
+            <div class="header-inner"><h1 onclick="showHome()">The Grid City Press</h1></div>
+            <nav class="main-nav">
+                <div class="nav-left">
+                    <a onclick="showHome()">Home</a>
+                    <a onclick="filterByTeam('Utah Jazz')">Utah Jazz</a>
+                    <a onclick="filterByTeam('Utah Mammoth')">Utah Mammoth</a>
+                    <a onclick="filterByTeam('Real Salt Lake')">Real Salt Lake</a>
+                    <a onclick="filterByTeam('Utah Athletics')">Utah Athletics</a>
+                    <a onclick="showWriters()">Writers</a>
+                    <a onclick="showPodcast()">Podcast</a>
+                    <a onclick="showWriteForUs()">Write for Us</a>
+                    <a onclick="showAbout()">About / Contact</a>
+                </div>
+                <div class="nav-right" id="nav-auth-article"></div>
+            </nav>
+        </header>
         <div class="container">
             <a class="back-link" onclick="showHome()" style="margin-top: 20px; margin-bottom: 10px;">← Back to Home</a>
             <div class="article-content" id="article-content"></div>
@@ -194,6 +302,7 @@
                 <p><strong>Role:</strong> <span id="profile-role"></span></p>
             </div>
             <div class="links">
+                <button onclick="showEditProfile()">Edit Profile</button>
                 <div id="admin-actions" class="hidden">
                     <button onclick="showAddArticle()">Add Article</button>
                     <button onclick="showEditArticles()">Edit Articles</button>
@@ -205,6 +314,26 @@
                 <button onclick="handleLogout()">Log Out</button>
             </div>
             <a class="back-link" onclick="showHome()">← Back to Home</a>
+        </div>
+    </div>
+
+    <div id="edit-profile-page" class="page">
+        <div class="auth-container">
+            <h1>Edit Profile</h1>
+            <div id="edit-profile-message"></div>
+            <form class="auth-form" onsubmit="handleEditProfile(event)">
+                <label>Display Name</label>
+                <input type="text" id="edit-profile-displayname" required>
+                
+                <label>Email</label>
+                <input type="email" id="edit-profile-email" required>
+                
+                <label>New Password (leave blank to keep current)</label>
+                <input type="password" id="edit-profile-password" minlength="6" placeholder="Leave blank to keep current password">
+                
+                <button type="submit">Save Changes</button>
+            </form>
+            <a class="back-link" onclick="showProfile()">← Back to Profile</a>
         </div>
     </div>
 
@@ -286,9 +415,109 @@
         </div>
     </div>
 
+    <div id="writers-page" class="page">
+        <header>
+            <div class="header-inner"><h1 onclick="showHome()">The Grid City Press</h1></div>
+            <nav class="main-nav">
+                <div class="nav-left">
+                    <a onclick="showHome()">Home</a>
+                    <a onclick="filterByTeam('Utah Jazz')">Utah Jazz</a>
+                    <a onclick="filterByTeam('Utah Mammoth')">Utah Mammoth</a>
+                    <a onclick="filterByTeam('Real Salt Lake')">Real Salt Lake</a>
+                    <a onclick="filterByTeam('Utah Athletics')">Utah Athletics</a>
+                    <a onclick="showWriters()">Writers</a>
+                    <a onclick="showPodcast()">Podcast</a>
+                    <a onclick="showWriteForUs()">Write for Us</a>
+                    <a onclick="showAbout()">About / Contact</a>
+                </div>
+                <div class="nav-right" id="nav-auth-writers"></div>
+            </nav>
+        </header>
+        <div class="container">
+            <h2 class="section-title">Writers</h2>
+            <p>Writers page coming soon.</p>
+            <a class="back-link" onclick="showHome()">← Back to Home</a>
+        </div>
+    </div>
+
+    <div id="podcast-page" class="page">
+        <header>
+            <div class="header-inner"><h1 onclick="showHome()">The Grid City Press</h1></div>
+            <nav class="main-nav">
+                <div class="nav-left">
+                    <a onclick="showHome()">Home</a>
+                    <a onclick="filterByTeam('Utah Jazz')">Utah Jazz</a>
+                    <a onclick="filterByTeam('Utah Mammoth')">Utah Mammoth</a>
+                    <a onclick="filterByTeam('Real Salt Lake')">Real Salt Lake</a>
+                    <a onclick="filterByTeam('Utah Athletics')">Utah Athletics</a>
+                    <a onclick="showWriters()">Writers</a>
+                    <a onclick="showPodcast()">Podcast</a>
+                    <a onclick="showWriteForUs()">Write for Us</a>
+                    <a onclick="showAbout()">About / Contact</a>
+                </div>
+                <div class="nav-right" id="nav-auth-podcast"></div>
+            </nav>
+        </header>
+        <div class="container">
+            <h2 class="section-title">Podcast</h2>
+            <p>Podcast page coming soon.</p>
+            <a class="back-link" onclick="showHome()">← Back to Home</a>
+        </div>
+    </div>
+
+    <div id="write-for-us-page" class="page">
+        <header>
+            <div class="header-inner"><h1 onclick="showHome()">The Grid City Press</h1></div>
+            <nav class="main-nav">
+                <div class="nav-left">
+                    <a onclick="showHome()">Home</a>
+                    <a onclick="filterByTeam('Utah Jazz')">Utah Jazz</a>
+                    <a onclick="filterByTeam('Utah Mammoth')">Utah Mammoth</a>
+                    <a onclick="filterByTeam('Real Salt Lake')">Real Salt Lake</a>
+                    <a onclick="filterByTeam('Utah Athletics')">Utah Athletics</a>
+                    <a onclick="showWriters()">Writers</a>
+                    <a onclick="showPodcast()">Podcast</a>
+                    <a onclick="showWriteForUs()">Write for Us</a>
+                    <a onclick="showAbout()">About / Contact</a>
+                </div>
+                <div class="nav-right" id="nav-auth-writefor"></div>
+            </nav>
+        </header>
+        <div class="container">
+            <h2 class="section-title">Write for Us</h2>
+            <p>Write for Us page coming soon.</p>
+            <a class="back-link" onclick="showHome()">← Back to Home</a>
+        </div>
+    </div>
+
+    <div id="about-page" class="page">
+        <header>
+            <div class="header-inner"><h1 onclick="showHome()">The Grid City Press</h1></div>
+            <nav class="main-nav">
+                <div class="nav-left">
+                    <a onclick="showHome()">Home</a>
+                    <a onclick="filterByTeam('Utah Jazz')">Utah Jazz</a>
+                    <a onclick="filterByTeam('Utah Mammoth')">Utah Mammoth</a>
+                    <a onclick="filterByTeam('Real Salt Lake')">Real Salt Lake</a>
+                    <a onclick="filterByTeam('Utah Athletics')">Utah Athletics</a>
+                    <a onclick="showWriters()">Writers</a>
+                    <a onclick="showPodcast()">Podcast</a>
+                    <a onclick="showWriteForUs()">Write for Us</a>
+                    <a onclick="showAbout()">About / Contact</a>
+                </div>
+                <div class="nav-right" id="nav-auth-about"></div>
+            </nav>
+        </header>
+        <div class="container">
+            <h2 class="section-title">About / Contact</h2>
+            <p>About and Contact information coming soon.</p>
+            <a class="back-link" onclick="showHome()">← Back to Home</a>
+        </div>
+    </div>
+
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, updateEmail, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
         import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, query, orderBy, onSnapshot, setDoc, getDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
         const firebaseConfig = {
@@ -320,7 +549,6 @@
         async function init() {
             document.getElementById('year').textContent = new Date().getFullYear();
             
-            // Set default dates for article forms
             const today = getTodayDateString();
             if (document.getElementById('article-date')) {
                 document.getElementById('article-date').value = today;
@@ -339,10 +567,8 @@
             });
             await loadArticles();
             
-            // Handle initial URL hash
             const initialState = parseHash();
             if (initialState.page !== 'home' || initialState.data.filter) {
-                // If landing directly on a non-home page, add home to history first
                 history.replaceState({ page: 'home', data: {} }, '', '#home');
                 history.pushState(initialState, '', window.location.hash);
                 renderPage(initialState);
@@ -370,53 +596,55 @@
         }
 
         window.updateAuthUI = function() {
-            const navAuth = document.getElementById('nav-auth');
-            if (currentUser && currentUserData) {
-                navAuth.innerHTML = '<a onclick="showProfile()">' + escapeHtml(currentUserData.displayName) + '</a><button onclick="handleLogout()">Log Out</button>';
-            } else {
-                navAuth.innerHTML = '<a onclick="showLogin()">Log In</a><a onclick="showRegister()">Register</a>';
-            }
+            const authHTML = currentUser && currentUserData 
+                ? '<a onclick="showProfile()">' + escapeHtml(currentUserData.displayName) + '</a><button onclick="handleLogout()">Log Out</button>'
+                : '<a onclick="showLogin()">Log In</a><a onclick="showRegister()">Register</a>';
+            
+            const navElements = ['nav-auth', 'nav-auth-article', 'nav-auth-writers', 'nav-auth-podcast', 'nav-auth-writefor', 'nav-auth-about'];
+            navElements.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) element.innerHTML = authHTML;
+            });
         }
 
         window.displayArticles = function(filter = null) {
-    const list = document.getElementById('articles-list');
-    const title = document.getElementById('articles-title');
-    
-    // Show loading state if no articles yet
-    if (articles.length === 0) {
-        list.innerHTML = '<div class="empty-state"><p>Loading articles...</p></div>';
-        return;
-    }
-    
-    let filtered = articles.slice();
-    
-    // Only apply 7-day filter on home page (when no team filter is active)
-    if (!filter) {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        const sevenDaysAgo = new Date(today);
-        sevenDaysAgo.setDate(today.getDate() - 7);
-        
-        filtered = filtered.filter(a => {
-            const articleDate = new Date(a.published_at + 'T00:00:00');
-            return articleDate >= sevenDaysAgo;
-        });
-    } else {
-        // Apply team filter - show all articles for that team
-        filtered = filtered.filter(a => a.team === filter);
-    }
-    
-    title.textContent = filter ? filter + ' Articles' : 'Latest Articles';
-    if (filtered.length === 0) {
-        const emptyMessage = filter ? 'No articles yet.' : 'No articles from the past 7 days.';
-        list.innerHTML = '<div class="empty-state"><p>' + emptyMessage + '</p></div>';
-    } else {
-        list.innerHTML = filtered.map(a => '<a class="article-link" onclick="showArticle(\'' + a.id + '\')"><h3>' + escapeHtml(a.title) + '</h3><small>' + escapeHtml(a.team) + ' | ' + formatDate(a.published_at) + '</small></a>').join('');
-    }
-}
+            const list = document.getElementById('articles-list');
+            const title = document.getElementById('articles-title');
+            
+            if (articles.length === 0) {
+                list.innerHTML = '<div class="empty-state"><p>Loading articles...</p></div>';
+                return;
+            }
+            
+            let filtered = articles.slice();
+            
+            if (!filter) {
+                filtered = filtered.slice(0, 6);
+            } else {
+                filtered = filtered.filter(a => a.team === filter);
+            }
+            
+            title.textContent = filter ? filter + ' Articles' : 'Latest Articles';
+            if (filtered.length === 0) {
+                const emptyMessage = filter ? 'No articles yet.' : 'No articles available.';
+                list.innerHTML = '<div class="empty-state"><p>' + emptyMessage + '</p></div>';
+            } else {
+                list.innerHTML = filtered.map(a => 
+                    '<div class="article-card" onclick="showArticle(\'' + a.id + '\')">' +
+                        '<div class="article-card-content">' +
+                            '<h3>' + escapeHtml(a.title) + '</h3>' +
+                            '<div class="article-meta">' +
+                                '<span class="article-author" onclick="event.stopPropagation();">' + escapeHtml(a.author_name || 'Unknown Author') + '</span>' +
+                                '<span class="article-date">' + formatDate(a.published_at) + '</span>' +
+                                '<span class="article-team-badge">' + escapeHtml(a.team) + '</span>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>'
+                ).join('');
+            }
+        }
+
         function formatDate(dateStr) {
-            // Handle date string in YYYY-MM-DD format
-            // Parse manually to avoid timezone issues
             const parts = dateStr.split('-');
             if (parts.length === 3) {
                 const [year, month, day] = parts;
@@ -425,10 +653,9 @@
                     year: 'numeric', 
                     month: 'long', 
                     day: 'numeric',
-                    timeZone: 'America/Denver' // MST timezone
+                    timeZone: 'America/Denver'
                 });
             }
-            // Fallback for any other format
             return dateStr;
         }
 
@@ -486,7 +713,7 @@
             } else if (page === 'article') {
                 const article = articles.find(a => a.id === data.id);
                 if (!article) { navigate('home'); return; }
-                            document.getElementById('article-content').innerHTML = article.content;
+                document.getElementById('article-content').innerHTML = article.content;
                 hideAllPages();
                 document.getElementById('article-page').classList.add('active');
             } else if (page === 'login') {
@@ -506,6 +733,14 @@
                 document.getElementById('superuser-actions').classList.toggle('hidden', currentUser.uid !== SUPERUSER_UID);
                 hideAllPages();
                 document.getElementById('profile-page').classList.add('active');
+            } else if (page === 'edit-profile') {
+                if (!currentUser || !currentUserData) { navigate('login'); return; }
+                document.getElementById('edit-profile-displayname').value = currentUserData.displayName;
+                document.getElementById('edit-profile-email').value = currentUser.email;
+                document.getElementById('edit-profile-password').value = '';
+                document.getElementById('edit-profile-message').innerHTML = '';
+                hideAllPages();
+                document.getElementById('edit-profile-page').classList.add('active');
             } else if (page === 'add-article') {
                 if (!currentUser || (currentUserData.role !== 'admin' && currentUser.uid !== SUPERUSER_UID)) {
                     alert('Admin access required');
@@ -559,14 +794,24 @@
                 loadUsers();
                 hideAllPages();
                 document.getElementById('manage-users-page').classList.add('active');
+            } else if (page === 'writers') {
+                hideAllPages();
+                document.getElementById('writers-page').classList.add('active');
+            } else if (page === 'podcast') {
+                hideAllPages();
+                document.getElementById('podcast-page').classList.add('active');
+            } else if (page === 'write-for-us') {
+                hideAllPages();
+                document.getElementById('write-for-us-page').classList.add('active');
+            } else if (page === 'about') {
+                hideAllPages();
+                document.getElementById('about-page').classList.add('active');
             }
             window.scrollTo(0, 0);
         }
 
         window.addEventListener('popstate', (event) => {
-            // Check if we're at the start of history
             if (window.history.length <= 2) {
-                // If there's minimal history, go home instead of back
                 navigate('home');
                 return;
             }
@@ -593,11 +838,16 @@
         window.showLogin = () => navigate('login');
         window.showRegister = () => navigate('register');
         window.showProfile = () => navigate('profile');
+        window.showEditProfile = () => navigate('edit-profile');
         window.showAddArticle = () => navigate('add-article');
         window.showEditArticles = () => navigate('edit-articles');
         window.showEditArticle = (id) => navigate('edit-article', { id });
         window.showDeleteArticles = () => navigate('delete-articles');
         window.showManageUsers = () => navigate('manage-users');
+        window.showWriters = () => navigate('writers');
+        window.showPodcast = () => navigate('podcast');
+        window.showWriteForUs = () => navigate('write-for-us');
+        window.showAbout = () => navigate('about');
 
         document.getElementById('reg-role').addEventListener('change', function() {
             document.getElementById('admin-secret-container').classList.toggle('hidden', this.value !== 'admin');
@@ -644,6 +894,79 @@
                 setTimeout(() => navigate('home'), 1500);
             } catch (error) {
                 showMessage('register-message', getErrorMessage(error), true);
+            }
+        }
+
+        window.handleEditProfile = async function(e) {
+            e.preventDefault();
+            if (!currentUser || !currentUserData) return;
+            
+            const newDisplayName = document.getElementById('edit-profile-displayname').value.trim();
+            const newEmail = document.getElementById('edit-profile-email').value.trim();
+            const newPassword = document.getElementById('edit-profile-password').value;
+            
+            if (!newDisplayName || !newEmail) {
+                showMessage('edit-profile-message', 'Name and email are required.', true);
+                return;
+            }
+            
+            try {
+                let needsReauth = false;
+                
+                if (newEmail !== currentUser.email || newPassword) {
+                    needsReauth = true;
+                    const password = prompt('Please enter your current password to confirm these changes:');
+                    if (!password) {
+                        showMessage('edit-profile-message', 'Password required to update email or password.', true);
+                        return;
+                    }
+                    
+                    const credential = EmailAuthProvider.credential(currentUser.email, password);
+                    await reauthenticateWithCredential(currentUser, credential);
+                }
+                
+                if (newDisplayName !== currentUserData.displayName) {
+                    await updateProfile(currentUser, { displayName: newDisplayName });
+                    await updateDoc(doc(db, 'users', currentUser.uid), { displayName: newDisplayName });
+                    
+                    const articlesRef = collection(db, 'articles');
+                    const q = query(articlesRef);
+                    const querySnapshot = await getDocs(q);
+                    
+                    const updatePromises = [];
+                    querySnapshot.forEach((docSnap) => {
+                        const articleData = docSnap.data();
+                        if (articleData.author_uid === currentUser.uid) {
+                            updatePromises.push(
+                                updateDoc(doc(db, 'articles', docSnap.id), { 
+                                    author_name: newDisplayName 
+                                })
+                            );
+                        }
+                    });
+                    
+                    if (updatePromises.length > 0) {
+                        await Promise.all(updatePromises);
+                    }
+                }
+                
+                if (newEmail !== currentUser.email) {
+                    await updateEmail(currentUser, newEmail);
+                    await updateDoc(doc(db, 'users', currentUser.uid), { email: newEmail });
+                }
+                
+                if (newPassword) {
+                    await updatePassword(currentUser, newPassword);
+                }
+                
+                const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
+                if (userDoc.exists()) currentUserData = userDoc.data();
+                
+                showMessage('edit-profile-message', 'Profile updated successfully!', false);
+                setTimeout(() => navigate('profile'), 1500);
+            } catch (error) {
+                console.error('Error updating profile:', error);
+                showMessage('edit-profile-message', getErrorMessage(error), true);
             }
         }
 
