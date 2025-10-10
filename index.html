@@ -346,6 +346,8 @@
                 <input type="text" id="article-title-input" required>
                 <label>Full Article</label>
                 <div id="editor" contenteditable="true"></div>
+                <label>Author Name</label>
+                <input type="text" id="article-author" required>
                 <label>Team</label>
                 <select id="article-team" required>
                     <option value="">-- Choose a Team --</option>
@@ -372,6 +374,8 @@
                 <input type="text" id="edit-article-title" required>
                 <label>Full Article</label>
                 <div id="edit-editor" contenteditable="true"></div>
+                <label>Author Name</label>
+                <input type="text" id="edit-article-author" required>
                 <label>Team</label>
                 <select id="edit-article-team" required>
                     <option value="">-- Choose a Team --</option>
@@ -770,6 +774,7 @@
                 document.getElementById('edit-article-id').value = article.id;
                 document.getElementById('edit-article-title').value = article.title;
                 document.getElementById('edit-editor').innerHTML = article.content;
+                document.getElementById('edit-article-author').value = article.author_name || 'Unknown Author';
                 document.getElementById('edit-article-team').value = article.team;
                 document.getElementById('edit-article-date').value = article.published_at;
                 document.getElementById('edit-article-message').innerHTML = '';
@@ -1008,13 +1013,14 @@
             const articleId = document.getElementById('edit-article-id').value;
             const title = document.getElementById('edit-article-title').value.trim();
             const editorContent = document.getElementById('edit-editor').innerHTML.trim();
+            const authorName = document.getElementById('edit-article-author').value.trim();
             const team = document.getElementById('edit-article-team').value;
             const dateInput = document.getElementById('edit-article-date').value;
             const date = dateInput;
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = editorContent;
             const textContent = tempDiv.textContent || tempDiv.innerText || '';
-            if (!title || !textContent.trim() || !team || !date) {
+            if (!title || !textContent.trim() || !authorName || !team || !date) {
                 showMessage('edit-article-message', 'All fields are required.', true);
                 return;
             }
@@ -1022,6 +1028,7 @@
                 await updateDoc(doc(db, 'articles', articleId), {
                     title,
                     content: editorContent,
+                    author_name: authorName,
                     team,
                     published_at: date
                 });
