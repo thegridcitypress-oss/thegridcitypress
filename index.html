@@ -180,10 +180,13 @@
             header h1 { font-size: 2rem; }
             .header-inner { padding-bottom: 10px; }
             .nav-right { position: static; justify-content: center; margin-top: 15px; margin-bottom: 10px; }
+            .nav-right a, .nav-right button { font-size: 0.95rem; }
+            .nav-right a::after, .nav-right button::after { content: '|'; margin-left: 10px; color: #ccc; }
+            .nav-right a:last-child::after, .nav-right button:last-child::after { content: none; }
             nav.main-nav { flex-direction: column; align-items: stretch; margin-top: 0; }
-            .nav-left { gap: 10px; }
-            .nav-left a { display: block; padding: 8px 0; }
-            .nav-left a:not(:last-child)::after { content: ''; margin-left: 0; }
+            .nav-left { gap: 5px; flex-wrap: wrap; justify-content: center; }
+            .nav-left a { padding: 8px 5px; font-size: 0.95rem; }
+            .nav-left a:not(:last-child)::after { content: '|'; margin-left: 10px; color: #ccc; }
             .articles-grid {
                 grid-template-columns: 1fr;
                 gap: 20px;
