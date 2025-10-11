@@ -47,13 +47,24 @@
         .nav-left a { text-decoration: none; color: #444; font-weight: 600; font-size: 1rem; cursor: pointer; white-space: nowrap; padding: 5px 0; }
         .nav-left a:not(:last-child)::after { content: '|'; margin-left: 15px; color: #ccc; }
         .nav-left a:hover { color: #000; }
-        .nav-right { position: absolute; top: 0; right: 0; display: flex; gap: 10px; }
-        .nav-right a, .nav-right button { text-decoration: none; color: #444; font-weight: 600; font-size: 1rem; background: none; border: none; cursor: pointer; font-family: inherit; white-space: nowrap; }
+        
+        /* Desktop: auth buttons below nav, centered */
+        .nav-right { display: flex; gap: 10px; justify-content: center; margin-top: 15px; }
+        .nav-right a, .nav-right button { text-decoration: none; color: #444; font-weight: 600; font-size: 1rem; background: none; border: none; cursor: pointer; font-family: inherit; white-space: nowrap; padding: 0; }
         .nav-right a:hover, .nav-right button:hover { color: #000; }
+        .nav-right a:not(:last-child)::after, .nav-right button:not(:last-child)::after { content: '|'; margin-left: 10px; color: #ccc; }
         
         @media (max-width: 768px) {
-            .nav-right { position: static; justify-content: center; margin-top: 15px; margin-bottom: 10px; }
+            header h1 { font-size: 2rem; }
+            .header-inner { padding-bottom: 10px; }
+            .nav-right { margin-top: 15px; margin-bottom: 10px; }
+            .nav-right a, .nav-right button { font-size: 0.95rem; }
+            nav.main-nav { flex-direction: column; align-items: stretch; margin-top: 0; }
+            .nav-left { gap: 5px; flex-wrap: wrap; justify-content: center; }
+            .nav-left a { padding: 8px 5px; font-size: 0.95rem; }
+            .nav-left a:not(:last-child)::after { content: '|'; margin-left: 10px; color: #ccc; }
         }
+        
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px 40px; }
         h2.section-title { font-size: 1.8rem; margin: 20px 0 15px; font-weight: 700; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
         
@@ -311,26 +322,16 @@
             color: white;
         }
         
-        @media (max-width: 768px) {
-            header h1 { font-size: 2rem; }
-            .header-inner { padding-bottom: 10px; }
-            .nav-right { position: static; justify-content: center; margin-top: 15px; margin-bottom: 10px; }
-            .nav-right a, .nav-right button { font-size: 0.95rem; }
-            .nav-right a::after, .nav-right button::after { content: '|'; margin-left: 10px; color: #ccc; }
-            .nav-right a:last-child::after, .nav-right button:last-child::after { content: none; }
-            nav.main-nav { flex-direction: column; align-items: stretch; margin-top: 0; }
-            .nav-left { gap: 5px; flex-wrap: wrap; justify-content: center; }
-            .nav-left a { padding: 8px 5px; font-size: 0.95rem; }
-            .nav-left a:not(:last-child)::after { content: '|'; margin-left: 10px; color: #ccc; }
-            .articles-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-        }
-        
         @media (min-width: 769px) and (max-width: 1024px) {
             .articles-grid {
                 grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .articles-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
             }
         }
     </style>
@@ -1331,9 +1332,7 @@
                         let embedUrl = podcast.link;
                         let showUrl = podcast.link;
                         
-                        // Convert regular Apple Podcasts URL to embed format
                         if (podcast.link.includes('podcasts.apple.com/') && !podcast.link.includes('/embed/')) {
-                            // Extract podcast ID and episode ID if present
                             const podcastIdMatch = podcast.link.match(/id(\d+)/);
                             const episodeIdMatch = podcast.link.match(/i=(\d+)/);
                             
