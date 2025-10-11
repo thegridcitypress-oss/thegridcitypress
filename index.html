@@ -211,6 +211,46 @@
             border: none;
         }
         
+        .apple-podcast-card {
+            background: linear-gradient(135deg, #FA243C 0%, #ff6b7a 100%);
+            padding: 40px 20px;
+            border-radius: 12px;
+            text-align: center;
+            color: white;
+            min-height: 232px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .apple-podcast-card h4 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .apple-podcast-card p {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            opacity: 0.95;
+        }
+        
+        .apple-podcast-card .listen-now-btn {
+            display: inline-block;
+            background: white;
+            color: #FA243C;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: transform 0.2s;
+        }
+        
+        .apple-podcast-card .listen-now-btn:hover {
+            transform: scale(1.05);
+        }
+        
         .podcast-button {
             display: block;
             width: 100%;
@@ -542,9 +582,10 @@
                 <label>Embed Link/URL</label>
                 <input type="text" id="podcast-link" required placeholder="https://...">
                 <small style="display:block; margin-top:5px; color:#666;">
-                    Spotify: Use embed link (open.spotify.com/embed/...)<br>
-                    Apple: Use podcast episode URL<br>
-                    YouTube: Use video URL (youtube.com/watch?v= or youtu.be/)
+                    <strong>Spotify:</strong> Use embed link (open.spotify.com/embed/...)<br>
+                    <strong>Apple Podcasts:</strong> Use the regular podcast episode URL (podcasts.apple.com/...)<br>
+                    <strong>YouTube:</strong> Use video URL (youtube.com/watch?v= or youtu.be/)<br>
+                    <em>Note: Apple Podcasts doesn't support embeds, so we'll show a "Listen Now" card instead</em>
                 </small>
                 
                 <button type="submit">Add Podcast</button>
@@ -1287,7 +1328,30 @@
                         const embedUrl = podcast.link.replace('/episode/', '/embed/episode/').replace('/show/', '/embed/show/');
                         html += `<iframe src="${embedUrl}" height="232" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
                     } else if (platform === 'apple') {
-                        html += `<iframe src="${podcast.link}" height="232" allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"></iframe>`;
+                        let embedUrl = podcast.link;
+                        let showUrl = podcast.link;
+                        
+                        // Convert regular Apple Podcasts URL to embed format
+                        if (podcast.link.includes('podcasts.apple.com/') && !podcast.link.includes('/embed/')) {
+                            // Extract podcast ID and episode ID if present
+                            const podcastIdMatch = podcast.link.match(/id(\d+)/);
+                            const episodeIdMatch = podcast.link.match(/i=(\d+)/);
+                            
+                            if (podcastIdMatch) {
+                                const podcastId = podcastIdMatch[1];
+                                showUrl = `https://podcasts.apple.com/us/podcast/id${podcastId}`;
+                                if (episodeIdMatch) {
+                                    const episodeId = episodeIdMatch[1];
+                                    embedUrl = `https://embed.podcasts.apple.com/us/podcast/id${podcastId}?i=${episodeId}`;
+                                } else {
+                                    embedUrl = `https://embed.podcasts.apple.com/us/podcast/id${podcastId}`;
+                                }
+                            }
+                        }
+                        
+                        platformLinks.apple = showUrl;
+                        
+                        html += `<iframe src="${embedUrl}" height="232" allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" style="border: none;"></iframe>`;
                     } else if (platform === 'youtube') {
                         let videoId = '';
                         const url = podcast.link;
@@ -1341,6 +1405,11 @@
             
             if (!title || !platform || !link) {
                 showMessage('podcast-manage-message', 'All fields are required.', true);
+                return;
+            }
+            
+            if (!link.startsWith('http://') && !link.startsWith('https://')) {
+                showMessage('podcast-manage-message', 'URL must start with http:// or https://', true);
                 return;
             }
             
