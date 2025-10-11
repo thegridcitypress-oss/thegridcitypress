@@ -42,12 +42,12 @@
         header { position: relative; background-color: white; border-bottom: 1px solid #ccc; padding: 30px 20px 20px; }
         .header-inner { text-align: center; position: relative; }
         header h1 { font-size: 3rem; font-weight: 700; letter-spacing: 1px; margin: 0; cursor: pointer; }
-        nav.main-nav { margin-top: 20px; margin-bottom: 10px; position: relative; display: flex; flex-direction: column; align-items: center; }
+        nav.main-nav { margin-top: 20px; margin-bottom: 10px; position: relative; }
         .nav-left { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; align-items: center; }
         .nav-left a { text-decoration: none; color: #444; font-weight: 600; font-size: 1rem; cursor: pointer; white-space: nowrap; padding: 5px 0; }
         .nav-left a:not(:last-child)::after { content: '|'; margin-left: 15px; color: #ccc; }
         .nav-left a:hover { color: #000; }
-        .nav-right { display: flex; gap: 10px; justify-content: center; margin-top: 15px; }
+        .nav-right { position: absolute; top: 0; right: 0; display: flex; gap: 10px; }
         .nav-right a, .nav-right button { text-decoration: none; color: #444; font-weight: 600; font-size: 1rem; background: none; border: none; cursor: pointer; font-family: inherit; white-space: nowrap; }
         .nav-right a:hover, .nav-right button:hover { color: #000; }
         
@@ -1328,25 +1328,30 @@
                         const embedUrl = podcast.link.replace('/episode/', '/embed/episode/').replace('/show/', '/embed/show/');
                         html += `<iframe src="${embedUrl}" height="232" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
                     } else if (platform === 'apple') {
-                        // Apple Podcasts doesn't support reliable embeds, show a card instead
-                        let episodeUrl = podcast.link;
+                        let embedUrl = podcast.link;
                         let showUrl = podcast.link;
                         
-                        if (podcast.link.includes('podcasts.apple.com/')) {
+                        // Convert regular Apple Podcasts URL to embed format
+                        if (podcast.link.includes('podcasts.apple.com/') && !podcast.link.includes('/embed/')) {
+                            // Extract podcast ID and episode ID if present
                             const podcastIdMatch = podcast.link.match(/id(\d+)/);
+                            const episodeIdMatch = podcast.link.match(/i=(\d+)/);
+                            
                             if (podcastIdMatch) {
                                 const podcastId = podcastIdMatch[1];
                                 showUrl = `https://podcasts.apple.com/us/podcast/id${podcastId}`;
+                                if (episodeIdMatch) {
+                                    const episodeId = episodeIdMatch[1];
+                                    embedUrl = `https://embed.podcasts.apple.com/us/podcast/id${podcastId}?i=${episodeId}`;
+                                } else {
+                                    embedUrl = `https://embed.podcasts.apple.com/us/podcast/id${podcastId}`;
+                                }
                             }
                         }
                         
                         platformLinks.apple = showUrl;
                         
-                        html += `</div><div class="apple-podcast-card">
-                            <h4>🎙️ ${escapeHtml(podcast.title)}</h4>
-                            <p>Listen to our latest episode on Apple Podcasts</p>
-                            <a href="${episodeUrl}" target="_blank" class="listen-now-btn">Listen Now on Apple Podcasts</a>
-                        </div><div style="display:none;">`;
+                        html += `<iframe src="${embedUrl}" height="232" allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" style="border: none;"></iframe>`;
                     } else if (platform === 'youtube') {
                         let videoId = '';
                         const url = podcast.link;
