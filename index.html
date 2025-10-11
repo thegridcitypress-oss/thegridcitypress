@@ -176,6 +176,101 @@
         .role-badge.admin { background-color: #1976d2; color: white; }
         .role-badge.user { background-color: #757575; color: white; }
         
+        .podcast-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .podcast-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .podcast-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            text-align: center;
+            color: #111;
+        }
+        
+        .podcast-embed {
+            width: 100%;
+            min-height: 200px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .podcast-embed iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .podcast-button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #000;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+        }
+        
+        .podcast-button:hover {
+            background-color: #333;
+        }
+        
+        .podcast-item {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: white;
+            border-radius: 4px;
+        }
+        
+        .podcast-item h4 {
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .podcast-item p {
+            margin: 5px 0;
+            color: #666;
+            font-size: 0.95rem;
+        }
+        
+        .platform-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+        
+        .platform-badge.spotify {
+            background-color: #1DB954;
+            color: white;
+        }
+        
+        .platform-badge.apple {
+            background-color: #FA243C;
+            color: white;
+        }
+        
+        .platform-badge.youtube {
+            background-color: #FF0000;
+            color: white;
+        }
+        
         @media (max-width: 768px) {
             header h1 { font-size: 2rem; }
             .header-inner { padding-bottom: 10px; }
@@ -318,6 +413,7 @@
                 </div>
                 <div id="superuser-actions" class="hidden">
                     <button onclick="showManageUsers()">Manage All Users</button>
+                    <button onclick="showManagePodcasts()">Manage Podcasts</button>
                 </div>
                 <button onclick="handleLogout()">Log Out</button>
             </div>
@@ -427,6 +523,40 @@
         </div>
     </div>
 
+    <div id="manage-podcasts-page" class="page">
+        <div class="auth-container">
+            <h1>Manage Podcasts</h1>
+            <div id="podcast-manage-message"></div>
+            <form class="auth-form" onsubmit="handleAddPodcast(event)">
+                <label>Podcast Title</label>
+                <input type="text" id="podcast-title" required>
+                
+                <label>Platform</label>
+                <select id="podcast-platform" required>
+                    <option value="">-- Select Platform --</option>
+                    <option value="spotify">Spotify</option>
+                    <option value="apple">Apple Podcasts</option>
+                    <option value="youtube">YouTube</option>
+                </select>
+                
+                <label>Embed Link/URL</label>
+                <input type="text" id="podcast-link" required placeholder="https://...">
+                <small style="display:block; margin-top:5px; color:#666;">
+                    Spotify: Use embed link (open.spotify.com/embed/...)<br>
+                    Apple: Use podcast episode URL<br>
+                    YouTube: Use video URL (youtube.com/watch?v= or youtu.be/)
+                </small>
+                
+                <button type="submit">Add Podcast</button>
+            </form>
+            
+            <h2 style="margin-top: 40px; font-size: 1.4rem; border-bottom: 1px solid #ddd; padding-bottom: 10px;">Current Podcasts</h2>
+            <div id="current-podcasts-list"></div>
+            
+            <a class="back-link" onclick="showProfile()">← Back to Profile</a>
+        </div>
+    </div>
+
     <div id="writers-page" class="page">
         <header>
             <div class="header-inner"><h1 onclick="showHome()">The Grid City Press</h1></div>
@@ -471,8 +601,8 @@
             </nav>
         </header>
         <div class="container">
-            <h2 class="section-title">Podcast</h2>
-            <p>Podcast page coming soon.</p>
+            <h2 class="section-title">The Grid City Press Podcast</h2>
+            <div id="podcast-grid" class="podcast-grid"></div>
             <a class="back-link" onclick="showHome()">← Back to Home</a>
         </div>
     </div>
@@ -548,7 +678,7 @@
         const ADMIN_SECRET = 'gridcity2024admin';
         const SUPERUSER_UID = 'fDfPjF8oVuOq8RW0vYDChVIdH0E2';
 
-        let articles = [], currentUser = null, currentUserData = null, currentFilter = null;
+        let articles = [], currentUser = null, currentUserData = null, currentFilter = null, podcasts = [];
 
         function getTodayDateString() {
             const today = new Date();
@@ -593,6 +723,15 @@
                 articles = [];
                 snapshot.forEach((doc) => { articles.push({ id: doc.id, ...doc.data() }); });
                 displayArticles(currentFilter);
+            });
+            
+            const podcastsRef = collection(db, 'podcasts');
+            onSnapshot(podcastsRef, (snapshot) => {
+                podcasts = [];
+                snapshot.forEach((docSnap) => { podcasts.push({ id: docSnap.id, ...docSnap.data() }); });
+                if (document.getElementById('podcast-page').classList.contains('active')) {
+                    displayPodcasts();
+                }
             });
         }
 
@@ -808,12 +947,22 @@
                 loadUsers();
                 hideAllPages();
                 document.getElementById('manage-users-page').classList.add('active');
+            } else if (page === 'manage-podcasts') {
+                if (!currentUser || currentUser.uid !== SUPERUSER_UID) {
+                    alert('Superuser access required');
+                    navigate('home');
+                    return;
+                }
+                loadCurrentPodcasts();
+                hideAllPages();
+                document.getElementById('manage-podcasts-page').classList.add('active');
             } else if (page === 'writers') {
                 hideAllPages();
                 document.getElementById('writers-page').classList.add('active');
             } else if (page === 'podcast') {
                 hideAllPages();
                 document.getElementById('podcast-page').classList.add('active');
+                displayPodcasts();
             } else if (page === 'write-for-us') {
                 hideAllPages();
                 document.getElementById('write-for-us-page').classList.add('active');
@@ -858,6 +1007,7 @@
         window.showEditArticle = (id) => navigate('edit-article', { id });
         window.showDeleteArticles = () => navigate('delete-articles');
         window.showManageUsers = () => navigate('manage-users');
+        window.showManagePodcasts = () => navigate('manage-podcasts');
         window.showWriters = () => navigate('writers');
         window.showPodcast = () => navigate('podcast');
         window.showWriteForUs = () => navigate('write-for-us');
@@ -1098,6 +1248,173 @@
             } catch (error) {
                 console.error('Error deleting user:', error);
                 showMessage('users-message', 'Error deleting user.', true);
+            }
+        }
+
+        function displayPodcasts() {
+            const grid = document.getElementById('podcast-grid');
+            if (!grid) return;
+            
+            const platforms = {
+                spotify: podcasts.find(p => p.platform === 'spotify'),
+                apple: podcasts.find(p => p.platform === 'apple'),
+                youtube: podcasts.find(p => p.platform === 'youtube')
+            };
+            
+            const platformNames = {
+                spotify: 'Spotify',
+                apple: 'Apple Podcasts',
+                youtube: 'YouTube'
+            };
+            
+            const platformLinks = {
+                spotify: 'https://open.spotify.com/show/YOUR_SHOW_ID',
+                apple: 'https://podcasts.apple.com/us/podcast/YOUR_PODCAST',
+                youtube: 'https://www.youtube.com/@YourChannel'
+            };
+            
+            let html = '';
+            
+            ['spotify', 'apple', 'youtube'].forEach(platform => {
+                const podcast = platforms[platform];
+                html += `<div class="podcast-card">
+                    <h3>${platformNames[platform]}</h3>`;
+                
+                if (podcast) {
+                    html += `<div class="podcast-embed">`;
+                    
+                    if (platform === 'spotify') {
+                        const embedUrl = podcast.link.replace('/episode/', '/embed/episode/').replace('/show/', '/embed/show/');
+                        html += `<iframe src="${embedUrl}" height="232" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+                    } else if (platform === 'apple') {
+                        html += `<iframe src="${podcast.link}" height="232" allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"></iframe>`;
+                    } else if (platform === 'youtube') {
+                        let videoId = '';
+                        const url = podcast.link;
+                        if (url.includes('youtube.com/watch?v=')) {
+                            videoId = url.split('v=')[1].split('&')[0];
+                        } else if (url.includes('youtu.be/')) {
+                            videoId = url.split('youtu.be/')[1].split('?')[0];
+                        } else if (url.includes('/embed/')) {
+                            videoId = url.split('/embed/')[1].split('?')[0];
+                        }
+                        if (videoId) {
+                            html += `<iframe src="https://www.youtube.com/embed/${videoId}" height="315" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+                        } else {
+                            html += `<p>Invalid YouTube URL</p>`;
+                        }
+                    }
+                    
+                    html += `</div>`;
+                    
+                    let linkUrl = platformLinks[platform];
+                    if (platform === 'youtube' && podcast.link) {
+                        if (podcast.link.includes('youtube.com/')) {
+                            const channelMatch = podcast.link.match(/youtube\.com\/(c\/|channel\/|@)?([^\/\?]+)/);
+                            if (channelMatch) {
+                                linkUrl = `https://www.youtube.com/@${channelMatch[2]}`;
+                            }
+                        }
+                    }
+                    
+                    html += `<a href="${linkUrl}" target="_blank" class="podcast-button">Listen to More Podcasts</a>`;
+                } else {
+                    html += `<div class="empty-state"><p>No podcast added yet</p></div>`;
+                }
+                
+                html += `</div>`;
+            });
+            
+            grid.innerHTML = html;
+        }
+
+        window.handleAddPodcast = async function(e) {
+            e.preventDefault();
+            if (!currentUser || currentUser.uid !== SUPERUSER_UID) {
+                showMessage('podcast-manage-message', 'Superuser access required.', true);
+                return;
+            }
+            
+            const title = document.getElementById('podcast-title').value.trim();
+            const platform = document.getElementById('podcast-platform').value;
+            const link = document.getElementById('podcast-link').value.trim();
+            
+            if (!title || !platform || !link) {
+                showMessage('podcast-manage-message', 'All fields are required.', true);
+                return;
+            }
+            
+            try {
+                const existingPodcast = podcasts.find(p => p.platform === platform);
+                
+                if (existingPodcast) {
+                    await updateDoc(doc(db, 'podcasts', existingPodcast.id), {
+                        title,
+                        link,
+                        updatedAt: new Date().toISOString()
+                    });
+                    showMessage('podcast-manage-message', 'Podcast updated successfully!', false);
+                } else {
+                    await addDoc(collection(db, 'podcasts'), {
+                        title,
+                        platform,
+                        link,
+                        createdAt: new Date().toISOString()
+                    });
+                    showMessage('podcast-manage-message', 'Podcast added successfully!', false);
+                }
+                
+                document.getElementById('podcast-title').value = '';
+                document.getElementById('podcast-platform').value = '';
+                document.getElementById('podcast-link').value = '';
+                
+                setTimeout(() => {
+                    loadCurrentPodcasts();
+                }, 500);
+            } catch (error) {
+                console.error('Error adding podcast:', error);
+                showMessage('podcast-manage-message', 'Error: ' + error.message, true);
+            }
+        }
+
+        async function loadCurrentPodcasts() {
+            try {
+                const podcastsRef = collection(db, 'podcasts');
+                const querySnapshot = await getDocs(podcastsRef);
+                const list = document.getElementById('current-podcasts-list');
+                
+                if (querySnapshot.empty) {
+                    list.innerHTML = '<div class="empty-state"><p>No podcasts added yet.</p></div>';
+                    return;
+                }
+                
+                let html = '';
+                querySnapshot.forEach((docSnap) => {
+                    const podcast = docSnap.data();
+                    const platformName = podcast.platform === 'spotify' ? 'Spotify' : 
+                                       podcast.platform === 'apple' ? 'Apple Podcasts' : 'YouTube';
+                    html += `<div class="podcast-item">
+                        <h4>${escapeHtml(podcast.title)}<span class="platform-badge ${podcast.platform}">${platformName}</span></h4>
+                        <p><strong>Link:</strong> ${escapeHtml(podcast.link)}</p>
+                        <button class="delete-button" onclick="deletePodcast('${docSnap.id}')">Delete</button>
+                    </div>`;
+                });
+                
+                list.innerHTML = html;
+            } catch (error) {
+                console.error('Error loading podcasts:', error);
+            }
+        }
+
+        window.deletePodcast = async function(id) {
+            if (!confirm('Delete this podcast?')) return;
+            try {
+                await deleteDoc(doc(db, 'podcasts', id));
+                showMessage('podcast-manage-message', 'Podcast deleted.', false);
+                loadCurrentPodcasts();
+            } catch (error) {
+                console.error('Error deleting podcast:', error);
+                showMessage('podcast-manage-message', 'Error deleting podcast.', true);
             }
         }
 
