@@ -40,16 +40,20 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Playfair Display', serif; background-color: #f9f9f9; color: #111; }
         header { position: relative; background-color: white; border-bottom: 1px solid #ccc; padding: 30px 20px 20px; }
-        .header-inner { text-align: center; }
+        .header-inner { text-align: center; position: relative; }
         header h1 { font-size: 3rem; font-weight: 700; letter-spacing: 1px; margin: 0; cursor: pointer; }
         nav.main-nav { margin-top: 20px; margin-bottom: 10px; position: relative; }
         .nav-left { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; align-items: center; }
         .nav-left a { text-decoration: none; color: #444; font-weight: 600; font-size: 1rem; cursor: pointer; white-space: nowrap; padding: 5px 0; }
         .nav-left a:not(:last-child)::after { content: '|'; margin-left: 15px; color: #ccc; }
         .nav-left a:hover { color: #000; }
-        .nav-right { position: absolute; top: -60px; right: 0; display: flex; gap: 10px; }
+        .nav-right { position: absolute; top: 0; right: 0; display: flex; gap: 10px; }
         .nav-right a, .nav-right button { text-decoration: none; color: #444; font-weight: 600; font-size: 1rem; background: none; border: none; cursor: pointer; font-family: inherit; white-space: nowrap; }
         .nav-right a:hover, .nav-right button:hover { color: #000; }
+        
+        @media (max-width: 768px) {
+            .nav-right { position: static; justify-content: center; margin-top: 15px; margin-bottom: 10px; }
+        }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px 40px; }
         h2.section-title { font-size: 1.8rem; margin: 20px 0 15px; font-weight: 700; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
         
@@ -174,11 +178,12 @@
         
         @media (max-width: 768px) {
             header h1 { font-size: 2rem; }
-            nav.main-nav { flex-direction: column; align-items: stretch; }
+            .header-inner { padding-bottom: 10px; }
+            .nav-right { position: static; justify-content: center; margin-top: 15px; margin-bottom: 10px; }
+            nav.main-nav { flex-direction: column; align-items: stretch; margin-top: 0; }
             .nav-left { gap: 10px; }
             .nav-left a { display: block; padding: 8px 0; }
             .nav-left a:not(:last-child)::after { content: ''; margin-left: 0; }
-            .nav-right { justify-content: center; margin-top: 10px; }
             .articles-grid {
                 grid-template-columns: 1fr;
                 gap: 20px;
@@ -752,6 +757,7 @@
                 }
                 document.getElementById('article-title-input').value = '';
                 document.getElementById('editor').innerHTML = '';
+                document.getElementById('article-author').value = '';
                 document.getElementById('article-team').value = '';
                 document.getElementById('article-date').value = getTodayDateString();
                 document.getElementById('add-article-message').innerHTML = '';
@@ -933,26 +939,6 @@
                 if (newDisplayName !== currentUserData.displayName) {
                     await updateProfile(currentUser, { displayName: newDisplayName });
                     await updateDoc(doc(db, 'users', currentUser.uid), { displayName: newDisplayName });
-                    
-                    const articlesRef = collection(db, 'articles');
-                    const q = query(articlesRef);
-                    const querySnapshot = await getDocs(q);
-                    
-                    const updatePromises = [];
-                    querySnapshot.forEach((docSnap) => {
-                        const articleData = docSnap.data();
-                        if (articleData.author_uid === currentUser.uid) {
-                            updatePromises.push(
-                                updateDoc(doc(db, 'articles', docSnap.id), { 
-                                    author_name: newDisplayName 
-                                })
-                            );
-                        }
-                    });
-                    
-                    if (updatePromises.length > 0) {
-                        await Promise.all(updatePromises);
-                    }
                 }
                 
                 if (newEmail !== currentUser.email) {
@@ -980,13 +966,14 @@
             if (!currentUser || (currentUserData.role !== 'admin' && currentUser.uid !== SUPERUSER_UID)) return;
             const title = document.getElementById('article-title-input').value.trim();
             const editorContent = document.getElementById('editor').innerHTML.trim();
+            const authorName = document.getElementById('article-author').value.trim();
             const team = document.getElementById('article-team').value;
             const dateInput = document.getElementById('article-date').value;
             const date = dateInput;
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = editorContent;
             const textContent = tempDiv.textContent || tempDiv.innerText || '';
-            if (!title || !textContent.trim() || !team || !date) {
+            if (!title || !textContent.trim() || !authorName || !team || !date) {
                 showMessage('add-article-message', 'All fields are required.', true);
                 return;
             }
@@ -994,10 +981,10 @@
                 await addDoc(collection(db, 'articles'), {
                     title,
                     content: editorContent,
+                    author_name: authorName,
                     team,
                     published_at: date,
-                    author_uid: currentUser.uid,
-                    author_name: currentUserData.displayName
+                    created_by_uid: currentUser.uid
                 });
                 showMessage('add-article-message', 'Article published!', false);
                 setTimeout(() => navigate('profile'), 1500);
