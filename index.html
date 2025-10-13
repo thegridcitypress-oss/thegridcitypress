@@ -187,153 +187,125 @@
         .role-badge.admin { background-color: #1976d2; color: white; }
         .role-badge.user { background-color: #757575; color: white; }
         
-        .podcast-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 30px;
-        }
-        
-        .podcast-card {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        
-        .podcast-card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            text-align: center;
-            color: #111;
-        }
-        
-        .podcast-embed {
-            width: 100%;
-            min-height: 200px;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        
-        .podcast-embed iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        
-        .apple-podcast-card {
-            background: linear-gradient(135deg, #FA243C 0%, #ff6b7a 100%);
-            padding: 40px 20px;
-            border-radius: 12px;
-            text-align: center;
-            color: white;
-            min-height: 232px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .apple-podcast-card h4 {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            color: white;
-        }
-        
-        .apple-podcast-card p {
-            font-size: 1rem;
-            margin-bottom: 20px;
-            opacity: 0.95;
-        }
-        
-        .apple-podcast-card .listen-now-btn {
-            display: inline-block;
-            background: white;
-            color: #FA243C;
-            padding: 12px 30px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: 700;
-            transition: transform 0.2s;
-        }
-        
-        .apple-podcast-card .listen-now-btn:hover {
-            transform: scale(1.05);
-        }
-        
-        .podcast-button {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            background-color: #000;
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            font-weight: 600;
-            border-radius: 6px;
-            transition: background-color 0.2s;
-        }
-        
-        .podcast-button:hover {
-            background-color: #333;
-        }
-        
         .podcast-item {
-            border: 1px solid #ccc;
-            padding: 15px;
-            margin-bottom: 15px;
-            background: white;
-            border-radius: 4px;
-        }
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 15px;
+    background: white;
+    border-radius: 4px;
+}
+
+.podcast-item h4 {
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+}
+
+.podcast-item p {
+    margin: 5px 0;
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.platform-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-left: 8px;
+}
+
+.platform-badge.spotify {
+    background-color: #1DB954;
+    color: white;
+}
+
+.platform-badge.apple {
+    background-color: #FA243C;
+    color: white;
+}
+
+.platform-badge.youtube {
+    background-color: #FF0000;
+    color: white;
+}
         
-        .podcast-item h4 {
-            margin-bottom: 8px;
-            font-size: 1.1rem;
-        }
-        
-        .podcast-item p {
-            margin: 5px 0;
-            color: #666;
-            font-size: 0.95rem;
-        }
-        
-        .platform-badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-left: 8px;
-        }
-        
-        .platform-badge.spotify {
-            background-color: #1DB954;
-            color: white;
-        }
-        
-        .platform-badge.apple {
-            background-color: #FA243C;
-            color: white;
-        }
-        
-        .platform-badge.youtube {
-            background-color: #FF0000;
-            color: white;
-        }
-        
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .articles-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .articles-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-        }
+        .youtube-featured {
+    max-width: 900px;
+    margin: 30px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+}
+
+.youtube-featured iframe {
+    width: 100%;
+    height: 500px;
+    border-radius: 8px;
+}
+
+.platform-sections {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    margin-top: 50px;
+}
+
+.platform-section {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+}
+
+.platform-section h3 {
+    font-size: 1.5rem;
+    margin-bottom: 25px;
+    text-align: center;
+    color: #111;
+}
+
+.podcast-segment {
+    margin-bottom: 25px;
+}
+
+.podcast-segment:last-child {
+    margin-bottom: 0;
+}
+
+.podcast-segment h4 {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    color: #374151;
+    font-weight: 600;
+}
+
+.podcast-segment iframe {
+    width: 100%;
+    height: 152px;
+    border-radius: 8px;
+}
+
+.empty-segment {
+    background: #f3f4f6;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    color: #6b7280;
+    font-size: 0.95rem;
+}
+
+@media (max-width: 968px) {
+    .platform-sections {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .youtube-featured iframe {
+        height: 350px;
+    }
+}
     </style>
 </head>
 <body>
@@ -563,40 +535,57 @@
             <a class="back-link" onclick="showProfile()">← Back to Profile</a>
         </div>
     </div>
-
-    <div id="manage-podcasts-page" class="page">
-        <div class="auth-container">
-            <h1>Manage Podcasts</h1>
-            <div id="podcast-manage-message"></div>
-            <form class="auth-form" onsubmit="handleAddPodcast(event)">
-                <label>Podcast Title</label>
-                <input type="text" id="podcast-title" required>
-                
-                <label>Platform</label>
-                <select id="podcast-platform" required>
-                    <option value="">-- Select Platform --</option>
-                    <option value="spotify">Spotify</option>
-                    <option value="apple">Apple Podcasts</option>
-                    <option value="youtube">YouTube</option>
-                </select>
-                
-                <label>Embed Link/URL</label>
-                <input type="text" id="podcast-link" required placeholder="https://...">
-                <small style="display:block; margin-top:5px; color:#666;">
-                    <strong>Spotify:</strong> Use embed link (open.spotify.com/embed/...)<br>
-                    <strong>Apple Podcasts:</strong> Use the regular podcast episode URL (podcasts.apple.com/...)<br>
-                    <strong>YouTube:</strong> Use video URL (youtube.com/watch?v= or youtu.be/)<br>
-                    <em>Note: Apple Podcasts doesn't support embeds, so we'll show a "Listen Now" card instead</em>
-                </small>
-                
-                <button type="submit">Add Podcast</button>
-            </form>
-            
-            <h2 style="margin-top: 40px; font-size: 1.4rem; border-bottom: 1px solid #ddd; padding-bottom: 10px;">Current Podcasts</h2>
-            <div id="current-podcasts-list"></div>
-            
-            <a class="back-link" onclick="showProfile()">← Back to Profile</a>
-        </div>
+<div id="manage-podcasts-page" class="page">
+   <div class="auth-container">
+    <h1>Manage Podcasts</h1>
+    <div id="podcast-manage-message"></div>
+    
+    <h2 style="margin-top: 30px; font-size: 1.4rem; border-bottom: 1px solid #ddd; padding-bottom: 10px;">YouTube Featured Podcast</h2>
+    <form class="auth-form" onsubmit="handleAddYoutubePodcast(event)">
+        <label>YouTube Video URL</label>
+        <input type="text" id="youtube-url" placeholder="https://youtube.com/watch?v=...">
+        <button type="submit">Update YouTube Video</button>
+    </form>
+    
+    <h2 style="margin-top: 40px; font-size: 1.4rem; border-bottom: 1px solid #ddd; padding-bottom: 10px;">Spotify Segments</h2>
+    <form class="auth-form" onsubmit="handleAddSpotifySegments(event)">
+        <label>Utah Mammoth Spotify Embed URL</label>
+        <input type="text" id="spotify-mammoth" placeholder="https://open.spotify.com/embed/episode/...">
+        
+        <label>Utah Jazz Spotify Embed URL</label>
+        <input type="text" id="spotify-jazz" placeholder="https://open.spotify.com/embed/episode/...">
+        
+        <label>Real Salt Lake Spotify Embed URL</label>
+        <input type="text" id="spotify-rsl" placeholder="https://open.spotify.com/embed/episode/...">
+        
+        <label>Utah Athletics Spotify Embed URL</label>
+        <input type="text" id="spotify-utes" placeholder="https://open.spotify.com/embed/episode/...">
+        
+        <button type="submit">Update Spotify Segments</button>
+    </form>
+    
+    <h2 style="margin-top: 40px; font-size: 1.4rem; border-bottom: 1px solid #ddd; padding-bottom: 10px;">Apple Podcasts Segments</h2>
+    <form class="auth-form" onsubmit="handleAddAppleSegments(event)">
+        <label>Utah Mammoth Apple Podcasts URL</label>
+        <input type="text" id="apple-mammoth" placeholder="https://podcasts.apple.com/us/podcast/...">
+        
+        <label>Utah Jazz Apple Podcasts URL</label>
+        <input type="text" id="apple-jazz" placeholder="https://podcasts.apple.com/us/podcast/...">
+        
+        <label>Real Salt Lake Apple Podcasts URL</label>
+        <input type="text" id="apple-rsl" placeholder="https://podcasts.apple.com/us/podcast/...">
+        
+        <label>Utah Athletics Apple Podcasts URL</label>
+        <input type="text" id="apple-utes" placeholder="https://podcasts.apple.com/us/podcast/...">
+        
+        <button type="submit">Update Apple Podcasts Segments</button>
+    </form>
+    
+    <h2 style="margin-top: 40px; font-size: 1.4rem; border-bottom: 1px solid #ddd; padding-bottom: 10px;">Current Podcasts</h2>
+    <div id="current-podcasts-list"></div>
+    
+    <a class="back-link" onclick="showProfile()">← Back to Profile</a>
+</div>
     </div>
 
     <div id="writers-page" class="page">
@@ -644,7 +633,8 @@
         </header>
         <div class="container">
             <h2 class="section-title">The Latest Grid City Press Podcast</h2>
-            <div id="podcast-grid" class="podcast-grid"></div>
+            <div id="youtube-featured" class="youtube-featured"></div>
+<div id="platform-sections" class="platform-sections"></div>
             <a class="back-link" onclick="showHome()">← Back to Home</a>
         </div>
     </div>
@@ -737,7 +727,7 @@
                     <div style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
                         <h4 style="font-size: 1.3rem; margin-bottom: 0.5em; color: #111;">Charlie Haley</h4>
                         <p style="font-size: 0.95rem; color: #666; margin-bottom: 0.8em; font-weight: 600;">Co-Host / Social Media Admin and Digital Design</p>
-                        <p style="font-size: 1rem; line-height: 1.6;">Original Host of RSL Corner and loves to bring sports coverage through his graphics.</p>
+                        <p style="font-size: 1rem; line-height: 1.6;">Original Host of RSL Corner and loves bringing sports coverage to life through his graphics.</p>
                     </div>
                     
                     <div style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
@@ -749,7 +739,7 @@
                     <div style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
                         <h4 style="font-size: 1.3rem; margin-bottom: 0.5em; color: #111;">Oliver Haley</h4>
                         <p style="font-size: 0.95rem; color: #666; margin-bottom: 0.8em; font-weight: 600;">Co-Host / Podcast Coordinator and Fan Enthusiast</p>
-                        <p style="font-size: 1rem; line-height: 1.6;">Loves all Utah sports and showcases his passion through his vibrant words on the podcast.</p>
+                        <p style="font-size: 1rem; line-height: 1.6;">Loves all Utah sports and brings his passion to life through his vibrant words on the podcast.</p>
                     </div>
                 </div>
                 
@@ -1363,187 +1353,278 @@
             }
         }
 
-        function displayPodcasts() {
-            const grid = document.getElementById('podcast-grid');
-            if (!grid) return;
-            
-            const platforms = {
-                spotify: podcasts.find(p => p.platform === 'spotify'),
-                apple: podcasts.find(p => p.platform === 'apple'),
-                youtube: podcasts.find(p => p.platform === 'youtube')
-            };
-            
-            const platformNames = {
-                spotify: 'Spotify',
-                apple: 'Apple Podcasts',
-                youtube: 'YouTube'
-            };
-            
-            const platformLinks = {
-                spotify: 'https://open.spotify.com/show/4yXMa5qsxuAPTI3Oh0RH1O',
-                apple: 'https://podcasts.apple.com/us/podcast/the-grid-city-press-podcast/id1845270155',
-                youtube: 'https://www.youtube.com/@TheGridCityPress'
-            };
-            
-            let html = '';
-            
-            ['spotify', 'apple', 'youtube'].forEach(platform => {
-                const podcast = platforms[platform];
-                html += `<div class="podcast-card">
-                    <h3>${platformNames[platform]}</h3>`;
-                
-                if (podcast) {
-                    html += `<div class="podcast-embed">`;
-                    
-                    if (platform === 'spotify') {
-                        const embedUrl = podcast.link.replace('/episode/', '/embed/episode/').replace('/show/', '/embed/show/');
-                        html += `<iframe src="${embedUrl}" height="232" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
-                    } else if (platform === 'apple') {
-                        let embedUrl = podcast.link;
-                        let showUrl = podcast.link;
-                        
-                        if (podcast.link.includes('podcasts.apple.com/') && !podcast.link.includes('/embed/')) {
-                            const podcastIdMatch = podcast.link.match(/id(\d+)/);
-                            const episodeIdMatch = podcast.link.match(/i=(\d+)/);
-                            
-                            if (podcastIdMatch) {
-                                const podcastId = podcastIdMatch[1];
-                                showUrl = `https://podcasts.apple.com/us/podcast/id${podcastId}`;
-                                if (episodeIdMatch) {
-                                    const episodeId = episodeIdMatch[1];
-                                    embedUrl = `https://embed.podcasts.apple.com/us/podcast/id${podcastId}?i=${episodeId}`;
-                                } else {
-                                    embedUrl = `https://embed.podcasts.apple.com/us/podcast/id${podcastId}`;
-                                }
-                            }
-                        }
-                        
-                        platformLinks.apple = showUrl;
-                        
-                        html += `<iframe src="${embedUrl}" height="232" allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" style="border: none;"></iframe>`;
-                    } else if (platform === 'youtube') {
-                        let videoId = '';
-                        const url = podcast.link;
-                        if (url.includes('youtube.com/watch?v=')) {
-                            videoId = url.split('v=')[1].split('&')[0];
-                        } else if (url.includes('youtu.be/')) {
-                            videoId = url.split('youtu.be/')[1].split('?')[0];
-                        } else if (url.includes('/embed/')) {
-                            videoId = url.split('/embed/')[1].split('?')[0];
-                        }
-                        if (videoId) {
-                            html += `<iframe src="https://www.youtube.com/embed/${videoId}" height="315" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-                        } else {
-                            html += `<p>Invalid YouTube URL</p>`;
-                        }
-                    }
-                    
-                    html += `</div>`;
-                    
-                    let linkUrl = platformLinks[platform];
-                    if (platform === 'youtube' && podcast.link) {
-                        if (podcast.link.includes('youtube.com/')) {
-                            const channelMatch = podcast.link.match(/youtube\.com\/(c\/|channel\/|@)?([^\/\?]+)/);
-                            if (channelMatch) {
-                                linkUrl = `https://www.youtube.com/@${channelMatch[2]}`;
-                            }
-                        }
-                    }
-                    
-                    html += `<a href="${linkUrl}" target="_blank" class="podcast-button">Listen to More Podcasts</a>`;
-                } else {
-                    html += `<div class="empty-state"><p>No podcast added yet</p></div>`;
-                }
-                
-                html += `</div>`;
-            });
-            
-            grid.innerHTML = html;
+       function displayPodcasts() {
+    const youtubeFeatured = document.getElementById('youtube-featured');
+    const platformSections = document.getElementById('platform-sections');
+    if (!youtubeFeatured || !platformSections) return;
+    
+    const youtube = podcasts.find(p => p.platform === 'youtube');
+    const spotifySegments = podcasts.find(p => p.platform === 'spotify-segments');
+    const appleSegments = podcasts.find(p => p.platform === 'apple-segments');
+    
+    // Display YouTube
+    if (youtube && youtube.link) {
+        let videoId = '';
+        const url = youtube.link;
+        if (url.includes('youtube.com/watch?v=')) {
+            videoId = url.split('v=')[1].split('&')[0];
+        } else if (url.includes('youtu.be/')) {
+            videoId = url.split('youtu.be/')[1].split('?')[0];
+        } else if (url.includes('/embed/')) {
+            videoId = url.split('/embed/')[1].split('?')[0];
         }
+        if (videoId) {
+            youtubeFeatured.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+        } else {
+            youtubeFeatured.innerHTML = '<div class="empty-segment">Invalid YouTube URL</div>';
+        }
+    } else {
+        youtubeFeatured.innerHTML = '<div class="empty-segment">No featured YouTube video added yet</div>';
+    }
+    
+    const teams = [
+        { key: 'mammoth', name: 'Utah Mammoth' },
+        { key: 'jazz', name: 'Utah Jazz' },
+        { key: 'rsl', name: 'Real Salt Lake' },
+        { key: 'utes', name: 'Utah Athletics' }
+    ];
+    
+    // Display Spotify
+    let spotifyHTML = '<div class="platform-section"><h3>Spotify</h3>';
+    teams.forEach(team => {
+        const embedUrl = spotifySegments && spotifySegments.segments && spotifySegments.segments[team.key] 
+            ? spotifySegments.segments[team.key] 
+            : null;
+        
+        spotifyHTML += `<div class="podcast-segment">
+            <h4>${team.name}</h4>`;
+        
+        if (embedUrl) {
+            spotifyHTML += `<iframe src="${embedUrl}" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+        } else {
+            spotifyHTML += `<div class="empty-segment">No ${team.name} segment added yet</div>`;
+        }
+        
+        spotifyHTML += `</div>`;
+    });
+    spotifyHTML += '</div>';
+    
+    // Display Apple Podcasts
+    let appleHTML = '<div class="platform-section"><h3>Apple Podcasts</h3>';
+    teams.forEach(team => {
+        const episodeUrl = appleSegments && appleSegments.segments && appleSegments.segments[team.key] 
+            ? appleSegments.segments[team.key] 
+            : null;
+        
+        appleHTML += `<div class="podcast-segment">
+            <h4>${team.name}</h4>`;
+        
+        if (episodeUrl) {
+            let embedUrl = episodeUrl;
+            if (episodeUrl.includes('podcasts.apple.com/') && !episodeUrl.includes('/embed/')) {
+                const podcastIdMatch = episodeUrl.match(/id(\d+)/);
+                const episodeIdMatch = episodeUrl.match(/i=(\d+)/);
+                
+                if (podcastIdMatch) {
+                    const podcastId = podcastIdMatch[1];
+                    if (episodeIdMatch) {
+                        const episodeId = episodeIdMatch[1];
+                        embedUrl = `https://embed.podcasts.apple.com/us/podcast/id${podcastId}?i=${episodeId}`;
+                    } else {
+                        embedUrl = `https://embed.podcasts.apple.com/us/podcast/id${podcastId}`;
+                    }
+                }
+            }
+            appleHTML += `<iframe src="${embedUrl}" allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" style="border: none;"></iframe>`;
+        } else {
+            appleHTML += `<div class="empty-segment">No ${team.name} segment added yet</div>`;
+        }
+        
+        appleHTML += `</div>`;
+    });
+    appleHTML += '</div>';
+    
+    platformSections.innerHTML = spotifyHTML + appleHTML;
+    
+}
 
-        window.handleAddPodcast = async function(e) {
-            e.preventDefault();
-            if (!currentUser || currentUser.uid !== SUPERUSER_UID) {
-                showMessage('podcast-manage-message', 'Superuser access required.', true);
-                return;
-            }
-            
-            const title = document.getElementById('podcast-title').value.trim();
-            const platform = document.getElementById('podcast-platform').value;
-            const link = document.getElementById('podcast-link').value.trim();
-            
-            if (!title || !platform || !link) {
-                showMessage('podcast-manage-message', 'All fields are required.', true);
-                return;
-            }
-            
-            if (!link.startsWith('http://') && !link.startsWith('https://')) {
-                showMessage('podcast-manage-message', 'URL must start with http:// or https://', true);
-                return;
-            }
-            
-            try {
-                const existingPodcast = podcasts.find(p => p.platform === platform);
-                
-                if (existingPodcast) {
-                    await updateDoc(doc(db, 'podcasts', existingPodcast.id), {
-                        title,
-                        link,
-                        updatedAt: new Date().toISOString()
-                    });
-                    showMessage('podcast-manage-message', 'Podcast updated successfully!', false);
-                } else {
-                    await addDoc(collection(db, 'podcasts'), {
-                        title,
-                        platform,
-                        link,
-                        createdAt: new Date().toISOString()
-                    });
-                    showMessage('podcast-manage-message', 'Podcast added successfully!', false);
-                }
-                
-                document.getElementById('podcast-title').value = '';
-                document.getElementById('podcast-platform').value = '';
-                document.getElementById('podcast-link').value = '';
-                
-                setTimeout(() => {
-                    loadCurrentPodcasts();
-                }, 500);
-            } catch (error) {
-                console.error('Error adding podcast:', error);
-                showMessage('podcast-manage-message', 'Error: ' + error.message, true);
-            }
+function convertToSpotifyEmbed(url) {
+    if (!url) return '';
+    // If already an embed URL, return as-is
+    if (url.includes('/embed/')) return url;
+    // Convert regular Spotify URL to embed URL
+    return url.replace('open.spotify.com/', 'open.spotify.com/embed/');
+}
+        window.handleAddYoutubePodcast = async function(e) {
+    e.preventDefault();
+    if (!currentUser || currentUser.uid !== SUPERUSER_UID) {
+        showMessage('podcast-manage-message', 'Superuser access required.', true);
+        return;
+    }
+    
+    const link = document.getElementById('youtube-url').value.trim();
+    
+    if (!link) {
+        showMessage('podcast-manage-message', 'YouTube URL is required.', true);
+        return;
+    }
+    
+    if (!link.startsWith('http://') && !link.startsWith('https://')) {
+        showMessage('podcast-manage-message', 'URL must start with http:// or https://', true);
+        return;
+    }
+    
+    try {
+        const existingPodcast = podcasts.find(p => p.platform === 'youtube');
+        
+        if (existingPodcast) {
+            await updateDoc(doc(db, 'podcasts', existingPodcast.id), {
+                link,
+                updatedAt: new Date().toISOString()
+            });
+        } else {
+            await addDoc(collection(db, 'podcasts'), {
+                platform: 'youtube',
+                link,
+                createdAt: new Date().toISOString()
+            });
         }
+        
+        showMessage('podcast-manage-message', 'YouTube video updated successfully!', false);
+        loadCurrentPodcasts();
+    } catch (error) {
+        console.error('Error updating YouTube video:', error);
+        showMessage('podcast-manage-message', 'Error: ' + error.message, true);
+    }
+}
+
+window.handleAddSpotifySegments = async function(e) {
+    e.preventDefault();
+    if (!currentUser || currentUser.uid !== SUPERUSER_UID) {
+        showMessage('podcast-manage-message', 'Superuser access required.', true);
+        return;
+    }
+    
+    const segments = {
+    mammoth: convertToSpotifyEmbed(document.getElementById('spotify-mammoth').value.trim()),
+    jazz: convertToSpotifyEmbed(document.getElementById('spotify-jazz').value.trim()),
+    rsl: convertToSpotifyEmbed(document.getElementById('spotify-rsl').value.trim()),
+    utes: convertToSpotifyEmbed(document.getElementById('spotify-utes').value.trim())
+};
+    
+    try {
+        const existingPodcast = podcasts.find(p => p.platform === 'spotify-segments');
+        
+        if (existingPodcast) {
+            await updateDoc(doc(db, 'podcasts', existingPodcast.id), {
+                segments,
+                updatedAt: new Date().toISOString()
+            });
+        } else {
+            await addDoc(collection(db, 'podcasts'), {
+                platform: 'spotify-segments',
+                segments,
+                createdAt: new Date().toISOString()
+            });
+        }
+        
+        showMessage('podcast-manage-message', 'Spotify segments updated successfully!', false);
+        loadCurrentPodcasts();
+    } catch (error) {
+        console.error('Error updating Spotify segments:', error);
+        showMessage('podcast-manage-message', 'Error: ' + error.message, true);
+    }
+}
+
+window.handleAddAppleSegments = async function(e) {
+    e.preventDefault();
+    if (!currentUser || currentUser.uid !== SUPERUSER_UID) {
+        showMessage('podcast-manage-message', 'Superuser access required.', true);
+        return;
+    }
+    
+    const segments = {
+        mammoth: document.getElementById('apple-mammoth').value.trim(),
+        jazz: document.getElementById('apple-jazz').value.trim(),
+        rsl: document.getElementById('apple-rsl').value.trim(),
+        utes: document.getElementById('apple-utes').value.trim()
+    };
+    
+    try {
+        const existingPodcast = podcasts.find(p => p.platform === 'apple-segments');
+        
+        if (existingPodcast) {
+            await updateDoc(doc(db, 'podcasts', existingPodcast.id), {
+                segments,
+                updatedAt: new Date().toISOString()
+            });
+        } else {
+            await addDoc(collection(db, 'podcasts'), {
+                platform: 'apple-segments',
+                segments,
+                createdAt: new Date().toISOString()
+            });
+        }
+        
+        showMessage('podcast-manage-message', 'Apple Podcasts segments updated successfully!', false);
+        loadCurrentPodcasts();
+    } catch (error) {
+        console.error('Error updating Apple Podcasts segments:', error);
+        showMessage('podcast-manage-message', 'Error: ' + error.message, true);
+    }
+}        
 
         async function loadCurrentPodcasts() {
-            try {
-                const podcastsRef = collection(db, 'podcasts');
-                const querySnapshot = await getDocs(podcastsRef);
-                const list = document.getElementById('current-podcasts-list');
-                
-                if (querySnapshot.empty) {
-                    list.innerHTML = '<div class="empty-state"><p>No podcasts added yet.</p></div>';
-                    return;
-                }
-                
-                let html = '';
-                querySnapshot.forEach((docSnap) => {
-                    const podcast = docSnap.data();
-                    const platformName = podcast.platform === 'spotify' ? 'Spotify' : 
-                                       podcast.platform === 'apple' ? 'Apple Podcasts' : 'YouTube';
-                    html += `<div class="podcast-item">
-                        <h4>${escapeHtml(podcast.title)}<span class="platform-badge ${podcast.platform}">${platformName}</span></h4>
-                        <p><strong>Link:</strong> ${escapeHtml(podcast.link)}</p>
-                        <button class="delete-button" onclick="deletePodcast('${docSnap.id}')">Delete</button>
-                    </div>`;
-                });
-                
-                list.innerHTML = html;
-            } catch (error) {
-                console.error('Error loading podcasts:', error);
-            }
+    try {
+        const podcastsRef = collection(db, 'podcasts');
+        const querySnapshot = await getDocs(podcastsRef);
+        const list = document.getElementById('current-podcasts-list');
+        
+        if (querySnapshot.empty) {
+            list.innerHTML = '<div class="empty-state"><p>No podcasts added yet.</p></div>';
+            return;
         }
-
+        
+        let html = '';
+        querySnapshot.forEach((docSnap) => {
+            const podcast = docSnap.data();
+            
+            if (podcast.platform === 'youtube') {
+                html += `<div class="podcast-item">
+                    <h4>YouTube Featured Video</h4>
+                    <p><strong>Link:</strong> ${escapeHtml(podcast.link)}</p>
+                    <button class="delete-button" onclick="deletePodcast('${docSnap.id}')">Delete</button>
+                </div>`;
+            } else if (podcast.platform === 'spotify-segments') {
+                html += `<div class="podcast-item">
+                    <h4>Spotify Segments<span class="platform-badge spotify">Spotify</span></h4>`;
+                if (podcast.segments) {
+                    html += `<p><strong>Mammoth:</strong> ${podcast.segments.mammoth || 'Not set'}</p>`;
+                    html += `<p><strong>Jazz:</strong> ${podcast.segments.jazz || 'Not set'}</p>`;
+                    html += `<p><strong>RSL:</strong> ${podcast.segments.rsl || 'Not set'}</p>`;
+                    html += `<p><strong>Utes:</strong> ${podcast.segments.utes || 'Not set'}</p>`;
+                }
+                html += `<button class="delete-button" onclick="deletePodcast('${docSnap.id}')">Delete</button>
+                </div>`;
+            } else if (podcast.platform === 'apple-segments') {
+                html += `<div class="podcast-item">
+                    <h4>Apple Podcasts Segments<span class="platform-badge apple">Apple Podcasts</span></h4>`;
+                if (podcast.segments) {
+                    html += `<p><strong>Mammoth:</strong> ${podcast.segments.mammoth || 'Not set'}</p>`;
+                    html += `<p><strong>Jazz:</strong> ${podcast.segments.jazz || 'Not set'}</p>`;
+                    html += `<p><strong>RSL:</strong> ${podcast.segments.rsl || 'Not set'}</p>`;
+                    html += `<p><strong>Utes:</strong> ${podcast.segments.utes || 'Not set'}</p>`;
+                }
+                html += `<button class="delete-button" onclick="deletePodcast('${docSnap.id}')">Delete</button>
+                </div>`;
+            }
+        });
+        
+        list.innerHTML = html;
+    } catch (error) {
+        console.error('Error loading podcasts:', error);
+    }
+}
         window.deletePodcast = async function(id) {
             if (!confirm('Delete this podcast?')) return;
             try {
