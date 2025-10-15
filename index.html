@@ -658,10 +658,63 @@
             </nav>
         </header>
         <div class="container">
-            <h2 class="section-title">Write for Us</h2>
-            <p>Write for Us page coming soon.</p>
-            <a class="back-link" onclick="showHome()">← Back to Home</a>
+    <div style="max-width: 800px; margin: 0 auto;">
+        <h2 class="section-title">Join The Grid City Press</h2>
+        
+        <div style="line-height: 1.8; margin-bottom: 3em;">
+            <p style="margin-bottom: 1.5em; font-size: 1.05rem;">
+                We're a small group of guys from Salt Lake who started this because we love talking about Utah sports — and we know plenty of other people do too.
+            </p>
+            
+            <p style="margin-bottom: 1.5em; font-size: 1.05rem;">
+                We're looking for fans who want to write articles, share takes, and help grow a community of voices around the teams we all care about. Whether you've written before or not, this is your shot to get your work out there and build your own portfolio.
+            </p>
+            
+            <h3 style="font-size: 1.6rem; margin-top: 2.5em; margin-bottom: 1em; font-weight: 700;">What You'll Get</h3>
+            <ul style="margin-left: 2em; margin-bottom: 2em; font-size: 1.05rem;">
+                <li style="margin-bottom: 0.8em;">Your own writer page with all your articles</li>
+                <li style="margin-bottom: 0.8em;">Full credit and bylines on everything you publish</li>
+                <li style="margin-bottom: 0.8em;">Experience writing real sports content</li>
+                <li style="margin-bottom: 0.8em;">A chance to be part of something local and growing</li>
+            </ul>
+            
+            <h3 style="font-size: 1.6rem; margin-top: 2.5em; margin-bottom: 1em; font-weight: 700;">How to Apply</h3>
+            <p style="margin-bottom: 1.5em; font-size: 1.05rem;">
+                Fill out the form below and tell us a bit about yourself — what you'd like to write about, which team you follow, and why you want to join. Once you hit submit, we'll check it out and reach out if we think you're a good fit.
+            </p>
+            
+            <div style="background: white; padding: 40px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.1); margin-top: 2em;">
+                <h3 style="font-size: 1.4rem; margin-bottom: 1.5em; font-weight: 700; text-align: center;">Writer Application Form</h3>
+                
+                <div id="writer-form-message"></div>
+                
+                <form action="https://formspree.io/f/xgvnrwvv" method="POST">window.handleWriterApplication = async function(e)
+                    <label style="display: block; margin-top: 20px; font-weight: bold;">Full Name *</label>
+                    <input type="text" id="writer-name" name="name" required style="width: 100%; padding: 10px; margin-top: 5px; font-family: inherit; font-size: inherit; border: 1px solid #ccc; border-radius: 4px;">
+                    
+                    <label style="display: block; margin-top: 20px; font-weight: bold;">Email Address *</label>
+                    <input type="email" id="writer-email" name="email" required style="width: 100%; padding: 10px; margin-top: 5px; font-family: inherit; font-size: inherit; border: 1px solid #ccc; border-radius: 4px;">
+                    
+                    <label style="display: block; margin-top: 20px; font-weight: bold;">Team You Want to Cover *</label>
+                    <select id="writer-team" name="team" required style="width: 100%; padding: 10px; margin-top: 5px; font-family: inherit; font-size: inherit; border: 1px solid #ccc; border-radius: 4px;">
+                        <option value="">-- Select a Team --</option>
+                        <option value="Utah Jazz">Utah Jazz</option>
+                        <option value="Utah Mammoth">Utah Mammoth</option>
+                        <option value="Real Salt Lake">Real Salt Lake</option>
+                        <option value="Utah Athletics">Utah Athletics</option>
+                    </select>
+                    
+                    <label style="display: block; margin-top: 20px; font-weight: bold;">Tell Us About Yourself *</label>
+                    <textarea id="writer-about" name="about" required rows="6" placeholder="Tell us why you want to write for us, any experience you have, and what makes you passionate about Utah sports..." style="width: 100%; padding: 10px; margin-top: 5px; font-family: inherit; font-size: inherit; border: 1px solid #ccc; border-radius: 4px; resize: vertical;"></textarea>
+                    
+                    <button type="submit" style="margin-top: 30px; padding: 15px 40px; background-color: #000; color: #fff; border: none; cursor: pointer; font-family: inherit; font-size: 1.1rem; font-weight: 600; border-radius: 4px; width: 100%;">Submit Application</button>
+                </form>
+            </div>
         </div>
+    </div>
+    
+    <a class="back-link" onclick="showHome()">← Back to Home</a>
+</div>
     </div>
 
     <div id="about-page" class="page">
@@ -1660,6 +1713,7 @@ window.handleAddAppleSegments = async function(e) {
                 default: return error.message;
             }
         }
+        
 
         window.addEventListener('DOMContentLoaded', init);
     </script>
